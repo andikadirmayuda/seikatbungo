@@ -1,0 +1,131 @@
+/* Professional Toast Notification Styles */
+.notification-container {
+    max-width: 90vw !important;
+    min-width: 320px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Mobile specific styles */
+@media (max-width: 640px) {
+    .notification-container {
+        max-width: calc(100vw - 32px) !important;
+        min-width: auto !important;
+        margin: 0 16px;
+    }
+    
+    .notification-container .text-lg {
+        font-size: 1rem !important;
+    }
+    
+    .notification-container .text-2xl {
+        font-size: 1.5rem !important;
+    }
+}
+
+/* Tablet styles */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .notification-container {
+        max-width: 400px !important;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 1025px) {
+    .notification-container {
+        max-width: 450px !important;
+    }
+}
+
+/* Animation enhancements */
+.notification-enter {
+    animation: notificationSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification-exit {
+    animation: notificationSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes notificationSlideIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) translateY(0);
+    }
+}
+
+@keyframes notificationSlideOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95) translateY(-20px);
+    }
+}
+
+/* Progress bar animation */
+.progress-bar {
+    animation: progressFill 3s linear infinite;
+}
+
+@keyframes progressFill {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+
+/* Pulse effect for loading */
+.pulse-loading {
+    animation: pulseLoading 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseLoading {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.02);
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .notification-container {
+        border: 3px solid currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .notification-container {
+        transition: none !important;
+    }
+    
+    .notification-enter,
+    .notification-exit,
+    .progress-bar,
+    .pulse-loading {
+        animation: none !important;
+    }
+}
+
+/* Focus indicators for accessibility */
+.notification-container button:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+}
+
+/* Dark mode support (if needed) */
+@media (prefers-color-scheme: dark) {
+    .notification-container {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+}
