@@ -1022,8 +1022,9 @@
                                                         {{ number_format($maxPrice, 0, ',', '.') }}
                                                     @endif
                                                 </div>
-                                                <div class="text-xs text-gray-500 text-center">
-                                                    {{ $jsPrices->count() }} pilihan harga
+                                                <div class="text-xs text-gray-500 text-center mb-1">
+                                                    Beberapa pilihan harga
+                                                    {{-- {{ $jsPrices->count() }} pilihan harga --}}
                                                 </div>
                                             </div>
                                         </div>

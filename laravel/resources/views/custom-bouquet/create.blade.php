@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Bouquet Builder | Seikat Bungo</title>
+    <title>Custom Bouquet | Seikat Bungo</title>
     <link rel="icon" href="{{ asset(config('app.logo')) }}" type="image/png">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap Icons -->
@@ -113,22 +113,29 @@
         }
 
         .gradient-bg {
-            background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 50%, #f0fdf4 100%);
+            background: linear-gradient(135deg, #2D9C8F 0%, #FFFFFF 50%, #247A72 100%);
+        }
+
+        /* Konsisten dengan bouquets: gradient utama */
+        .bg-gradient-main {
+            background: linear-gradient(to bottom right, #F5F5F5, white, #F5F5F5);
         }
 
         .glass-effect {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(245, 166, 35, 0.25);
         }
 
         .card-hover {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(45, 156, 143, 0.1);
         }
 
         .card-hover:hover {
             transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(39, 90, 89, 0.2);
+            border-color: rgba(39, 90, 89, 0.3);
         }
 
         .custom-scrollbar {
@@ -286,23 +293,40 @@
             box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
         }
 
-        /* Enhanced chip button styles */
+        /* Enhanced chip button styles - konsisten dengan bouquets */
+        .chip-btn {
+            border: 2px solid #2D9C8F;
+            background: #fff;
+            color: #2D9C8F;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
         .chip-btn.active {
-            background: linear-gradient(135deg, #f43f5e, #ec4899);
-            color: white;
-            border-color: #f43f5e;
+            background: linear-gradient(135deg, #2D9C8F, #247A72);
+            color: #fff;
+            border-color: #2D9C8F;
             transform: translateY(-2px);
         }
 
         .chip-btn:hover {
-            border-color: #f43f5e;
-            background-color: #fef2f2;
+            border-color: #2D9C8F;
+            background-color: rgba(45, 156, 143, 0.1);
+            color: #247A72;
+        }
+
+        .category-tab {
+            border: 2px solid #2D9C8F;
+            background: #fff;
+            color: #2D9C8F;
+            font-weight: 600;
+            transition: all 0.2s;
         }
 
         .category-tab.active {
-            border-color: #f43f5e;
-            color: white;
-            background: linear-gradient(135deg, #f43f5e, #ec4899);
+            border-color: #2D9C8F;
+            color: #fff;
+            background: linear-gradient(135deg, #2D9C8F, #247A72);
         }
 
         #selectedItems:empty:before {
@@ -445,7 +469,8 @@
     </style>
 </head>
 
-<body class="min-h-screen gradient-bg text-black flex flex-col font-sans overflow-x-hidden">
+<body
+    class="min-h-screen bg-gradient-to-br from-[#F5F5F5] via-white to-[#F5F5F5] text-[#333333] flex flex-col font-sans overflow-x-hidden">
     @include('public.partials.cart-modal')
     @include('public.partials.cart-panel')
 
@@ -483,7 +508,7 @@
                         <div class="hidden md:flex items-center space-x-3">
                             <!-- Track Order -->
                             <a href="{{ route('public.order.track') }}"
-                                class="text-gray-600 hover:text-rose-600 p-2 rounded-full hover:bg-rose-50 transition-all duration-200"
+                                class="text-[#275a59] hover:text-[#59aaa1] relative p-2 rounded-full hover:bg-[#59aaa1]/10 transition-all duration-200"
                                 title="Lacak Pesanan">
                                 <i class="bi bi-truck text-xl"></i>
                             </a>
@@ -562,16 +587,18 @@
                 <div class="w-full mt-4">
                     <nav class="flex items-center justify-center">
                         <div class="flex items-center justify-center space-x-2 sm:space-x-4 md:space-x-8">
-                            <a href="{{ route('public.flowers') }}" class="px-2 sm:px-4 py-1.5 text-center">
+                            <a href="{{ route('public.flowers') }}"
+                                class="px-2 sm:px-4 py-1.5 text-center text-[#2D9C8F] hover:bg-[#2D9C8F]/10 rounded-xl transition-all duration-300">
                                 <span class="text-sm font-medium">BUNGA</span>
                             </a>
 
-                            <a href="{{ route('public.bouquets') }}" class="px-2 sm:px-4 py-1.5 text-center">
+                            <a href="{{ route('public.bouquets') }}"
+                                class="px-2 sm:px-4 py-1.5 text-center text-[#2D9C8F] hover:bg-[#2D9C8F]/10 rounded-xl transition-all duration-300">
                                 <span class="text-sm font-medium">BOUQUET</span>
                             </a>
 
                             <a href="{{ route('custom.bouquet.create') }}"
-                                class="px-2 sm:px-4 py-1.5 text-center nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-rose-500 to-red-500 text-white shadow-lg nav-active-gradient' : '' }}">
+                                class="px-2 sm:px-4 py-1.5 text-center nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-[#2D9C8F] to-[#247A72] text-white shadow-lg nav-active-gradient">
                                 <span class="text-sm font-medium">CUSTOM</span>
                             </a>
                         </div>
@@ -591,8 +618,7 @@
         <div class="mb-6 horizontal-builder">
             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                 <!-- Builder Header -->
-                <div
-                    class="bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 text-white p-4 relative overflow-hidden">
+                <div class="bg-gradient-to-r from-[#2D9C8F] to-[#247A72] text-white p-4 relative overflow-hidden">
                     <!-- Background Pattern -->
                     <div class="absolute inset-0 opacity-10">
                         <div class="absolute inset-0"
@@ -822,36 +848,37 @@
                                 }
                             @endphp
                             @if($defaultPrice && $product->current_stock > 0)
-                                <div class="product-card bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                                <div class="product-card glass-effect card-hover rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
                                     data-category="{{ $product->category->name ?? '' }}" data-product-id="{{ $product->id }}">
                                     <!-- Product Image -->
-                                    <div class="aspect-w-1 aspect-h-1 bg-gray-100 rounded-t-lg overflow-hidden">
+                                    <div
+                                        class="aspect-w-1 aspect-h-1 bg-gradient-to-br from-[#F5F5F5] to-[#2D9C8F]/10 rounded-t-2xl overflow-hidden">
                                         @if($product->image)
                                             <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
                                                 class="w-full h-32 object-cover">
                                         @else
                                             <div
-                                                class="w-full h-32 bg-gradient-to-br from-rose-100 to-pink-100 flex items-center justify-center">
-                                                <span class="text-4xl">🌸</span>
+                                                class="w-full h-32 bg-gradient-to-br from-[#2D9C8F]/10 to-[#247A72]/10 flex items-center justify-center">
+                                                <span class="text-4xl text-[#2D9C8F]">🌸</span>
                                             </div>
                                         @endif
                                     </div>
                                     <!-- Product Info -->
                                     <div class="p-4">
-                                        <h3 class="font-semibold text-gray-900 text-sm mb-1">{{ $product->name }}</h3>
-                                        <p class="text-xs text-gray-500 mb-2">
+                                        <h3 class="font-bold text-gray-800 text-sm mb-1">{{ $product->name }}</h3>
+                                        <p class="text-xs text-[#2D9C8F] mb-2 font-medium">
                                             {{ $product->category->name ?? 'Uncategorized' }}
                                         </p>
                                         <!-- Stock Info -->
                                         <div class="flex items-center justify-between mb-3">
-                                            <span class="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                                            <span class="text-xs badge-stock">
                                                 📦 {{ $product->current_stock }} {{ $product->base_unit }} tersedia
                                             </span>
                                         </div>
                                         <!-- Price Preview (show only custom prices) -->
                                         @foreach($customPrices as $price)
                                             <div class="text-sm mb-1">
-                                                <span class="text-rose-600 font-semibold">
+                                                <span class="text-price">
                                                     Rp {{ number_format($price->price, 0, ',', '.') }}
                                                 </span>
                                                 <span class="text-gray-500 text-xs">
@@ -861,9 +888,9 @@
                                         @endforeach
                                         <!-- Add Button -->
                                         <button
-                                            class="w-full mt-3 bg-purple-500 hover:bg-purple-600 text-white text-sm py-2 px-3 rounded-md transition-colors add-product-btn"
+                                            class="w-full mt-3 btn-add-bouquet text-white text-sm py-2 px-3 rounded-xl transition-all duration-200 add-product-btn"
                                             data-product-id="{{ $product->id }}">
-                                            + Tambah ke Bouquet
+                                            <i class="bi bi-cart-plus mr-1"></i>Tambah ke Bouquet
                                         </button>
                                     </div>
                                 </div>

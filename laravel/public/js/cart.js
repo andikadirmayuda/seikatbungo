@@ -329,8 +329,21 @@ function updateQuantity(cartKey, change) {
     const buttons = itemElement.querySelectorAll('button');
     buttons.forEach(btn => btn.disabled = true);
 
+    // Optimistic update: update jumlah di UI langsung
     quantityElement.textContent = newQuantity;
 
+    // Update harga total item di UI (jika ada)
+    const priceText = itemElement.querySelector('p.text-sm.text-gray-500');
+    if (priceText) {
+        // Ambil harga satuan dari text, misal: "2 x Rp 10.000"
+        const priceMatch = priceText.textContent.match(/Rp ([\d.]+)/);
+        if (priceMatch) {
+            const unitPrice = parseInt(priceMatch[1].replace(/\./g, ''));
+            priceText.textContent = `${newQuantity} x Rp ${formatPrice(unitPrice)}`;
+        }
+    }
+
+    // Update total cart secara async (tidak perlu notifikasi sukses)
     fetch(`/cart/update/${cartKey}`, {
         method: 'POST',
         headers: {
@@ -345,16 +358,32 @@ function updateQuantity(cartKey, change) {
         })
         .then(data => {
             if (data.success) {
-                updateCart();
-                showToast('Jumlah berhasil diperbarui', 'success');
+                // Hanya update cart panel (total, badge, dsb) tanpa notifikasi sukses
+                updateCart(true);
             } else {
+                // Rollback jumlah jika gagal
                 quantityElement.textContent = currentQuantity;
+                if (priceText) {
+                    const priceMatch = priceText.textContent.match(/Rp ([\d.]+)/);
+                    if (priceMatch) {
+                        const unitPrice = parseInt(priceMatch[1].replace(/\./g, ''));
+                        priceText.textContent = `${currentQuantity} x Rp ${formatPrice(unitPrice)}`;
+                    }
+                }
                 showToast(data.message || 'Gagal mengupdate jumlah', 'error');
             }
         })
         .catch(error => {
             console.error('Error updating quantity:', error);
+            // Rollback jumlah jika gagal
             quantityElement.textContent = currentQuantity;
+            if (priceText) {
+                const priceMatch = priceText.textContent.match(/Rp ([\d.]+)/);
+                if (priceMatch) {
+                    const unitPrice = parseInt(priceMatch[1].replace(/\./g, ''));
+                    priceText.textContent = `${currentQuantity} x Rp ${formatPrice(unitPrice)}`;
+                }
+            }
             showToast('Terjadi kesalahan saat mengupdate jumlah', 'error');
         })
         .finally(() => {

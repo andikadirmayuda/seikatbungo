@@ -2,7 +2,7 @@
 <div id="cartPriceModal" class="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-40 hidden"
     style="z-index: 1000;">
     <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 relative">
-        <button onclick="closeCartPriceModal()" class="absolute top-3 right-3 text-gray-400 hover:text-rose-500">
+        <button onclick="closeCartPriceModal()" class="absolute top-3 right-3 text-[#6B7280] hover:text-rose-500">
             <i class="bi bi-x-lg"></i>
         </button>
         <h3 class="text-lg font-bold mb-4 text-gray-800 flex items-center">
@@ -36,11 +36,24 @@
                 </span>
             </div>
         </div>
+
+        <!-- Important Info Message (rapi) -->
+        <div class="flex items-start gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg mt-4 mb-2">
+            <div class="pt-1">
+                <i class="bi bi-exclamation-triangle-fill text-yellow-500 text-lg"></i>
+            </div>
+            <div>
+                <div class="font-semibold text-yellow-800 text-sm mb-0.5">Hanya Bunga Potong</div>
+                <div class="text-xs text-yellow-700 leading-snug">(tidak dirangkai, tidak dibersihkan dari duri dan
+                    daun)</div>
+            </div>
+        </div>
+
         <div class="mt-6 flex justify-end gap-2">
             <button onclick="closeCartPriceModal()"
                 class="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200">Batal</button>
             <button id="modalAddToCartBtn"
-                class="px-4 py-2 rounded-lg bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold hover:from-rose-600 hover:to-pink-600"
+                class="px-4 py-2 rounded-lg bg-gradient-to-r from-[#2D9C8F] to-[#247A72] text-white font-semibold hover:from-[#58B8AB] hover:to-[#247A72]"
                 disabled>Tambah ke Keranjang</button>
         </div>
     </div>
@@ -119,16 +132,27 @@
         optionsDiv.innerHTML = prices.map(price => {
             // Only show reseller price if code is already validated
             if (price.type === 'reseller' && !isResellerActive) {
-                return ''; // Don't show reseller option until validated
+                return '';
+            }
+
+            // Custom label for ikat types
+            let customLabel = price.label;
+            if (price.type === 'ikat_5' || price.type === 'ikat 5') {
+                customLabel = 'Per Ikat (Isi 5 Tangkai)';
+            } else if (price.type === 'ikat_10' || price.type === 'ikat 10') {
+                customLabel = 'Per Ikat (Isi 10 Tangkai)';
+            } else if (price.type === 'ikat_20' || price.type === 'ikat 20') {
+                customLabel = 'Per Ikat (Isi 20 Tangkai)';
             }
 
             return `
             <label class="flex items-center gap-3 mb-2 cursor-pointer">
                 <input type="radio" name="priceOption" value="${price.type}" onchange="selectPriceOption('${price.type}')">
-                <span class="font-semibold text-gray-700">${price.label}</span>
-                <span class="ml-auto text-rose-600 font-bold">Rp ${formatPrice(price.price)}</span>
+                <span class="font-semibold text-gray-700">${customLabel}</span>
+                <span class="ml-auto font-bold" style="color:#2D9C8F">Rp ${formatPrice(price.price)}</span>
             </label>
-        `}).join('');
+        `;
+        }).join('');
 
         // Show/hide reseller section
         if (hasResellerPrice) {
@@ -158,18 +182,25 @@
             const isResellerActive = checkResellerStatus();
 
             optionsDiv.innerHTML = availablePrices.map(price => {
-                // Only show reseller price if code is already validated
                 if (price.type === 'reseller' && !isResellerActive) {
-                    return ''; // Don't show reseller option until validated
+                    return '';
                 }
-
+                let customLabel = price.label;
+                if (price.type === 'ikat_5' || price.type === 'ikat 5') {
+                    customLabel = 'Per Ikat (Isi 5 Tangkai)';
+                } else if (price.type === 'ikat_10' || price.type === 'ikat 10') {
+                    customLabel = 'Per Ikat (Isi 10 Tangkai)';
+                } else if (price.type === 'ikat_20' || price.type === 'ikat 20') {
+                    customLabel = 'Per Ikat (Isi 20 Tangkai)';
+                }
                 return `
                 <label class="flex items-center gap-3 mb-2 cursor-pointer">
                     <input type="radio" name="priceOption" value="${price.type}" onchange="selectPriceOption('${price.type}')">
-                    <span class="font-semibold text-gray-700">${price.label}</span>
-                    <span class="ml-auto text-rose-600 font-bold">Rp ${formatPrice(price.price)}</span>
+                    <span class="font-semibold text-gray-700">${customLabel}</span>
+                    <span class="ml-auto font-bold" style="color:#2D9C8F">Rp ${formatPrice(price.price)}</span>
                 </label>
-            `}).join('');
+            `;
+            }).join('');
         }
     }
 
