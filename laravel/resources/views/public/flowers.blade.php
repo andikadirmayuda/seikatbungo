@@ -1268,7 +1268,7 @@
                     target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-tiktok text-xl"></i>
                 </a>
-                <a href="https://wa.me/6282177929879?text=Halo%20Seikat%20Bungo%20!"
+                <a href="https://wa.me/6285119990901?text=Halo%20Seikat%20Bungo%20!"
                     class="text-rose-200 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-whatsapp text-xl"></i>
                 </a>

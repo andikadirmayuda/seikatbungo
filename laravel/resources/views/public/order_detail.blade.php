@@ -39,44 +39,44 @@
             <!-- Status Badge -->
             <div class="flex flex-col sm:flex-row gap-2 justify-center items-center mb-6">
                 @php
-                    $statusIndo = [
-                        'pending' => 'Menunggu',
-                        'confirmed' => 'Dikonfirmasi',
-                        'processing' => 'Diproses',
-                        'processed' => 'Diproses',
-                        'packing' => 'Sedang Dikemas',
-                        'ready' => 'Sudah Siap',
-                        'shipping' => 'Dikirim',
-                        'shipped' => 'Dikirim',
-                        'delivered' => 'Terkirim',
-                        'completed' => 'Selesai',
-                        'cancelled' => 'Dibatalkan'
-                    ];
+$statusIndo = [
+    'pending' => 'Menunggu',
+    'confirmed' => 'Dikonfirmasi',
+    'processing' => 'Diproses',
+    'processed' => 'Diproses',
+    'packing' => 'Sedang Dikemas',
+    'ready' => 'Sudah Siap',
+    'shipping' => 'Dikirim',
+    'shipped' => 'Dikirim',
+    'delivered' => 'Terkirim',
+    'completed' => 'Selesai',
+    'cancelled' => 'Dibatalkan'
+];
                 @endphp
                 <span
                     class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-semibold text-white text-xs sm:text-sm shadow bg-pink-600">
                     <i class="bi bi-clipboard-check"></i> {{ $statusIndo[$order->status] ?? ucfirst($order->status) }}
                 </span>
                 @php
-                    $paymentStatusMap = [
-                        'waiting_confirmation' => 'Menunggu Konfirmasi Stok',
-                        'ready_to_pay' => 'Siap Dibayar',
-                        'waiting_payment' => 'Menunggu Pembayaran',
-                        'waiting_verification' => 'Menunggu Verifikasi Pembayaran',
-                        'paid' => 'Lunas',
-                        'rejected' => 'Pembayaran Ditolak',
-                        'cancelled' => 'Dibatalkan',
-                    ];
-                    $paymentBg = match ($order->payment_status) {
-                        'paid' => '#16a34a',
-                        'ready_to_pay' => '#f59e42',
-                        'waiting_confirmation' => '#64748b',
-                        'waiting_payment' => '#f59e42',
-                        'waiting_verification' => '#f59e42',
-                        'rejected' => '#dc2626',
-                        'cancelled' => '#6b7280',
-                        default => '#64748b',
-                    };
+$paymentStatusMap = [
+    'waiting_confirmation' => 'Menunggu Konfirmasi Stok',
+    'ready_to_pay' => 'Siap Dibayar',
+    'waiting_payment' => 'Menunggu Pembayaran',
+    'waiting_verification' => 'Menunggu Verifikasi Pembayaran',
+    'paid' => 'Lunas',
+    'rejected' => 'Pembayaran Ditolak',
+    'cancelled' => 'Dibatalkan',
+];
+$paymentBg = match ($order->payment_status) {
+    'paid' => '#16a34a',
+    'ready_to_pay' => '#f59e42',
+    'waiting_confirmation' => '#64748b',
+    'waiting_payment' => '#f59e42',
+    'waiting_verification' => '#f59e42',
+    'rejected' => '#dc2626',
+    'cancelled' => '#6b7280',
+    default => '#64748b',
+};
                 @endphp
                 <span
                     class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-semibold text-white text-xs sm:text-sm shadow"
@@ -88,38 +88,38 @@
             <!-- Stepper Status Responsive Split for Mobile -->
             <div class="w-full mb-8">
                 @php
-                    // Base steps untuk flow normal pesanan
-                    $baseSteps = [
-                        'pending' => 'Pesanan Diterima',
-                        'processing' => 'Diproses',
-                        'packing' => 'Dikemas',
-                        'ready' => 'Sudah Siap',
-                        'shipped' => 'Dikirim',
-                        'done' => 'Selesai',
-                    ];
-                    
-                    // Tambahkan status dibatalkan hanya jika pesanan dibatalkan
-                    $steps = $baseSteps;
-                    if (in_array(strtolower($order->status), ['cancelled', 'canceled'])) {
-                        $steps['cancelled'] = 'Dibatalkan';
-                    }
-                    
-                    $statusMap = [
-                        'pending' => 'pending',
-                        'processed' => 'processing',
-                        'processing' => 'processing',
-                        'packing' => 'packing',
-                        'ready' => 'ready',
-                        'shipped' => 'shipped',
-                        'done' => 'done',
-                        'completed' => 'done',
-                        'cancelled' => 'cancelled',
-                        'canceled' => 'cancelled',
-                    ];
-                    $currentStatus = strtolower($order->status);
-                    $currentStatus = $statusMap[$currentStatus] ?? $currentStatus;
-                    $stepKeys = array_keys($steps);
-                    $currentIndex = array_search($currentStatus, $stepKeys);
+// Base steps untuk flow normal pesanan
+$baseSteps = [
+    'pending' => 'Pesanan Diterima',
+    'processing' => 'Diproses',
+    'packing' => 'Dikemas',
+    'ready' => 'Sudah Siap',
+    'shipped' => 'Dikirim',
+    'done' => 'Selesai',
+];
+
+// Tambahkan status dibatalkan hanya jika pesanan dibatalkan
+$steps = $baseSteps;
+if (in_array(strtolower($order->status), ['cancelled', 'canceled'])) {
+    $steps['cancelled'] = 'Dibatalkan';
+}
+
+$statusMap = [
+    'pending' => 'pending',
+    'processed' => 'processing',
+    'processing' => 'processing',
+    'packing' => 'packing',
+    'ready' => 'ready',
+    'shipped' => 'shipped',
+    'done' => 'done',
+    'completed' => 'done',
+    'cancelled' => 'cancelled',
+    'canceled' => 'cancelled',
+];
+$currentStatus = strtolower($order->status);
+$currentStatus = $statusMap[$currentStatus] ?? $currentStatus;
+$stepKeys = array_keys($steps);
+$currentIndex = array_search($currentStatus, $stepKeys);
                 @endphp
                 <!-- Mobile: 2 rows, Desktop: 1 row -->
                 @php 
@@ -159,7 +159,7 @@
                 <div class="flex flex-col gap-1 sm:hidden">
                     @php 
                         $stepCount = count($steps);
-                        $isCancelled = in_array(strtolower($order->status), ['cancelled', 'canceled']);
+$isCancelled = in_array(strtolower($order->status), ['cancelled', 'canceled']);
                     @endphp
                     
                     @if($isCancelled)
@@ -240,13 +240,13 @@
                             <span class="text-gray-500">Waktu Ambil/Pengiriman</span><br>
                             <span class="font-bold text-gray-800 break-words">{{ $order->pickup_time }}</span>
                             @php
-                                $hour = (int)substr($order->pickup_time, 0, 2);
-                                $timeOfDay = match(true) {
-                                    $hour >= 5 && $hour < 11 => 'Pagi',
-                                    $hour >= 11 && $hour < 15 => 'Siang',
-                                    $hour >= 15 && $hour < 18 => 'Sore',
-                                    default => 'Malam'
-                                };
+$hour = (int) substr($order->pickup_time, 0, 2);
+$timeOfDay = match (true) {
+    $hour >= 5 && $hour < 11 => 'Pagi',
+    $hour >= 11 && $hour < 15 => 'Siang',
+    $hour >= 15 && $hour < 18 => 'Sore',
+    default => 'Malam'
+};
                             @endphp
                             <span class="text-sm text-blue-600 ml-2">({{ $timeOfDay }})</span>
                         </div>
@@ -307,32 +307,32 @@
             
             @php 
                 $itemsTotal = 0;
-                // Calculate totals from items only
-                foreach($order->items as $item) {
-                    $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
-                    $itemsTotal += $subtotal;
-                }
-                
-                // Check if delivery method needs shipping fee
-                $needsShippingFee = in_array($order->delivery_method, [
-                    'Gosend (Pesan Dari Toko)',
-                    'Gocar (Pesan Dari Toko)'
-                ]);
-                
-                // Check if admin has set shipping fee
-                $shippingFee = $order->shipping_fee ?? 0;
-                $shippingFeeSet = $shippingFee > 0;
-                
-                // Determine if we should show grand total
-                $showGrandTotal = !$needsShippingFee || $shippingFeeSet;
-                
-                // Calculate grand total
-                $grandTotal = $itemsTotal + $shippingFee;
-                
-                // Payment calculations
-                $totalPaid = $order->amount_paid ?? 0;
-                $sisa = $order->payment_status === 'paid' ? 0 : max($grandTotal - $totalPaid, 0);
-                $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid;
+// Calculate totals from items only
+foreach ($order->items as $item) {
+    $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
+    $itemsTotal += $subtotal;
+}
+
+// Check if delivery method needs shipping fee
+$needsShippingFee = in_array($order->delivery_method, [
+    'Gosend (Pesan Dari Toko)',
+    'Gocar (Pesan Dari Toko)'
+]);
+
+// Check if admin has set shipping fee
+$shippingFee = $order->shipping_fee ?? 0;
+$shippingFeeSet = $shippingFee > 0;
+
+// Determine if we should show grand total
+$showGrandTotal = !$needsShippingFee || $shippingFeeSet;
+
+// Calculate grand total
+$grandTotal = $itemsTotal + $shippingFee;
+
+// Payment calculations
+$totalPaid = $order->amount_paid ?? 0;
+$sisa = $order->payment_status === 'paid' ? 0 : max($grandTotal - $totalPaid, 0);
+$displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid;
             @endphp
 
             <!-- Desktop: Table Layout -->
@@ -352,8 +352,8 @@
                         @foreach($order->items as $item)
                             @php 
                                 $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
-                                $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
-                                $cleanName = trim($cleanName) ?: $item->product_name;
+    $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
+    $cleanName = trim($cleanName) ?: $item->product_name;
                             @endphp
                             <tr>
                                 <td class="py-3 px-4 break-words whitespace-pre-wrap align-top">{{ $cleanName }}</td>
@@ -428,8 +428,8 @@
                 @foreach($order->items as $item)
                     @php 
                         $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
-                        $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
-                        $cleanName = trim($cleanName) ?: $item->product_name;
+    $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
+    $cleanName = trim($cleanName) ?: $item->product_name;
                     @endphp
                     <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                         <!-- Product Header -->
@@ -544,9 +544,9 @@
 
             <!-- Custom Bouquet Information Card -->
             @php
-                $customBouquetItems = $order->items->filter(function($item) {
-                    return $item->type === 'custom_bouquet';
-                });
+$customBouquetItems = $order->items->filter(function ($item) {
+    return $item->type === 'custom_bouquet';
+});
             @endphp
             
             @if($customBouquetItems->count() > 0)
@@ -663,7 +663,7 @@
                                             <div class="mt-4 p-3 bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-lg">
                                                 <div class="flex justify-between items-center">
                                                     <span class="font-semibold text-purple-800 text-sm sm:text-base">Total Harga:</span>
-                                                    <span class="font-bold text-lg text-purple-800">Rp {{ number_format((float)($customBouquet->total_price ?? 0), 0, ',', '.') }}</span>
+                                                    <span class="font-bold text-lg text-purple-800">Rp {{ number_format((float) ($customBouquet->total_price ?? 0), 0, ',', '.') }}</span>
                                                 </div>
                                             </div>
                                             
@@ -771,46 +771,46 @@
                                 
                                 <div class="mt-4 text-center">
                                     @php
-                                        $waMessage = "🌸 *Halo, Seikat Bungo*\n";
-                                        $waMessage .= "══════════\n\n";
-                                        $waMessage .= "Saya ingin mengirim bukti pembayaran untuk:\n\n";
-                                        $waMessage .= "📋 *Pesanan :* {$order->public_code}\n";
-                                        $waMessage .= "🔗 *Link :* " . url("/order/{$order->public_code}") . "\n\n";
-                                        $waMessage .= "👤 *Nama Pemesan :* {$order->customer_name}\n";
-                                        $waMessage .= "📱 *WhatsApp Pemesan :* {$order->wa_number}\n";
-                                        if($order->receiver_name) {
-                                            $waMessage .= "👥 *Nama Penerima :* {$order->receiver_name}\n";
-                                        }
-                                        if($order->receiver_wa) {
-                                            $waMessage .= "📲 *WhatsApp Penerima :* {$order->receiver_wa}\n";
-                                        }
-                                        $waMessage .= "📅 *Tanggal :* " . \Carbon\Carbon::parse($order->pickup_date)->format('d-m-Y') . "\n";
-                                        $waMessage .= "⏰ *Waktu :* {$order->pickup_time}\n";
-                                        $waMessage .= "🚚 *Pengiriman :* {$order->delivery_method}\n";
-                                        $waMessage .= "📍 *Tujuan :* {$order->destination}\n\n";
-                                        
-                                        // Tambahkan breakdown harga dengan ongkir
-                                        $waMessage .= "💰 *Detail Harga:*\n";
-                                        $waMessage .= "• Total Produk: Rp " . number_format($itemsTotal, 0, ',', '.') . "\n";
-                                        if ($shippingFee > 0) {
-                                            $waMessage .= "• Ongkir: Rp " . number_format($shippingFee, 0, ',', '.') . "\n";
-                                        }
-                                        $waMessage .= "• *Total Keseluruhan: Rp " . number_format($grandTotal, 0, ',', '.') . "*\n\n";
-                                        
-                                        if ($showGrandTotal) {
-                                            $waMessage .= "💰 *Total Pesanan :* Rp " . number_format($grandTotal, 0, ',', '.') . "\n\n";
-                                            $waMessage .= "═══════════\n";
-                                            $waMessage .= "Mohon konfirmasi pembayaran 🙏\n";
-                                        } else {
-                                            $waMessage .= "⏳ *Status :* Menunggu admin menghitung ongkir\n\n";
-                                            $waMessage .= "═══════════\n";
-                                            $waMessage .= "Mohon tunggu info total final dari admin 🙏\n";
-                                        }
-                                        
-                                        $waMessage .= "Terima kasih 😊";
-                                        $encodedMessage = urlencode($waMessage);
+    $waMessage = "🌸 *Halo, Seikat Bungo*\n";
+    $waMessage .= "══════════\n\n";
+    $waMessage .= "Saya ingin mengirim bukti pembayaran untuk:\n\n";
+    $waMessage .= "📋 *Pesanan :* {$order->public_code}\n";
+    $waMessage .= "🔗 *Link :* " . url("/order/{$order->public_code}") . "\n\n";
+    $waMessage .= "👤 *Nama Pemesan :* {$order->customer_name}\n";
+    $waMessage .= "📱 *WhatsApp Pemesan :* {$order->wa_number}\n";
+    if ($order->receiver_name) {
+        $waMessage .= "👥 *Nama Penerima :* {$order->receiver_name}\n";
+    }
+    if ($order->receiver_wa) {
+        $waMessage .= "📲 *WhatsApp Penerima :* {$order->receiver_wa}\n";
+    }
+    $waMessage .= "📅 *Tanggal :* " . \Carbon\Carbon::parse($order->pickup_date)->format('d-m-Y') . "\n";
+    $waMessage .= "⏰ *Waktu :* {$order->pickup_time}\n";
+    $waMessage .= "🚚 *Pengiriman :* {$order->delivery_method}\n";
+    $waMessage .= "📍 *Tujuan :* {$order->destination}\n\n";
+
+    // Tambahkan breakdown harga dengan ongkir
+    $waMessage .= "💰 *Detail Harga:*\n";
+    $waMessage .= "• Total Produk: Rp " . number_format($itemsTotal, 0, ',', '.') . "\n";
+    if ($shippingFee > 0) {
+        $waMessage .= "• Ongkir: Rp " . number_format($shippingFee, 0, ',', '.') . "\n";
+    }
+    $waMessage .= "• *Total Keseluruhan: Rp " . number_format($grandTotal, 0, ',', '.') . "*\n\n";
+
+    if ($showGrandTotal) {
+        $waMessage .= "💰 *Total Pesanan :* Rp " . number_format($grandTotal, 0, ',', '.') . "\n\n";
+        $waMessage .= "═══════════\n";
+        $waMessage .= "Mohon konfirmasi pembayaran 🙏\n";
+    } else {
+        $waMessage .= "⏳ *Status :* Menunggu admin menghitung ongkir\n\n";
+        $waMessage .= "═══════════\n";
+        $waMessage .= "Mohon tunggu info total final dari admin 🙏\n";
+    }
+
+    $waMessage .= "Terima kasih 😊";
+    $encodedMessage = urlencode($waMessage);
                                     @endphp
-                                    <a href="https://wa.me/6282177929879?text={{ $encodedMessage }}" 
+                                    <a href="https://wa.me/6285119990901?text={{ $encodedMessage }}" 
                                        target="_blank"
                                        class="bg-green-500 hover:bg-green-600 text-white text-xs px-4 py-2 rounded-lg transition duration-200 inline-flex items-center gap-2 shadow-md hover:shadow-lg">
                                         <i class="bi bi-whatsapp text-lg"></i> 
@@ -898,7 +898,7 @@
                     <h3 class="font-semibold text-base mb-2 flex items-center gap-2 justify-center"><i
                             class="bi bi-receipt"></i> Bukti Pembayaran</h3>
                     @php
-                        $ext = pathinfo($order->payment_proof, PATHINFO_EXTENSION);
+    $ext = pathinfo($order->payment_proof, PATHINFO_EXTENSION);
                     @endphp
                     @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
                         <img src="{{ asset('storage/' . $order->payment_proof) }}" alt="Bukti Pembayaran"
@@ -925,29 +925,29 @@
                     </h3>
                     
                     @php
-                        $packingFiles = [];
-                        
-                        // Prioritize new multiple files format
-                        if (!empty($order->packing_files)) {
-                            $files = is_string($order->packing_files) ? json_decode($order->packing_files, true) : $order->packing_files;
-                            if (is_array($files)) {
-                                $packingFiles = $files;
-                            }
-                        } 
-                        // Fallback to old single photo format only if no packing_files
-                        elseif (!empty($order->packing_photo)) {
-                            $packingFiles[] = $order->packing_photo;
-                        }
+    $packingFiles = [];
+
+    // Prioritize new multiple files format
+    if (!empty($order->packing_files)) {
+        $files = is_string($order->packing_files) ? json_decode($order->packing_files, true) : $order->packing_files;
+        if (is_array($files)) {
+            $packingFiles = $files;
+        }
+    }
+    // Fallback to old single photo format only if no packing_files
+    elseif (!empty($order->packing_photo)) {
+        $packingFiles[] = $order->packing_photo;
+    }
                     @endphp
                     
                     @if(count($packingFiles) > 0)
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
                             @foreach($packingFiles as $index => $file)
                                 @php
-                                    $filePath = asset('storage/' . $file);
-                                    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-                                    $isVideo = in_array($ext, ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm']);
-                                    $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp']);
+            $filePath = asset('storage/' . $file);
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            $isVideo = in_array($ext, ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm']);
+            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp']);
                                 @endphp
                                 
                                 <div class="bg-white rounded-lg border border-gray-200 p-3 shadow-sm">

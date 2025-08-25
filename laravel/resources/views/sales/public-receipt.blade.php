@@ -90,10 +90,9 @@
                 <h1 class="text-2xl font-bold text-gray-900 mb-2">Seikat Bungo</h1>
                 <div class="w-10 h-0.5 bg-pink-400 mx-auto mb-3"></div>
                 <div class="text-sm text-gray-600 leading-relaxed">
-                    <p>Jl. Lunjuk Jaya No.5, Bukit Lama, Kec. Ilir Bar. I</p>
-                    <p>Kota Palembang, Sumatera Selatan 30139</p>
+                    <p>Jln. Angkatan 45 (samping PS Mall) </p>
                     <p class="mt-2">
-                        <i class="bi bi-telephone mr-1"></i>0821-7792-9879 |
+                        <i class="bi bi-telephone mr-1"></i>0851-1999-0901 |
                         <i class="bi bi-instagram ml-2 mr-1"></i>@seikat.bungo
                     </p>
                 </div>
@@ -381,9 +380,9 @@
                     <div class="text-sm text-gray-600 space-y-2">
                         <p class="font-medium">Butuh bantuan?</p>
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-                            <a href="tel:082177929879"
+                            <a href="tel:085119990901"
                                 class="inline-flex items-center text-blue-600 hover:text-blue-700">
-                                <i class="bi bi-telephone mr-1"></i>0821-7792-9879
+                                <i class="bi bi-telephone mr-1"></i>0851-1999-0901
                             </a>
                             <a href="https://instagram.com/seikat.bungo" target="_blank"
                                 class="inline-flex items-center text-pink-600 hover:text-pink-700">

@@ -323,8 +323,8 @@
                                 </div>
                                 <input type="text" name="wa_number"
                                     class="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="Contoh: 08123456789" value="{{ $wa_number ?? '' }}" required
-                                    pattern="[0-9]+" title="Masukkan nomor WhatsApp (hanya angka)">
+                                    placeholder="Contoh: 08XXX" value="{{ $wa_number ?? '' }}" required pattern="[0-9]+"
+                                    title="Masukkan nomor WhatsApp (hanya angka)">
                             </div>
                             <p class="text-sm text-gray-500 flex items-center gap-2">
                                 <i class="bi bi-info-circle"></i>
@@ -485,7 +485,7 @@
                         </div>
                         <h4 class="font-semibold text-gray-900 mb-2">WhatsApp</h4>
                         <p class="text-gray-600 text-sm mb-3">Chat langsung dengan tim kami</p>
-                        <a href="https://wa.me/+6282177929879"
+                        <a href="https://wa.me/+6285119990901"
                             class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium">
                             <i class="bi bi-arrow-right"></i>
                             Hubungi Kami
@@ -498,10 +498,10 @@
                         </div>
                         <h4 class="font-semibold text-gray-900 mb-2">Telepon</h4>
                         <p class="text-gray-600 text-sm mb-3">Hubungi customer service</p>
-                        <a href="tel:+6282177929879"
+                        <a href="tel:+6285119990901"
                             class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium">
                             <i class="bi bi-arrow-right"></i>
-                            (+62) 821-7792-9879
+                            (+62) 851-1999-0901
                         </a>
                     </div>
 

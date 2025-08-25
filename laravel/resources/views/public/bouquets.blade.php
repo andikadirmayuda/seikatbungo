@@ -520,11 +520,11 @@
         <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6" id="bouquetGrid">
             @forelse($bouquets as $bouquet)
                 @php
-                    // Only show bouquets that have components
-                    $sizeIdsWithComponents = $bouquet->sizesWithComponents->pluck('id');
-                    $pricesWithComponents = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
-                    $minPrice = $pricesWithComponents->min('price') ?? 0;
-                    $maxPrice = $pricesWithComponents->max('price') ?? 0;
+    // Only show bouquets that have components
+    $sizeIdsWithComponents = $bouquet->sizesWithComponents->pluck('id');
+    $pricesWithComponents = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
+    $minPrice = $pricesWithComponents->min('price') ?? 0;
+    $maxPrice = $pricesWithComponents->max('price') ?? 0;
                 @endphp
                 @if($bouquet->sizesWithComponents->count() > 0)
                     <div class="bouquet-card group" data-name="{{ strtolower($bouquet->name) }}"
@@ -594,14 +594,14 @@
                                         Tersedia:</span>
                                     <div class="flex flex-wrap gap-1">
                                         @php
-                                            // Define size order
-                                            $sizeOrder = ['Extra Small', 'Small', 'Medium', 'Large'];
+        // Define size order
+        $sizeOrder = ['Extra Small', 'Small', 'Medium', 'Large'];
 
-                                            // Sort sizes based on the defined order - only show sizes with components
-                                            $sortedSizes = $bouquet->sizesWithComponents->sortBy(function ($size) use ($sizeOrder) {
-                                                $index = array_search($size->name, $sizeOrder);
-                                                return $index !== false ? $index : 999; // Put unknown sizes at the end
-                                            });
+        // Sort sizes based on the defined order - only show sizes with components
+        $sortedSizes = $bouquet->sizesWithComponents->sortBy(function ($size) use ($sizeOrder) {
+            $index = array_search($size->name, $sizeOrder);
+            return $index !== false ? $index : 999; // Put unknown sizes at the end
+        });
                                         @endphp
                                         @foreach($sortedSizes as $size)
                                             <span
@@ -615,11 +615,11 @@
                                 <!-- Price Range -->
                                 <div class="mb-3 sm:mb-4">
                                     @php
-                                        // Only show prices for sizes that have components
-                                        $sizeIdsWithComponents = $bouquet->sizesWithComponents->pluck('id');
-                                        $pricesWithComponents = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
-                                        $minPrice = $pricesWithComponents->min('price');
-                                        $maxPrice = $pricesWithComponents->max('price');
+        // Only show prices for sizes that have components
+        $sizeIdsWithComponents = $bouquet->sizesWithComponents->pluck('id');
+        $pricesWithComponents = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
+        $minPrice = $pricesWithComponents->min('price');
+        $maxPrice = $pricesWithComponents->max('price');
                                     @endphp
                                     @if($minPrice && $maxPrice)
                                         <div class="text-center">
@@ -640,11 +640,11 @@
                                 <!-- Action Buttons -->
                                 <div class="mt-auto space-y-1.5 sm:space-y-2">
                                     @php
-                                        $availablePrices = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
+        $availablePrices = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
                                     @endphp
                                     @if($availablePrices->count() == 1)
                                         @php
-                                            $firstPrice = $availablePrices->first();
+            $firstPrice = $availablePrices->first();
                                         @endphp
                                         <button
                                             onclick="showGreetingCardModal(
@@ -711,7 +711,7 @@
                     target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-tiktok text-xl"></i>
                 </a>
-                <a href="https://wa.me/6282177929879?text=Halo%20Seikat%20Bungo%20!"
+                <a href="https://wa.me/6285119990901?text=Halo%20Seikat%20Bungo%20!"
                     class="text-rose-200 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-whatsapp text-xl"></i>
                 </a>

@@ -85,10 +85,10 @@
                 <h1 class="text-2xl font-bold text-gray-900 mb-2">Seikat Bungo</h1>
                 <div class="w-10 h-0.5 bg-pink-400 mx-auto mb-3"></div>
                 <div class="text-sm text-gray-600 leading-relaxed">
-                    <p>Jl. Lunjuk Jaya No.5, Bukit Lama, Kec. Ilir Bar. I</p>
-                    <p>Kota Palembang, Sumatera Selatan 30139</p>
+                    <p>Jln. Angkatan 45 (samping PS Mall)</p>
+                    {{-- <p>Kota Palembang, Sumatera Selatan 30139</p> --}}
                     <p class="mt-2">
-                        <i class="bi bi-telephone mr-1"></i>0821-7792-9879 |
+                        <i class="bi bi-telephone mr-1"></i>0851-1999-0901 |
                         <i class="bi bi-instagram ml-2 mr-1"></i>@seikat.bungo
                     </p>
                 </div>
@@ -116,9 +116,9 @@
                             <div>
                                 <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">No. Invoice</p>
                                 @php
-                                    $noUrut = str_pad($order->id, 3, '0', STR_PAD_LEFT);
-                                    $tgl = date('dmy', strtotime($order->created_at ?? now()));
-                                    $noInvoice = '#INV-' . $noUrut . '' . $tgl . '' . $order->id;
+$noUrut = str_pad($order->id, 3, '0', STR_PAD_LEFT);
+$tgl = date('dmy', strtotime($order->created_at ?? now()));
+$noInvoice = '#INV-' . $noUrut . '' . $tgl . '' . $order->id;
                                 @endphp
                                 <p class="text-sm font-semibold text-blue-700">{{ $noInvoice }}</p>
                             </div>
@@ -133,13 +133,13 @@
                                 <p class="text-sm font-semibold text-gray-900">{{ \Carbon\Carbon::parse($order->pickup_date)->format('d/m/Y') }}</p>
                                 <p class="text-xs text-rose-600">{{ \Carbon\Carbon::parse($order->pickup_date)->locale('id')->dayName }}</p>
                                 @php
-                                    $hour = (int)substr($order->pickup_time, 0, 2);
-                                    $timeOfDay = match(true) {
-                                        $hour >= 5 && $hour < 11 => 'Pagi',
-                                        $hour >= 11 && $hour < 15 => 'Siang',
-                                        $hour >= 15 && $hour < 18 => 'Sore',
-                                        default => 'Malam'
-                                    };
+$hour = (int) substr($order->pickup_time, 0, 2);
+$timeOfDay = match (true) {
+    $hour >= 5 && $hour < 11 => 'Pagi',
+    $hour >= 11 && $hour < 15 => 'Siang',
+    $hour >= 15 && $hour < 18 => 'Sore',
+    default => 'Malam'
+};
                                 @endphp
                                 <p class="text-xs text-gray-600">
                                     {{ $order->pickup_time }} WIB
@@ -244,36 +244,36 @@
                         <div>
                             <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Status Pesanan</p>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                {{ $order->status === 'completed' ? 'bg-green-100 text-green-800' : 
-                                   ($order->status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
+                                {{ $order->status === 'completed' ? 'bg-green-100 text-green-800' :
+    ($order->status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
                                 @php
-                                    $statusIndo = [
-                                        'pending' => 'Menunggu',
-                                        'confirmed' => 'Dikonfirmasi',
-                                        'processing' => 'Diproses',
-                                        'processed' => 'Diproses',
-                                        'packing' => 'Sedang Dikemas',
-                                        'ready' => 'Sudah Siap',
-                                        'shipping' => 'Dikirim',
-                                        'shipped' => 'Dikirim',
-                                        'delivered' => 'Terkirim',
-                                        'completed' => 'Selesai',
-                                        'cancelled' => 'Dibatalkan'
-                                    ];
+$statusIndo = [
+    'pending' => 'Menunggu',
+    'confirmed' => 'Dikonfirmasi',
+    'processing' => 'Diproses',
+    'processed' => 'Diproses',
+    'packing' => 'Sedang Dikemas',
+    'ready' => 'Sudah Siap',
+    'shipping' => 'Dikirim',
+    'shipped' => 'Dikirim',
+    'delivered' => 'Terkirim',
+    'completed' => 'Selesai',
+    'cancelled' => 'Dibatalkan'
+];
                                 @endphp
                                 {{ $statusIndo[$order->status] ?? ucfirst($order->status) }}
                             </span>
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ml-2
                                 {{ $order->payment_status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800' }}">
                                 @php
-                                    $paymentStatusIndo = [
-                                        'pending' => 'Menunggu Pembayaran',
-                                        'waiting_confirmation' => 'Menunggu Konfirmasi',
-                                        'confirmed' => 'Pembayaran Dikonfirmasi',
-                                        'paid' => 'Lunas',
-                                        'failed' => 'Gagal',
-                                        'cancelled' => 'Dibatalkan'
-                                    ];
+$paymentStatusIndo = [
+    'pending' => 'Menunggu Pembayaran',
+    'waiting_confirmation' => 'Menunggu Konfirmasi',
+    'confirmed' => 'Pembayaran Dikonfirmasi',
+    'paid' => 'Lunas',
+    'failed' => 'Gagal',
+    'cancelled' => 'Dibatalkan'
+];
                                 @endphp
                                 {{ $paymentStatusIndo[$order->payment_status ?? 'waiting_confirmation'] ?? ucfirst(str_replace('_', ' ', $order->payment_status ?? 'waiting_confirmation')) }}
                             </span>
@@ -318,7 +318,8 @@
                         <tbody class="bg-white divide-y divide-gray-100">
                             @php $total = 0; @endphp
                             @foreach($order->items as $index => $item)
-                            @php $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0); $total += $subtotal; @endphp
+                            @php $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
+    $total += $subtotal; @endphp
                             <tr class="hover:bg-gray-50 transition-colors">
                                 <td class="px-4 py-4 text-center text-sm text-gray-600 font-medium">
                                     {{ $index + 1 }}
@@ -336,7 +337,7 @@
                                             <!-- Detail Custom Bouquet -->
                                             <div class="mt-3 space-y-2 bg-gray-50 p-3 rounded-lg">
                                                 @php
-                                                    $details = json_decode($item->details ?? '{}', true) ?? [];
+        $details = json_decode($item->details ?? '{}', true) ?? [];
                                                 @endphp
                                                 
                                                 @if(!empty($details['flowers']))
@@ -380,7 +381,7 @@
                                             </span>
                                             @if(!empty($item->details))
                                                 @php
-                                                    $details = json_decode($item->details, true) ?? [];
+            $details = json_decode($item->details, true) ?? [];
                                                 @endphp
                                                 <div class="mt-2 space-y-1 bg-gray-50 p-3 rounded-lg">
                                                     @foreach($details as $key => $value)
@@ -470,7 +471,8 @@
                 <div class="md:hidden space-y-3">
                     @php $total = 0; @endphp
                     @foreach($order->items as $index => $item)
-                    @php $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0); $total += $subtotal; @endphp
+                    @php $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
+    $total += $subtotal; @endphp
                     <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
                         <!-- Header dengan nomor dan nama produk -->
                         <div class="flex items-start justify-between mb-3">
@@ -590,11 +592,11 @@
                 <div class="space-y-4">
                     @php 
                         $items_total = $total; // items total already calculated above
-                        $shipping_fee = $order->shipping_fee ?? 0;
-                        $grand_total = $items_total + $shipping_fee;
-                        $total_paid = $order->amount_paid ?? 0;
-                        $sisa_pembayaran = $order->payment_status === 'paid' ? 0 : max($grand_total - $total_paid, 0);
-                        $display_total_paid = $order->payment_status === 'paid' ? $grand_total : $total_paid;
+$shipping_fee = $order->shipping_fee ?? 0;
+$grand_total = $items_total + $shipping_fee;
+$total_paid = $order->amount_paid ?? 0;
+$sisa_pembayaran = $order->payment_status === 'paid' ? 0 : max($grand_total - $total_paid, 0);
+$display_total_paid = $order->payment_status === 'paid' ? $grand_total : $total_paid;
                     @endphp
                     
                     <!-- Items Total -->
@@ -687,9 +689,9 @@
                 </h2>
                 <div class="flex justify-center">
                     @php
-                        $ext = pathinfo($order->payment_proof, PATHINFO_EXTENSION);
+    $ext = pathinfo($order->payment_proof, PATHINFO_EXTENSION);
                     @endphp
-                    @if(in_array(strtolower($ext), ['jpg','jpeg','png','gif','webp']))
+                    @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
                         <img src="{{ asset('storage/' . $order->payment_proof) }}"
                              alt="Bukti Pembayaran"
                              class="max-w-sm max-h-64 rounded-lg shadow-md border border-gray-200"
@@ -720,29 +722,29 @@
                 </h2>
                 
                 @php
-                    $packingFiles = [];
-                    
-                    // Prioritize new multiple files format
-                    if (!empty($order->packing_files)) {
-                        $files = is_string($order->packing_files) ? json_decode($order->packing_files, true) : $order->packing_files;
-                        if (is_array($files)) {
-                            $packingFiles = $files;
-                        }
-                    } 
-                    // Fallback to old single photo format only if no packing_files
-                    elseif (!empty($order->packing_photo)) {
-                        $packingFiles[] = $order->packing_photo;
-                    }
+    $packingFiles = [];
+
+    // Prioritize new multiple files format
+    if (!empty($order->packing_files)) {
+        $files = is_string($order->packing_files) ? json_decode($order->packing_files, true) : $order->packing_files;
+        if (is_array($files)) {
+            $packingFiles = $files;
+        }
+    }
+    // Fallback to old single photo format only if no packing_files
+    elseif (!empty($order->packing_photo)) {
+        $packingFiles[] = $order->packing_photo;
+    }
                 @endphp
                 
                 @if(count($packingFiles) > 0)
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         @foreach($packingFiles as $index => $file)
                             @php
-                                $filePath = asset('storage/' . $file);
-                                $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-                                $isVideo = in_array($ext, ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm']);
-                                $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp']);
+            $filePath = asset('storage/' . $file);
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            $isVideo = in_array($ext, ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm']);
+            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp']);
                             @endphp
                             
                             <div class="bg-white rounded-lg border border-gray-200 p-3 shadow-sm">
@@ -852,9 +854,9 @@
                     <div class="text-sm text-gray-600 space-y-2">
                         <p class="font-medium">Butuh bantuan?</p>
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-                            <a href="tel:082177929879"
+                            <a href="tel:085119990901"
                                 class="inline-flex items-center text-blue-600 hover:text-blue-700">
-                                <i class="bi bi-telephone mr-1"></i>0821-7792-9879
+                                <i class="bi bi-telephone mr-1"></i>0851-1999-0901
                             </a>
                             <a href="https://instagram.com/seikat.bungo" target="_blank"
                                 class="inline-flex items-center text-pink-600 hover:text-pink-700">

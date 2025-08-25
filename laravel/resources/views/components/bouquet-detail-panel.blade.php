@@ -135,7 +135,7 @@
         const isAvailable = checkComponentsAvailability(price.size_id);
         const outOfStockComponents = getOutOfStockComponents(price.size_id);
         const componentNames = outOfStockComponents.map(c => c.product?.name || 'Bunga').join(', ');
-        
+
         if (isAvailable) {
             return `<button onclick="handleSizeSelection(${price.id}, ${price.size_id}, '${price.size?.name || 'Standard'}', ${price.price})"
                 class="bg-gradient-to-r from-rose-500 to-pink-500 text-white py-2 px-4 rounded-lg text-sm font-medium hover:from-rose-600 hover:to-pink-600 transition-all duration-200">
@@ -338,10 +338,10 @@
         if (!currentBouquetDetail || !currentBouquetDetail.components_by_size) {
             return false;
         }
-        
+
         const sizeKey = String(sizeId);
         const components = currentBouquetDetail.components_by_size[sizeKey] || [];
-        
+
         // Cek apakah semua komponen memiliki stok > 0
         return components.every(component => {
             const stock = typeof component.product?.current_stock === 'number' ? component.product.current_stock : 0;
@@ -354,10 +354,10 @@
         if (!currentBouquetDetail || !currentBouquetDetail.components_by_size) {
             return [];
         }
-        
+
         const sizeKey = String(sizeId);
         const components = currentBouquetDetail.components_by_size[sizeKey] || [];
-        
+
         return components.filter(component => {
             const stock = typeof component.product?.current_stock === 'number' ? component.product.current_stock : 0;
             return stock <= 0;
@@ -367,14 +367,14 @@
     // Handler untuk pemilihan ukuran dengan validasi stok
     function handleSizeSelection(priceId, sizeId, sizeName, price) {
         const isAvailable = checkComponentsAvailability(sizeId);
-        
+
         if (!isAvailable) {
             const outOfStockComponents = getOutOfStockComponents(sizeId);
             const componentNames = outOfStockComponents.map(c => c.product?.name || 'Bunga').join(', ');
             alert(`Maaf, ukuran ${sizeName} tidak tersedia karena komponen berikut stoknya habis:\n${componentNames}`);
             return;
         }
-        
+
         // Jika stok tersedia, lanjutkan dengan pemilihan normal
         selectBouquetSize(priceId, sizeId, sizeName, price);
     }
@@ -428,7 +428,7 @@
             // Tidak ada harga tersedia
             addToCartText.textContent = 'Hubungi Kami';
             addToCartBtn.onclick = () => {
-                window.open('https://wa.me/6282177929879?text=Halo, saya tertarik dengan bouquet ' + encodeURIComponent(bouquet.name), '_blank');
+                window.open('https://wa.me/6285119990901?text=Halo, saya tertarik dengan bouquet ' + encodeURIComponent(bouquet.name), '_blank');
             };
             addToCartBtn.classList.remove('bg-gray-300', 'cursor-not-allowed');
             addToCartBtn.classList.add('bg-gradient-to-r', 'from-rose-500', 'to-pink-500', 'hover:from-rose-600', 'hover:to-pink-600');

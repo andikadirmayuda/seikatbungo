@@ -137,7 +137,7 @@ class PushNotificationService
             return false;
         }
 
-        // Validate public_code format (contoh: FEL001)
+        // Validate public_code format (contoh: SB001)
         if (!preg_match('/^[A-Z]{3}\d{3,}$/', $data['public_code'])) {
             Log::warning('Invalid public_code format', ['public_code' => $data['public_code']]);
             return false;
