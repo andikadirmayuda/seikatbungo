@@ -359,7 +359,7 @@ class CustomBouquetController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Item removed from custom bouquet successfully.',
+                'message' => 'Berhasil dihapus.',
                 'total_price' => $customBouquet->getAttribute('total_price')
             ]);
         } catch (\Exception $e) {

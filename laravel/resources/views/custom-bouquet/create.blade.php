@@ -697,13 +697,13 @@
                                     <span class="text-lg mr-2">📸</span>
                                     Upload Referensi
                                     <span
-                                        class="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Opsional</span>
+                                        class="ml-2 text-xs bg-[#F5A623] text-white px-2 py-1 rounded-full">Opsional</span>
                                 </label>
                                 <div class="relative">
                                     <input type="file" id="referenceImage" accept="image/*" class="hidden">
                                     <button type="button" id="uploadReferenceBtn"
-                                        class="w-full border-2 border-dashed border-purple-300 hover:border-purple-400 rounded-xl p-4 text-center transition-all duration-300 bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 group">
-                                        <div class="text-purple-400 group-hover:text-purple-500">
+                                        class="w-full border-2 border-dashed border-[#F5A623] hover:border-[#E59420] rounded-xl p-4 text-center transition-all duration-300 bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 group">
+                                        <div class="text-[#F5A623] group-hover:text-[#E59420]">
                                             <svg class="mx-auto h-8 w-8 mb-2" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -750,7 +750,7 @@
                             <!-- Action Buttons -->
                             <div class="space-y-3">
                                 <button type="button" id="addToMainCartBtn"
-                                    class="w-full bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 hover:from-purple-600 hover:via-purple-700 hover:to-indigo-700 text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none group relative overflow-hidden"
+                                    class="w-full bg-gradient-to-r from-[#58B8AB] via-[#247A72] to-[#2D9C8F] hover:from-[#FFC65A] hover:via-[#E59420] hover:to-[#F5A623] text-white font-bold py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none group relative overflow-hidden"
                                     disabled>
                                     <div
                                         class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300">
@@ -821,9 +821,9 @@
         <!-- Product Selection -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <!-- Products Grid Header -->
-            <div class="bg-gradient-to-r from-rose-50 to-pink-50 px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-semibold text-gray-800">🌸 Pilih Komponen Bouquet</h3>
-                <p class="text-sm text-gray-600">Klik produk untuk menambahkan ke bouquet Anda</p>
+            <div class="bg-gradient-to-r from-[#58B8AB] to-[#2D9C8F] px-6 py-4 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-white">🌸 Pilih Komponen Bouquet</h3>
+                <p class="text-sm text-white">Klik produk untuk menambahkan ke bouquet Anda</p>
             </div>
             <!-- Products Grid -->
             <div class="p-6">
@@ -888,7 +888,7 @@
                                         @endforeach
                                         <!-- Add Button -->
                                         <button
-                                            class="w-full mt-3 btn-add-bouquet text-white text-sm py-2 px-3 rounded-xl transition-all duration-200 add-product-btn"
+                                            class="w-full mt-3 btn-add-bouquet text-white bg-[#2D9C8F] text-sm py-2 px-3 rounded-xl transition-all duration-200 add-product-btn"
                                             data-product-id="{{ $product->id }}">
                                             <i class="bi bi-cart-plus mr-1"></i>Tambah ke Bouquet
                                         </button>
@@ -1220,6 +1220,27 @@
 
             const quantity = parseInt(document.getElementById('quantity').value) || 1;
 
+
+            // Scroll ke atas halaman dengan animasi smooth custom agar lebih profesional
+            smoothScrollToTop();
+            // Fungsi scroll smooth ke atas dengan animasi custom
+            function smoothScrollToTop(duration = 600) {
+                const start = window.scrollY || window.pageYOffset;
+                const startTime = performance.now();
+                function scrollStep(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = progress < 0.5
+                        ? 2 * progress * progress
+                        : -1 + (4 - 2 * progress) * progress;
+                    window.scrollTo(0, start * (1 - ease));
+                    if (progress < 1) {
+                        requestAnimationFrame(scrollStep);
+                    }
+                }
+                requestAnimationFrame(scrollStep);
+            }
+
             try {
                 console.log('Adding item to builder:', {
                     productId: selectedProduct.id,
@@ -1303,8 +1324,8 @@
                     💡 Klik <span class="text-purple-600 font-semibold">"+ Tambah ke Bouquet"</span> pada produk di sebelah kiri
                 </p>
                 <div class="mt-4 flex justify-center">
-                    <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-full px-4 py-2">
-                        <span class="text-xs text-purple-700 font-medium">Mulai membangun bouquet impian Anda</span>
+                    <div class="bg-gradient-to-r from-[#E59420] to-[#F5A623] rounded-full px-4 py-2">
+                        <span class="text-xs text-[#333333] font-medium">Mulai membangun bouquet impian Anda</span>
                     </div>
                 </div>
             </div>
@@ -1516,8 +1537,10 @@
                     console.log('Cart success:', cartData); // Debug log
                     showNotification('Custom bouquet berhasil ditambahkan ke keranjang!', 'success');
                     updateCart(); // Update cart display
-
-                    // Optional: Show success message with option to continue or go to cart
+                    // Otomatis buka panel keranjang seperti halaman Fresh Flowers
+                    if (typeof toggleCart === 'function') {
+                        setTimeout(() => { toggleCart(); }, 350); // beri delay agar updateCart selesai
+                    }
                     // User stays on the current page to continue building or viewing their bouquet
                 } else {
                     console.error('Cart error:', cartData); // Debug log
@@ -1728,6 +1751,13 @@
                     </div>
                 </div>
             `;
+
+            // Jika notifikasi sukses penambahan ke builder, scroll ke atas halaman
+            if (typeof message === 'string' && message.toLowerCase().includes('berhasil')) {
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 400); // beri delay agar notifikasi sempat tampil
+            }
 
             // Add both backdrop and notification to body
             document.body.appendChild(backdrop);

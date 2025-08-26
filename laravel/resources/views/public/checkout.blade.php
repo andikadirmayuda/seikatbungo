@@ -303,10 +303,10 @@
                                             </label>
                                             <textarea name="custom_instructions" 
                                                       class="w-full px-4 py-3 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none" 
-                                                      rows="3" placeholder="Contoh: Tambahkan pita warna emas, bungkus dengan kertas transparan, dominasi warna ungu, dll."></textarea>
+                                                      rows="3" placeholder="Contoh: Kartu Ucapan, Tambahkan pita warna emas, bungkus dengan kertas transparan, dominasi warna ungu, dll."></textarea>
                                             <p class="text-xs text-purple-600 mt-1">
                                                 <i class="bi bi-lightbulb mr-1"></i>
-                                                Berikan detail tambahan untuk custom bouquet Anda (warna preferensi, style wrapping, dll.)
+                                                Berikan detail tambahan untuk custom bouquet Anda (Kartu Ucapan,warna preferensi, style wrapping, dll.)
                                             </p>
                                         </div>
                                     @endif

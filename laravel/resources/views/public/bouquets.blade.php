@@ -698,25 +698,25 @@
                 <img src="{{ asset('logo-seikat-bungo.png') }}" alt="Logo" class="brand-logo rounded-full w-12 h-12">
             </div>
             <h3 class="text-2xl font-bold mb-2">Seikat Bungo</h3>
-            <p class="text-rose-100 mb-4 max-w-2xl mx-auto">
+            <p class="text-white mb-4 max-w-2xl mx-auto">
                 Menghadirkan keindahan bunga segar berkualitas premium untuk setiap momen berharga dalam
                 hidup Anda
             </p>
             <div class="flex justify-center space-x-6 mb-6">
                 <a href="https://www.instagram.com/seikatbungo/"
-                    class="text-rose-200 hover:text-white transition-colors">
+                    class="text-[#E1306C] hover:text-white transition-colors">
                     <i class="bi bi-instagram text-xl"></i>
                 </a>
-                <a href="https://www.tiktok.com/@seikatbungo" class="text-rose-200 hover:text-white transition-colors"
+                <a href="https://www.tiktok.com/@seikatbungo" class="text-[#69C9D0] hover:text-white transition-colors"
                     target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-tiktok text-xl"></i>
                 </a>
                 <a href="https://wa.me/6285119990901?text=Halo%20Seikat%20Bungo%20!"
-                    class="text-rose-200 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+                    class="text-[#E1306C] hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-whatsapp text-xl"></i>
                 </a>
             </div>
-            <p class="text-rose-200 text-sm">© 2025 Seikat Bungo. All rights reserved.</p>
+            <p class="text-[#E1306C] text-sm">© 2025 Seikat Bungo. All rights reserved.</p>
         </div>
     </footer>
 
