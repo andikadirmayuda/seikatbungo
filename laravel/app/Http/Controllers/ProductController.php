@@ -155,6 +155,7 @@ class ProductController extends Controller
                 'price' => $priceData['price'],
                 'unit_equivalent' => $priceData['unit_equivalent'] ?? ProductRequest::getDefaultUnitEquivalent($priceData['type']),
                 'is_default' => isset($priceData['is_default']) && $priceData['is_default'],
+                'min_grosir_qty' => $priceData['min_grosir_qty'] ?? null,
             ]);
         }
     }

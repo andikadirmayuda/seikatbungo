@@ -67,12 +67,14 @@ class ProductRequest extends FormRequest
     {
         return [
             'per_tangkai',
+            'ikat_3',
             'ikat_5',
             'ikat_10',
             'ikat_20',
             'reseller',
             'normal',
             'promo',
+            'harga_grosir',
             'custom_ikat',
             'custom_tangkai',
             'custom_khusus'
@@ -83,6 +85,7 @@ class ProductRequest extends FormRequest
     {
         return match ($type) {
             'per_tangkai' => 1,
+            'ikat_3' => 3,
             'ikat_5' => 5,
             'ikat_10' => 10,
             'ikat_20' => 20,

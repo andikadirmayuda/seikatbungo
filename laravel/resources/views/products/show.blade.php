@@ -248,6 +248,10 @@
                                     Satuan Setara
                                 </th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                                    <i class="bi bi-123 mr-1"></i>
+                                    Minimal Grosir
+                                </th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                                     <i class="bi bi-star mr-1"></i>
                                     Status
                                 </th>
@@ -255,8 +259,6 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse($product->prices as $price)
-                                {{-- @if(!in_array($price->type, ['custom_ikat', 'custom_tangkai',
-                                'custom_khusus'])) --}}
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
@@ -277,6 +279,13 @@
                                             {{ $product->base_unit }}</span>
                                     </td>
                                     <td class="px-6 py-4">
+                                        @if(!is_null($price->min_grosir_qty) && $price->min_grosir_qty !== '')
+                                            <span class="text-pink-700 font-semibold">{{ $price->min_grosir_qty }}</span>
+                                        @else
+                                            <span class="text-gray-400">-</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
                                         @if($price->is_default)
                                             <span
                                                 class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 flex items-center w-fit">
@@ -288,7 +297,6 @@
                                         @endif
                                     </td>
                                 </tr>
-                                {{-- @endif --}}
                             @empty
                                 <tr>
                                     <td colspan="4" class="px-6 py-8 text-center">

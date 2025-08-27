@@ -111,15 +111,19 @@ class PublicCartController extends Controller
             ], 404);
         }
 
-        // Ambil harga berdasarkan price_type jika ada, jika tidak fallback ke default
-        $priceQuery = $productModel->prices();
-        if ($priceType) {
-            $priceModel = $priceQuery->where('type', $priceType)->first();
+        // Ambil harga grosir dan harga user
+        $hargaGrosir = $productModel->prices()->where('type', 'harga_grosir')->first();
+        $userPrice = $priceType ? $productModel->prices()->where('type', $priceType)->first() : $productModel->prices()->where('is_default', true)->first();
+
+        $minGrosirQty = $userPrice->min_grosir_qty ?? 0;
+
+        if ($hargaGrosir && $minGrosirQty > 0 && $qty >= $minGrosirQty) {
+            $selectedPrice = $hargaGrosir;
         } else {
-            $priceModel = $priceQuery->where('is_default', true)->first();
+            $selectedPrice = $userPrice;
         }
-        $price = ($priceModel && isset($priceModel->price)) ? $priceModel->price : 0;
-        $selectedPriceType = $priceModel ? $priceModel->type : ($priceType ?? null);
+        $price = $selectedPrice ? $selectedPrice->price : 0;
+        $selectedPriceType = $selectedPrice ? $selectedPrice->type : ($priceType ?? null);
 
         $product = [
             'id' => $productModel->id ?? null,
@@ -162,6 +166,35 @@ class PublicCartController extends Controller
             // Hapus item jika quantity <= 0
             if ($cart[$cartKey]['qty'] <= 0) {
                 unset($cart[$cartKey]);
+                session(['cart' => $cart]);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Keranjang berhasil diperbarui.',
+                    'cart' => $cart
+                ]);
+            }
+
+            // Cek ulang logika grosir jika produk utama
+            $item = $cart[$cartKey];
+            if (($item['type'] ?? 'product') === 'product') {
+                $productModel = \App\Models\Product::find($item['id']);
+                if ($productModel) {
+                    // Selalu ambil userPrice dari price_type awal user (bukan dari cart, agar tidak terjebak di harga grosir)
+                    $userPriceType = $item['user_price_type'] ?? $item['price_type'];
+                    $userPrice = $userPriceType ? $productModel->prices()->where('type', $userPriceType)->first() : $productModel->prices()->where('is_default', true)->first();
+                    $hargaGrosir = $productModel->prices()->where('type', 'harga_grosir')->first();
+                    $minGrosirQty = $userPrice->min_grosir_qty ?? 0;
+                    $qty = $cart[$cartKey]['qty'];
+                    if ($hargaGrosir && $minGrosirQty > 0 && $qty >= $minGrosirQty) {
+                        $selectedPrice = $hargaGrosir;
+                    } else {
+                        $selectedPrice = $userPrice;
+                    }
+                    $cart[$cartKey]['price'] = $selectedPrice ? $selectedPrice->price : 0;
+                    $cart[$cartKey]['price_type'] = $selectedPrice ? $selectedPrice->type : ($userPriceType ?? null);
+                    // Simpan user_price_type agar selalu tahu preferensi awal user
+                    $cart[$cartKey]['user_price_type'] = $userPriceType;
+                }
             }
 
             session(['cart' => $cart]);

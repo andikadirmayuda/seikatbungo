@@ -83,13 +83,23 @@ class PublicOrderController extends Controller
 
             foreach ($validated['items'] as $item) {
                 $product = Product::findOrFail($item['product_id']);
-                // Ambil harga sesuai tipe harga yang dipilih user
-                $selectedPrice = $product->prices()->where('type', $item['price_type'])->first();
+                // Ambil harga grosir dan harga user
+                $hargaGrosir = $product->prices()->where('type', 'harga_grosir')->first();
+                $userPrice = $product->prices()->where('type', $item['price_type'])->first();
+
+                $qty = $item['quantity'];
+                $minGrosirQty = $userPrice->min_grosir_qty ?? 0;
+
+                if ($hargaGrosir && $minGrosirQty > 0 && $qty >= $minGrosirQty) {
+                    $selectedPrice = $hargaGrosir;
+                } else {
+                    $selectedPrice = $userPrice;
+                }
                 $price = $selectedPrice ? $selectedPrice->price : 0;
                 $unitEquivalent = $item['unit_equivalent'] ?? ($selectedPrice ? $selectedPrice->unit_equivalent : 1);
 
                 // Hitung total pengurangan stok (quantity x unit_equivalent)
-                $totalQty = $item['quantity'] * $unitEquivalent;
+                $totalQty = $qty * $unitEquivalent;
                 if (!$product->hasEnoughStock($totalQty)) {
                     throw new \Exception('Stok produk ' . $product->name . ' tidak cukup!');
                 }
@@ -106,9 +116,9 @@ class PublicOrderController extends Controller
                 $order->items()->create([
                     'product_id' => $product->id,
                     'product_name' => $product->name,
-                    'price_type' => $item['price_type'],
+                    'price_type' => $selectedPrice ? $selectedPrice->type : $item['price_type'],
                     'unit_equivalent' => $unitEquivalent,
-                    'quantity' => $item['quantity'],
+                    'quantity' => $qty,
                     'price' => $price,
                 ]);
             }

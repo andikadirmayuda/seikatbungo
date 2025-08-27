@@ -45,6 +45,7 @@ class CustomBouquetItem extends Model
     {
         $priceTypeLabels = [
             'per_tangkai' => 'Per Tangkai',
+            'ikat_3' => 'Ikat 3',
             'ikat_5' => 'Ikat 5',
             'ikat_10' => 'Ikat 10',
             'ikat_20' => 'Ikat 20',

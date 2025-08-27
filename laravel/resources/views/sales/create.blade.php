@@ -541,7 +541,9 @@
 
             if (productPrices[productId]) {
                 productPrices[productId].forEach(price => {
-                    priceTypeSelect.innerHTML += `<option value="${price.type}" data-price="${price.price}">${price.type.replaceAll('_', ' ').toUpperCase()} (Rp ${formatPrice(parseFloat(price.price))})</option>`;
+                    if (price.type !== 'harga_grosir') {
+                        priceTypeSelect.innerHTML += `<option value="${price.type}" data-price="${price.price}">${price.type.replaceAll('_', ' ').toUpperCase()} (Rp ${formatPrice(parseFloat(price.price))})</option>`;
+                    }
                 });
             }
         };
@@ -642,23 +644,54 @@
         // Add item to cart
         addItemBtn.onclick = function () {
             let productId = productSelect.value;
-            let priceType = priceTypeSelect.value;
-            let priceTypeOption = priceTypeSelect.querySelector(`option[value='${priceType}']`);
             let quantity = parseInt(quantityInput.value);
-
-            if (!productId || !priceType || quantity < 1) {
+            let product = products.find(p => p.id == productId);
+            if (!productId || quantity < 1) {
                 alert('Lengkapi data produk!');
                 return;
             }
 
-            let product = products.find(p => p.id == productId);
-            let price = priceTypeOption ? parseFloat(priceTypeOption.getAttribute('data-price')) : 0;
+            
+            let priceType = priceTypeSelect.value;
+            let priceTypeOption;
+            let priceObj;
 
-            // Cek stok produk sebelum menambah
-            let priceObj = (product.prices || []).find(pr => pr.type === priceType);
+            // Ambil harga sesuai pilihan user
+            priceObj = (product.prices || []).find(pr => pr.type === priceType);
+
+            if (priceObj) {
+                let minGrosirQty = priceObj.min_grosir_qty ? parseInt(priceObj.min_grosir_qty) : 0;
+
+                // Kalau qty >= minimal grosir dari tipe ini, pakai harga grosir
+                if (minGrosirQty > 0 && quantity >= minGrosirQty) {
+                    let grosirObj = (product.prices || []).find(pr => pr.type === 'harga_grosir');
+                    if (grosirObj) {
+                        priceType = 'harga_grosir';
+                        priceObj = grosirObj;
+
+                        let grosirOption = priceTypeSelect.querySelector(`option[value='harga_grosir']`);
+                        if (grosirOption) priceTypeSelect.value = 'harga_grosir';
+                        priceTypeOption = grosirOption;
+                    }
+                }
+            }
+
+            // Fallback kalau tidak ketemu
+            if (!priceObj) {
+                priceObj = (product.prices || []).find(pr => pr.type === priceType);
+                priceTypeOption = priceTypeSelect.querySelector(`option[value='${priceType}']`);
+            }
+
+            let price = priceObj ? parseFloat(priceObj.price) : 0;
             let unitEquivalent = priceObj && priceObj.unit_equivalent ? parseInt(priceObj.unit_equivalent) : 1;
             let stokTersedia = product.current_stock;
             let totalButuh = quantity * unitEquivalent;
+
+            if (!priceType || !price) {
+                alert('Pilih tipe harga yang sesuai!');
+                return;
+            }
+
 
             if (stokTersedia < totalButuh) {
                 alert(`Stok produk tidak mencukupi!\nStok tersedia: ${stokTersedia}\nDibutuhkan: ${totalButuh}`);

@@ -98,23 +98,84 @@ class SaleController extends Controller
                 'wa_number' => $request->wa_number,
             ]);
 
+
+
             foreach ($request->items as $item) {
+                $product = Product::with('prices')->find($item['product_id']);
+                $product = Product::with('prices')->find($item['product_id']);
+
+                if (!$product) {
+                    continue;
+                }
+
+                $qty = (int) $item['quantity'];
+                $selectedPrice = null;
+
+                // Harga grosir global
+                $hargaGrosir = $product->prices->firstWhere('price_type', 'harga_grosir');
+
+                // Harga sesuai tipe yang dipilih user
+                $userPrice = $product->prices->firstWhere('price_type', $item['price_type']);
+
+                if ($userPrice) {
+                    $minGrosirQty = $userPrice->min_grosir_qty ?? 0;
+
+                    // Kalau beli >= minimal grosir untuk tipe harga ini → pakai harga grosir
+                    if ($hargaGrosir && $minGrosirQty > 0 && $qty >= $minGrosirQty) {
+                        $selectedPrice = $hargaGrosir;
+                    } else {
+                        $selectedPrice = $userPrice;
+                    }
+                }
+
+                // Fallback
+                if (!$selectedPrice) {
+                    $selectedPrice = $product->prices->firstWhere('is_default', true)
+                        ?: $product->prices->first();
+                }
+
+                $subtotal = $selectedPrice ? ($selectedPrice->price * $qty) : 0;
+
+                SaleItem::create([
+                    'sale_id' => $sale->id,
+                    'product_id' => $product->id,
+                    'price_type' => $selectedPrice->price_type ?? 'unknown',
+                    'quantity' => $qty,
+                    'price' => $selectedPrice->price ?? 0,
+                    'subtotal' => $subtotal,
+                ]);
+
+                // Hitung quantity berdasarkan unit_equivalent
+                $qtyToReduce = $qty;
+                if ($selectedPrice && $selectedPrice->unit_equivalent > 0) {
+                    $qtyToReduce = $qty * $selectedPrice->unit_equivalent;
+                }
+
+                // Kurangi stok produk
+                $product->decrement('current_stock', $qtyToReduce);
+
+                // Catat di log inventaris
+                \App\Models\InventoryLog::create([
+                    'product_id' => $product->id,
+                    'qty' => -abs($qtyToReduce),
+                    'source' => \App\Models\InventoryLog::SOURCE_SALE,
+                    'reference_id' => "sale:{$sale->id}",
+                    'notes' => "Penjualan langsung #{$sale->order_number} - " . (isset($selectedPrice->price_type) ? $selectedPrice->price_type : 'unknown')
+                ]);
+
                 SaleItem::create([
                     'sale_id' => $sale->id,
                     'product_id' => $item['product_id'],
-                    'price_type' => $item['price_type'],
-                    'quantity' => $item['quantity'],
-                    'price' => $item['price'],
-                    'subtotal' => $item['price'] * $item['quantity'],
+                    'price_type' => $selectedPrice->type,
+                    'quantity' => $qty,
+                    'price' => $selectedPrice->price,
+                    'subtotal' => $selectedPrice->price * $qty,
                 ]);
-                // Update stok
-                $product = Product::find($item['product_id']);
 
                 // Hitung quantity berdasarkan unit_equivalent
-                $qtyToReduce = $item['quantity'];
-                $price = $product->prices->where('type', $item['price_type'])->first();
-                if ($price && $price->unit_equivalent > 0) {
-                    $qtyToReduce = $item['quantity'] * $price->unit_equivalent;
+                $qtyToReduce = $qty;
+                if ($selectedPrice && $selectedPrice->unit_equivalent > 0) {
+                    $qtyToReduce = $qty * $selectedPrice->unit_equivalent;
                 }
 
                 // Kurangi stok produk
@@ -126,7 +187,7 @@ class SaleController extends Controller
                     'qty' => -abs($qtyToReduce),
                     'source' => \App\Models\InventoryLog::SOURCE_SALE,
                     'reference_id' => "sale:{$sale->id}",
-                    'notes' => "Penjualan langsung #{$sale->order_number} - {$item['price_type']}"
+                    'notes' => "Penjualan langsung #{$sale->order_number} - {$selectedPrice->type}"
                 ]);
             }
 

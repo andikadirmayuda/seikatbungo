@@ -139,6 +139,8 @@
             let customLabel = price.label;
             if (price.type === 'ikat_5' || price.type === 'ikat 5') {
                 customLabel = 'Per Ikat (Isi 5 Tangkai)';
+            } else if (price.type === 'ikat_3' || price.type === 'ikat 3') {
+                customLabel = 'Per Ikat (Isi 3 Tangkai)';
             } else if (price.type === 'ikat_10' || price.type === 'ikat 10') {
                 customLabel = 'Per Ikat (Isi 10 Tangkai)';
             } else if (price.type === 'ikat_20' || price.type === 'ikat 20') {
@@ -188,6 +190,8 @@
                 let customLabel = price.label;
                 if (price.type === 'ikat_5' || price.type === 'ikat 5') {
                     customLabel = 'Per Ikat (Isi 5 Tangkai)';
+                } else if (price.type === 'ikat_3' || price.type === 'ikat 3') {
+                    customLabel = 'Per Ikat (Isi 3 Tangkai)';
                 } else if (price.type === 'ikat_10' || price.type === 'ikat 10') {
                     customLabel = 'Per Ikat (Isi 10 Tangkai)';
                 } else if (price.type === 'ikat_20' || price.type === 'ikat 20') {

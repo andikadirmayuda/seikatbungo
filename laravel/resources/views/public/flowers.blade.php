@@ -1036,8 +1036,10 @@
                                                 <span
                                                     class="font-semibold {{ $flower->current_stock > 10 ? 'text-orange-600' : ($flower->current_stock > 0 ? 'text-yellow-600' : 'text-red-600') }}">
                                                     @php
-        // Cari harga ikat yang tersedia, prioritas ikat 5
-        $ikatPrice = $flower->prices->firstWhere('type', 'ikat_5')
+        // Cari harga ikat yang tersedia, prioritas ikat 3, ikat 5, ikat 10, ikat 20
+        $ikatPrice = $flower->prices->firstWhere('type', 'ikat_3')
+            ?: $flower->prices->firstWhere('type', 'ikat 3')
+            ?: $flower->prices->firstWhere('type', 'ikat_5')
             ?: $flower->prices->firstWhere('type', 'ikat 5')
             ?: $flower->prices->firstWhere('type', 'ikat_10')
             ?: $flower->prices->firstWhere('type', 'ikat 10')

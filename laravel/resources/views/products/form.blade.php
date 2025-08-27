@@ -272,12 +272,20 @@
                                         Unit Equivalent
                                     </th>
                                     <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                                        <i class="bi bi-hash mr-1"></i>
+                                        Qty
+                                    </th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                                         <i class="bi bi-star mr-1"></i>
                                         Default
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
+                                @php
+                                    $qtyTypes = ['ikat_3', 'ikat_5', 'ikat_10', 'ikat_20', 'normal'];
+                                    $noGrosirTypes = ['tangkai', 'reseller', 'promo', 'harga_grosir', 'custom'];
+                                @endphp
                                 @foreach($priceTypes as $type)
                                     <tr class="hover:bg-gray-50 transition-colors">
                                         <td class="px-6 py-4">
@@ -313,6 +321,22 @@
                                             @error("prices.$type.unit_equivalent")
                                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                             @enderror
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            @if($type === 'harga_grosir')
+                                                <span class="text-gray-400">-</span>
+                                            @elseif(in_array($type, $qtyTypes))
+                                                <div class="flex flex-col gap-1">
+                                                    <input type="number"
+                                                        name="prices[{{ $type }}][min_grosir_qty]"
+                                                        value="{{ old("prices.$type.min_grosir_qty", $existingPrices[$type]->min_grosir_qty ?? 0) }}"
+                                                        class="w-full px-4 py-2 border border-blue-200 rounded-xl input-focus focus:outline-none mt-1"
+                                                        min="0" placeholder="Minimal Grosir">
+                                                    <span class="text-xs text-blue-500">Minimal Grosir</span>
+                                                </div>
+                                            @else
+                                                <span class="text-gray-400">-</span>
+                                            @endif
                                         </td>
                                         <td class="px-6 py-4">
                                             <input type="radio" 

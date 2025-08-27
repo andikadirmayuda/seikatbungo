@@ -43,12 +43,14 @@ class ProductJsonController extends Controller
                         'min_stock' => $item['min_stock'] ?? 0,
                         'is_active' => $item['is_active'] ?? 1,
                         'price_per_tangkai' => $item['price_per_tangkai'] ?? 0,
+                        'price_ikat_3' => $item['price_ikat_3'] ?? 0,
                         'price_ikat_5' => $item['price_ikat_5'] ?? 0,
                         'price_ikat_10' => $item['price_ikat_10'] ?? 0,
                         'price_ikat_20' => $item['price_ikat_20'] ?? 0,
                         'price_reseller' => $item['price_reseller'] ?? 0,
                         'price_normal' => $item['price_normal'] ?? 0,
                         'price_promo' => $item['price_promo'] ?? 0,
+                        'price_harga_grosir' => $item['price_harga_grosir'] ?? 0,
                         'default_price_type' => $item['default_price_type'] ?? null,
                     ]
                 );
