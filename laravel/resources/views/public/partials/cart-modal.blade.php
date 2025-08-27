@@ -8,8 +8,30 @@
         <h3 class="text-lg font-bold mb-4 text-gray-800 flex items-center">
             <i class="bi bi-tag mr-2"></i> Pilih Harga Produk
         </h3>
+
         <div id="modalPriceOptions">
             <!-- Daftar harga akan diisi via JS -->
+        </div>
+
+        <!-- Harga Grosir Section (hanya lihat)-->
+        <div id="wholesalePriceSection" class="mt-4" style="display:none;">
+            <div class="mb-2 flex items-center gap-2">
+                <i class="bi bi-box-seam text-blue-500"></i>
+                <span class="font-semibold text-blue-800 text-sm">Harga Grosir</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-xs border border-blue-200 rounded-lg">
+                    <thead>
+                        <tr class="bg-blue-50 text-blue-700">
+                            <th class="px-3 py-2 text-left">Jumlah Pembelian</th>
+                            <th class="px-3 py-2 text-left">Harga Satuan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wholesalePriceTableBody">
+                        <!-- Diisi via JS -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Reseller Option Section -->
@@ -118,6 +140,8 @@
         const optionsDiv = document.getElementById('modalPriceOptions');
         const addBtn = document.getElementById('modalAddToCartBtn');
         const resellerSection = document.getElementById('resellerSection');
+        const wholesaleSection = document.getElementById('wholesalePriceSection');
+        const wholesaleTableBody = document.getElementById('wholesalePriceTableBody');
 
         currentFlowerId = flowerId;
         availablePrices = prices.filter(price => !['custom_ikat', 'custom_tangkai', 'custom_khusus'].includes(price.type));
@@ -128,33 +152,62 @@
         const hasResellerPrice = prices.some(price => price.type === 'reseller');
         const isResellerActive = checkResellerStatus();
 
-        // Render price options
-        optionsDiv.innerHTML = prices.map(price => {
-            // Only show reseller price if code is already validated
-            if (price.type === 'reseller' && !isResellerActive) {
-                return '';
-            }
+        // Render price options (exclude grosir from selectable)
+        optionsDiv.innerHTML = prices
+            .filter(price => price.type !== 'grosir' && price.type !== 'harga_grosir')
+            .map(price => {
+                if (price.type === 'reseller' && !isResellerActive) {
+                    return '';
+                }
+                let customLabel = price.label;
+                if (price.type === 'ikat_5' || price.type === 'ikat 5') {
+                    customLabel = 'Per Ikat (Isi 5 Tangkai)';
+                } else if (price.type === 'ikat_3' || price.type === 'ikat 3') {
+                    customLabel = 'Per Ikat (Isi 3 Tangkai)';
+                } else if (price.type === 'ikat_10' || price.type === 'ikat 10') {
+                    customLabel = 'Per Ikat (Isi 10 Tangkai)';
+                } else if (price.type === 'ikat_20' || price.type === 'ikat 20') {
+                    customLabel = 'Per Ikat (Isi 20 Tangkai)';
+                }
+                return `
+                <label class="flex items-center gap-3 mb-2 cursor-pointer">
+                    <input type="radio" name="priceOption" value="${price.type}" onchange="selectPriceOption('${price.type}')">
+                    <span class="font-semibold text-gray-700">${customLabel}</span>
+                    <span class="ml-auto font-bold" style="color:#2D9C8F">Rp ${formatPrice(price.price)}</span>
+                </label>
+            `;
+            })
+            .join('');
 
-            // Custom label for ikat types
-            let customLabel = price.label;
-            if (price.type === 'ikat_5' || price.type === 'ikat 5') {
-                customLabel = 'Per Ikat (Isi 5 Tangkai)';
-            } else if (price.type === 'ikat_3' || price.type === 'ikat 3') {
-                customLabel = 'Per Ikat (Isi 3 Tangkai)';
-            } else if (price.type === 'ikat_10' || price.type === 'ikat 10') {
-                customLabel = 'Per Ikat (Isi 10 Tangkai)';
-            } else if (price.type === 'ikat_20' || price.type === 'ikat 20') {
-                customLabel = 'Per Ikat (Isi 20 Tangkai)';
-            }
-
-            return `
-            <label class="flex items-center gap-3 mb-2 cursor-pointer">
-                <input type="radio" name="priceOption" value="${price.type}" onchange="selectPriceOption('${price.type}')">
-                <span class="font-semibold text-gray-700">${customLabel}</span>
-                <span class="ml-auto font-bold" style="color:#2D9C8F">Rp ${formatPrice(price.price)}</span>
-            </label>
-        `;
-        }).join('');
+        // Render grosir/wholesale price table
+        const grosirPrices = prices.filter(price => price.type === 'grosir' || price.type === 'harga_grosir');
+        // Ambil semua min_grosir_qty unik dari harga selain grosir
+        const minGrosirQtyList = prices
+            .filter(price => (price.type === 'grosir' || price.type === 'harga_grosir') && price.min_grosir_qty)
+            .map(price => price.min_grosir_qty)
+            .filter((qty, idx, arr) => arr.indexOf(qty) === idx) // unik
+            .sort((a, b) => a - b);
+        if (grosirPrices.length > 0) {
+            wholesaleSection.style.display = 'block';
+            // Untuk setiap grosir price, render baris untuk setiap min_grosir_qty unik
+            wholesaleTableBody.innerHTML = grosirPrices.map(price => {
+                // Cek min_grosir_qty dari setiap price individual
+                if (price.min_grosir_qty && price.min_grosir_qty !== null && price.min_grosir_qty !== '') {
+                    return `<tr>
+            <td class="px-3 py-2 font-semibold">≥ ${price.min_grosir_qty} pcs</td>
+            <td class="px-3 py-2 font-bold text-blue-700">Rp ${formatPrice(price.price)}</td>
+        </tr>`;
+                } else {
+                    return `<tr>
+                        <td class="px-3 py-2 font-bold text-blue-700">Min > 2 Ikat</td>
+                        <td class="px-3 py-2 font-bold text-blue-700">Rp ${formatPrice(price.price)}</td>
+                    </tr>`;
+                }
+            }).join('');
+        } else {
+            wholesaleSection.style.display = 'none';
+            wholesaleTableBody.innerHTML = '';
+        }
 
         // Show/hide reseller section
         if (hasResellerPrice) {
