@@ -704,19 +704,19 @@
             </p>
             <div class="flex justify-center space-x-6 mb-6">
                 <a href="https://www.instagram.com/seikatbungo/"
-                    class="text-[#E1306C] hover:text-white transition-colors">
+                    class="text-white hover:text-white transition-colors">
                     <i class="bi bi-instagram text-xl"></i>
                 </a>
-                <a href="https://www.tiktok.com/@seikatbungo" class="text-[#69C9D0] hover:text-white transition-colors"
+                <a href="https://www.tiktok.com/@seikatbungo" class="text-white hover:text-white transition-colors"
                     target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-tiktok text-xl"></i>
                 </a>
                 <a href="https://wa.me/6285119990901?text=Halo%20Seikat%20Bungo%20!"
-                    class="text-[#E1306C] hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+                    class="text-white hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
                     <i class="bi bi-whatsapp text-xl"></i>
                 </a>
             </div>
-            <p class="text-[#E1306C] text-sm">© 2025 Seikat Bungo. All rights reserved.</p>
+            <p class="text-white text-sm">© 2025 Seikat Bungo. All rights reserved.</p>
         </div>
     </footer>
 
