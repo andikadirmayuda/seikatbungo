@@ -15,16 +15,18 @@
 
         <!-- Harga Grosir Section (hanya lihat)-->
         <div id="wholesalePriceSection" class="mt-4" style="display:none;">
-            <div class="mb-2 flex items-center gap-2">
-                <i class="bi bi-box-seam text-blue-500"></i>
-                <span class="font-semibold text-blue-800 text-sm">Harga Grosir</span>
+            <div class="mb-2 flex flex-col items-center gap-2 justify-center text-center">
+
+                <span class="font-semibold text-blue-800 text-sm" style="color:#fca400"><i
+                        class="bi bi-box-seam text-blue-500" style="color:#fca400"></i> Harga
+                    Grosir</span>
             </div>
             <div class="overflow-x-auto">
-                <table class="min-w-full text-xs border border-blue-200 rounded-lg">
+                <table class="min-w-full text-xs border border-[#fca400] rounded-lg">
                     <thead>
-                        <tr class="bg-blue-50 text-blue-700">
-                            <th class="px-3 py-2 text-left">Jumlah Pembelian</th>
-                            <th class="px-3 py-2 text-left">Harga Satuan</th>
+                        <tr class="bg-[#fca400] text-white">
+                            <th class="px-3 py-2 text-left-center">Jumlah Pembelian</th>
+                            <th class="px-3 py-2 text-left-center">Harga Satuan</th>
                         </tr>
                     </thead>
                     <tbody id="wholesalePriceTableBody">
@@ -199,8 +201,8 @@
         </tr>`;
                 } else {
                     return `<tr>
-                        <td class="px-3 py-2 font-bold text-blue-700">Min > 2 Ikat</td>
-                        <td class="px-3 py-2 font-bold text-blue-700">Rp ${formatPrice(price.price)}</td>
+                        <td class="px-3 py-2 font-bold text-blue-700 text-center" style="color:#2D9C8F">Min > 2 Ikat</td>
+                        <td class="px-3 py-2 font-bold text-blue-700 text-center" style="color:#2D9C8F">Rp ${formatPrice(price.price)}</td>
                     </tr>`;
                 }
             }).join('');
