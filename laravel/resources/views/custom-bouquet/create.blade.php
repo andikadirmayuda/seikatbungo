@@ -515,7 +515,7 @@
 
                             @if(session('last_public_order_code'))
                                 <a href="{{ route('public.order.detail', ['public_code' => session('last_public_order_code')]) }}"
-                                    class="relative text-white bg-rose-500 hover:bg-rose-600 p-1.5 rounded-full hover:shadow-lg transition-all duration-200">
+                                    class="relative text-white bg-[#59aaa1] hover:bg-[#59aaa1]/10 p-1.5 rounded-full hover:shadow-lg transition-all duration-200">
                                     <i class="bi bi-receipt-cutoff text-xl"></i>
                                     <span
                                         class="absolute -top-1 -right-1 bg-green-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">✓</span>
@@ -524,7 +524,7 @@
 
                             <!-- Cart -->
                             <button onclick="toggleCart()"
-                                class="text-gray-600 hover:text-rose-600 relative p-2 rounded-full hover:bg-rose-50 transition-all duration-200"
+                                class="text-[#275a59] hover:text-[#59aaa1] relative p-2 rounded-full hover:bg-[#59aaa1]/10 transition-all duration-200"
                                 title="Keranjang Belanja">
                                 <i class="bi bi-bag text-xl"></i>
                                 <span id="cartBadge"
@@ -532,7 +532,7 @@
                             </button>
 
                             <a href="{{ route('login') }}"
-                                class="text-gray-600 hover:text-rose-600 p-2 rounded-full hover:bg-rose-50 transition-all duration-200">
+                                class="text-[#275a59] hover:text-[#59aaa1] p-2 rounded-full hover:bg-[#59aaa1]/10 transition-all duration-200">
                                 <i class="bi bi-person-circle text-xl"></i>
                             </a>
                         </div>
@@ -589,7 +589,7 @@
                         <div class="flex items-center justify-center space-x-2 sm:space-x-4 md:space-x-8">
                             <a href="{{ route('public.flowers') }}"
                                 class="px-2 sm:px-4 py-1.5 text-center text-[#2D9C8F] hover:bg-[#2D9C8F]/10 rounded-xl transition-all duration-300">
-                                <span class="text-sm font-medium">BUNGA</span>
+                                <span class="text-sm font-medium">BUNGA POTONG</span>
                             </a>
 
                             <a href="{{ route('public.bouquets') }}"
@@ -599,7 +599,7 @@
 
                             <a href="{{ route('custom.bouquet.create') }}"
                                 class="px-2 sm:px-4 py-1.5 text-center nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-[#2D9C8F] to-[#247A72] text-white shadow-lg nav-active-gradient">
-                                <span class="text-sm font-medium">CUSTOM</span>
+                                <span class="text-sm font-medium">CUSTOM RANGKAI</span>
                             </a>
                         </div>
                     </nav>
@@ -775,11 +775,11 @@
         </div>
         <!-- Status Bar -->
         <div class="mb-6 flex items-center justify-center gap-4 text-sm">
-            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full">
+            <span class="bg-[#59aaa1] text-white px-3 py-1 rounded-full">
                 <i class="bi bi-palette2 mr-1"></i>
                 Draft ID: #{{ $customBouquet->id }}
             </span>
-            <span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-full font-semibold" id="totalPrice">
+            <span class="bg-[#59aaa1] text-white px-3 py-1 rounded-full font-semibold" id="totalPrice">
                 <i class="bi bi-currency-dollar mr-1"></i>
                 Rp {{ number_format((float) ($customBouquet->total_price ?? 0), 0, ',', '.') }}
             </span>

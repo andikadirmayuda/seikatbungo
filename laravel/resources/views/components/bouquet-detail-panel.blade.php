@@ -170,7 +170,7 @@
 
         content.innerHTML = `
         <!-- Bouquet Image -->
-        <div class="relative h-64 mb-6 rounded-xl overflow-hidden">
+        <div class="relative h-120 sm:h-80 mb-6 rounded-xl overflow-hidden">
             ${bouquet.image ?
                 `<img src="/storage/${bouquet.image}" alt="${bouquet.name}" class="w-full h-full object-cover">` :
                 `<div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 to-pink-100">

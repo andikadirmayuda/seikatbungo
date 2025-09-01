@@ -15,10 +15,13 @@ class PublicFlowerController extends Controller
     {
         // Tampilkan semua produk bunga, termasuk yang stoknya 0.
         // Urutkan: yang ada stok dulu, lalu habis, kemudian berdasarkan nama.
+
         $flowers = Product::with(['category', 'prices'])
             ->orderByRaw('(current_stock > 0) desc')
-            ->orderBy('name')
-            ->get();
+            ->get()
+            ->sortBy(function ($flower) {
+                return $flower->prices->min('price') ?? 999999999;
+            })->values();
 
         $lastUpdated = Product::max('updated_at') ?? now();
 
@@ -44,10 +47,13 @@ class PublicFlowerController extends Controller
     {
         // Method untuk mendapatkan data flowers yang bisa dipanggil dari controller lain
         // Sertakan juga produk dengan stok 0 agar UI bisa menandai "Habis".
+
         $flowers = Product::with(['category', 'prices'])
             ->orderByRaw('(current_stock > 0) desc')
-            ->orderBy('name')
-            ->get();
+            ->get()
+            ->sortBy(function ($flower) {
+                return $flower->prices->min('price') ?? 999999999;
+            })->values();
 
         return [
             'flowers' => $flowers,

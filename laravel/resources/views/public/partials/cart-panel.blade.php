@@ -3,9 +3,9 @@
     class="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
     <div class="h-full flex flex-col">
         <!-- Cart Header -->
-        <div
-            class="p-4 border-b border-gray-200 flex items-center justify-between bg-gradient-to-r from-rose-50 to-pink-50">
-            <h3 class="text-lg font-bold text-gray-800 flex items-center">
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-gradient-to-r from-rose-50 to-pink-50"
+            style="background: #247A72">
+            <h3 class="text-lg font-bold text-white flex items-center">
                 <i class="bi bi-bag mr-2"></i> Keranjang Belanja
             </h3>
             <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700">
@@ -41,27 +41,27 @@
                                                 <span class="text-xs text-purple-700">Pita:</span>
                                                 <div
                                                     class="w-3 h-3 rounded-full
-                                                                                {{ $item['ribbon_color'] == 'pink' ? 'bg-pink-400' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'red' ? 'bg-red-500' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'purple' ? 'bg-purple-500' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'gold' ? 'bg-yellow-500' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'silver' ? 'bg-gray-400' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'white' ? 'bg-white border border-gray-300' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'yellow' ? 'bg-yellow-300' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'brown' ? 'bg-brown-500' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'navy' ? 'bg-blue-800' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'light-blue' ? 'bg-blue-300' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'dark-blue' ? 'bg-blue-900' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'dark-purple' ? 'bg-purple-800' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'light-purple' ? 'bg-purple-300' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'maroon' ? 'bg-red-800' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'tosca' ? 'bg-teal-400' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'light-green' ? 'bg-green-300' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'dark-green' ? 'bg-green-800' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'lime-green' ? 'bg-lime-300' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'dark-gray' ? 'bg-gray-600' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'dark-brown' ? 'bg-brown-800' : '' }}
-                                                                                {{ $item['ribbon_color'] == 'gold' ? 'bg-yellow-500' : '' }}">
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'pink' ? 'bg-pink-400' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'red' ? 'bg-red-500' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'purple' ? 'bg-purple-500' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'gold' ? 'bg-yellow-500' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'silver' ? 'bg-gray-400' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'white' ? 'bg-white border border-gray-300' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'yellow' ? 'bg-yellow-300' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'brown' ? 'bg-brown-500' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'navy' ? 'bg-blue-800' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'light-blue' ? 'bg-blue-300' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'dark-blue' ? 'bg-blue-900' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'dark-purple' ? 'bg-purple-800' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'light-purple' ? 'bg-purple-300' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'maroon' ? 'bg-red-800' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'tosca' ? 'bg-teal-400' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'light-green' ? 'bg-green-300' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'dark-green' ? 'bg-green-800' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'lime-green' ? 'bg-lime-300' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'dark-gray' ? 'bg-gray-600' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'dark-brown' ? 'bg-brown-800' : '' }}
+                                                                                                                                                                                                {{ $item['ribbon_color'] == 'gold' ? 'bg-yellow-500' : '' }}">
                                                 </div>
                                                 <span class="text-xs text-purple-800 capitalize">{{ $item['ribbon_color'] }}</span>
                                             </div>
@@ -86,10 +86,11 @@
         <div class="border-t border-gray-200 p-4 bg-white">
             <div class="flex justify-between mb-4">
                 <span class="font-semibold">Total:</span>
-                <span class="font-bold text-rose-600" id="cartTotal">Rp 0</span>
+                <span class="font-bold text-rose-600" style="color: #247A72;" id="cartTotal">Rp 0</span>
             </div>
             <a href="{{ route('public.checkout') }}"
-                class="block w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white text-center py-3 rounded-xl font-semibold hover:from-rose-600 hover:to-pink-600 transition-all duration-200">
+                class="block w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white text-center py-3 rounded-xl font-semibold hover:from-rose-600 hover:to-pink-600 transition-all duration-200"
+                style="background: #247A72;">
                 Lanjut ke Checkout
             </a>
         </div>

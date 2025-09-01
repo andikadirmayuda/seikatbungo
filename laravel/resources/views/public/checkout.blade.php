@@ -112,11 +112,11 @@
     <div class="container mx-auto px-4 py-8 max-w-4xl">
         <!-- Page Header -->
         <div class="text-center mb-8 form-enter">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-rose-500 to-pink-600 rounded-full mb-4 shadow-lg">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-rose-500 to-pink-600 rounded-full mb-4 shadow-lg" style="background: #247A72;">
                 <i class="bi bi-cart-check text-2xl text-white"></i>
             </div>
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-                Checkout <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">Pesanan</span>
+                Checkout <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600" style="color: #247A72;">Pesanan</span>
             </h1>
             <p class="text-gray-600">Lengkapi data pesanan Anda untuk melanjutkan</p>
         </div>
@@ -266,7 +266,7 @@
                                         </label>
                                         <textarea name="destination" 
                                                   class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" 
-                                                  rows="3" placeholder="Masukkan alamat lengkap pengiriman" required></textarea>
+                                                  rows="3" placeholder="Masukkan alamat lengkap pengiriman"></textarea>
                                     </div>
 
                                     <!-- Catatan Pesanan -->

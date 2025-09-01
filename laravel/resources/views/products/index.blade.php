@@ -220,8 +220,9 @@
 
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
-                    const categoryCell = row.children[2]?.textContent.toLowerCase() || '';
-                    const statusCell = row.children[4]?.textContent.toLowerCase() || '';
+                    // Kolom: 0=No, 1=Kode, 2=Nama, 3=Kategori, 4=Stok, 5=Status, 6=Aksi
+                    const categoryCell = row.children[3]?.textContent.toLowerCase() || '';
+                    const statusCell = row.children[5]?.textContent.toLowerCase() || '';
 
                     const matchText = !query || text.includes(query);
                     const matchCategory = !selectedCategory || categoryCell.includes(selectedCategory);

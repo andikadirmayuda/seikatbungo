@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Pemesanan - Seikat Bungo</title>
+    <link rel="icon" href="{{ asset(config('app.logo')) }}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Notification Styles -->
@@ -24,16 +25,16 @@
                     </div>
                 </div>
             @endif
-            
+
             <div class="text-center mb-8">
-                <h1
-                    class="text-2xl sm:text-3xl font-extrabold text-pink-600 tracking-tight mb-1 flex items-center justify-center gap-2">
-                    <i class="bi bi-flower1 text-pink-400 text-2xl"></i> Seikat Bungo
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-pink-600 tracking-tight mb-1 flex items-center justify-center gap-2"
+                    style="color:#247A72">
+                    <i class="bi bi-flower1 text-pink-400 text-2xl" style="color:#247A72"></i> Seikat Bungo
                 </h1>
                 <p class="text-gray-500 text-xs sm:text-base font-medium">Detail Pemesanan</p>
                 <div class="mt-2 mb-4">
                     <span class="text-sm text-gray-600">Kode Pesanan:</span>
-                    <span class="font-mono font-bold text-lg text-pink-600 bg-pink-50 px-3 py-1 rounded-lg border">{{ $order->public_code }}</span>
+                    <span class="font-mono font-bold text-lg text-pink-600 bg-pink-50 px-3 py-1 rounded-lg border"style="color:#E59420">{{ $order->public_code }}</span>
                 </div>
             </div>
             <!-- Status Badge -->
@@ -54,7 +55,8 @@ $statusIndo = [
 ];
                 @endphp
                 <span
-                    class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-semibold text-white text-xs sm:text-sm shadow bg-pink-600">
+                    class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-semibold text-white text-xs sm:text-sm shadow"
+                    style="background:#247A72;">
                     <i class="bi bi-clipboard-check"></i> {{ $statusIndo[$order->status] ?? ucfirst($order->status) }}
                 </span>
                 @php
@@ -79,7 +81,7 @@ $paymentBg = match ($order->payment_status) {
 };
                 @endphp
                 <span
-                    class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-semibold text-white text-xs sm:text-sm shadow"
+                    class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-semibold text-white text-xs sm:text-sm shadow" 
                     style="background:{{ $paymentBg }};">
                     <i class="bi bi-cash-coin"></i>
                     {{ $paymentStatusMap[$order->payment_status] ?? ucfirst($order->payment_status) }}
@@ -145,8 +147,7 @@ $currentIndex = array_search($currentStatus, $stepKeys);
                                     class="rounded-full w-8 h-8 flex items-center justify-center mb-1 text-[15px] font-bold {{ $currentStatus === $key || $currentIndex > array_search($key, $stepKeys) ? 'bg-pink-600 text-white shadow-lg' : 'bg-gray-200 text-gray-400' }}">
                                     {{ $loop->iteration }}
                                 </div>
-                                <div class="text-xs text-center font-medium leading-tight {{ $currentStatus === $key || $currentIndex > array_search($key, $stepKeys) ? 'text-pink-600' : 'text-gray-400' }}"
-                                    style="word-break:break-word;">{{ $label }}</div>
+                                <div class="text-xs text-center font-medium leading-tight {{ $currentStatus === $key || $currentIndex > array_search($key, $stepKeys) ? 'text-pink-600' : 'text-gray-400' }}" style="color:#2D9C8F; word-break:break-word;">{{ $label }}</div>
                             </div>
                             @if(!$loop->last)
                                 <div
@@ -158,7 +159,7 @@ $currentIndex = array_search($currentStatus, $stepKeys);
                 @endif
                 <div class="flex flex-col gap-1 sm:hidden">
                     @php 
-                        $stepCount = count($steps);
+                                                $stepCount = count($steps);
 $isCancelled = in_array(strtolower($order->status), ['cancelled', 'canceled']);
                     @endphp
                     
@@ -274,7 +275,7 @@ $timeOfDay = match (true) {
                 <div class="mb-4 sm:mb-6">
                     <div class="bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 border border-blue-200 rounded-lg sm:rounded-xl shadow-sm overflow-hidden">
                         <!-- Header -->
-                        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-3 sm:px-6 py-2 sm:py-3">
+                        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-3 sm:px-6 py-2 sm:py-3" style="background:#247A72">
                             <div class="flex items-center">
                                 <div class="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-white bg-opacity-20 rounded-full mr-2 sm:mr-3">
                                     <i class="bi bi-chat-left-text text-white text-xs sm:text-sm"></i>
@@ -285,11 +286,8 @@ $timeOfDay = match (true) {
                         <!-- Content -->
                         <div class="p-3 sm:p-4 lg:p-6">
                             <div class="bg-white rounded-lg p-3 sm:p-4 lg:p-5 border border-gray-100 shadow-sm">
-                                <div class="flex items-start">
-                                    <div class="flex-shrink-0 mr-2 sm:mr-3 hidden sm:block">
-                                        <i class="bi bi-quote text-blue-400 text-lg sm:text-xl lg:text-2xl"></i>
-                                    </div>
-                                    <div class="flex-1 min-w-0">
+                                <div class="items-start">
+                                    <div class=" min-w-0">
                                         <div class="text-gray-800 text-xs sm:text-sm lg:text-base leading-relaxed whitespace-pre-wrap break-words break-all font-medium italic">
                                             {{ $order->notes }}
                                         </div>
@@ -306,7 +304,7 @@ $timeOfDay = match (true) {
             </h2>
             
             @php 
-                $itemsTotal = 0;
+                                $itemsTotal = 0;
 // Calculate totals from items only
 foreach ($order->items as $item) {
     $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
@@ -341,7 +339,7 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                     <thead>
                         <tr class="text-left bg-gray-50">
                             <th class="py-3 px-4 w-[28%] whitespace-nowrap font-semibold">Nama</th>
-                            <th class="py-3 px-4 w-[14%] whitespace-nowrap font-semibold">Tipe</th>
+                            <th class="py-3 px-4 w-[14%] whitespace-nowrap font-semibold">Tipe Harga</th>
                             <th class="py-3 px-4 w-[14%] text-right whitespace-nowrap font-semibold">Harga</th>
                             <th class="py-3 px-4 w-[14%] text-right whitespace-nowrap font-semibold">Satuan</th>
                             <th class="py-3 px-4 w-[14%] text-right whitespace-nowrap font-semibold">Jumlah</th>
@@ -351,19 +349,29 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                     <tbody class="divide-y">
                         @foreach($order->items as $item)
                             @php 
-                                $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
+                                                                                        $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
     $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
     $cleanName = trim($cleanName) ?: $item->product_name;
                             @endphp
                             <tr>
                                 <td class="py-3 px-4 break-words whitespace-pre-wrap align-top">{{ $cleanName }}</td>
-                                <td class="py-3 px-4 break-words whitespace-normal align-top">{{ $item->price_type ?? '-' }}</td>
+                                <td class="py-3 px-4 break-words whitespace-normal align-top">
+                                    @php
+    $priceType = $item->price_type ?? '-';
+    if (Str::startsWith($priceType, 'ikat_')) {
+        $jumlah = (int) str_replace('ikat_', '', $priceType);
+        echo 'Per Ikat (isi ' . $jumlah . ' Tangkai)';
+    } else {
+        echo $priceType;
+    }
+                                    @endphp
+                                </td>
                                 <td class="py-3 px-4 text-right align-top whitespace-nowrap">Rp{{ number_format($item->price ?? 0, 0, ',', '.') }}</td>
                                 <td class="py-3 px-4 text-right align-top whitespace-nowrap">{{ $item->unit_equivalent ?? '-' }}</td>
                                 <td class="py-3 px-4 text-right align-top whitespace-nowrap">{{ $item->quantity }}</td>
                                 <td class="py-3 px-4 text-right align-top whitespace-nowrap">Rp{{ number_format($subtotal, 0, ',', '.') }}</td>
                             </tr>
-                            @endforeach
+                        @endforeach
                         </tbody>
                     <tfoot class="bg-gray-50">
                         <tr>
@@ -406,12 +414,12 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                                 <th class="px-4 py-3 text-right font-bold text-blue-600">Rp{{ number_format($displayTotalPaid, 0, ',', '.') }}</th>
                             </tr>
                             @if($sisa > 0)
-                            <tr>
-                                <th colspan="5" class="text-right px-4 py-3 font-semibold">Sisa Pembayaran</th>
-                                <th class="px-4 py-3 text-right font-bold text-red-600">Rp{{ number_format($sisa, 0, ',', '.') }}</th>
-                            </tr>
+                                <tr>
+                                    <th colspan="5" class="text-right px-4 py-3 font-semibold">Sisa Pembayaran</th>
+                                    <th class="px-4 py-3 text-right font-bold text-red-600">Rp{{ number_format($sisa, 0, ',', '.') }}</th>
+                                </tr>
                             @endif
-                            @endif
+                        @endif
                         </tfoot>
                     </table>
                 </div>
@@ -427,7 +435,7 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
             <div class="sm:hidden space-y-3 mb-6">
                 @foreach($order->items as $item)
                     @php 
-                        $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
+                                                            $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
     $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
     $cleanName = trim($cleanName) ?: $item->product_name;
                     @endphp
@@ -441,13 +449,21 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                                     </h3>
                                     @if($item->price_type && $item->price_type !== '-')
                                         <span class="inline-block mt-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-md font-medium">
-                                            {{ $item->price_type }}
+                                            @php
+        $priceType = $item->price_type;
+        if (Str::startsWith($priceType, 'ikat_')) {
+            $jumlah = (int) str_replace('ikat_', '', $priceType);
+            echo 'Per Ikat (isi ' . $jumlah . ' Tangkai)';
+        } else {
+            echo $priceType;
+        }
+                                            @endphp
                                         </span>
                                     @endif
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Product Details -->
                         <div class="p-3">
                             <!-- Harga dan Satuan -->
@@ -461,7 +477,7 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                                     <p class="text-gray-800 text-sm font-semibold">{{ $item->unit_equivalent ?? '-' }}</p>
                                 </div>
                             </div>
-                            
+
                             <!-- Jumlah dan Subtotal -->
                             <div class="flex justify-between items-center py-1.5">
                                 <div class="flex-1">
@@ -553,7 +569,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                 <div class="my-6 sm:my-8">
                     @foreach($customBouquetItems as $item)
                         <x-custom-bouquet-order-detail :item="$item" />
-                            
+
                             <!-- Content -->
                             <div class="p-4 sm:p-6 space-y-6">
                                 <!-- Reference Image Section -->
@@ -565,7 +581,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                             </div>
                                             <h4 class="font-bold text-purple-800 text-sm sm:text-base">Upload Referensi</h4>
                                         </div>
-                                        
+
                                         <div class="grid grid-cols-1 gap-6">
                                             <!-- Image Preview -->
                                             <div class="space-y-3">
@@ -581,7 +597,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <!-- Action buttons -->
                                                 <div class="flex flex-col sm:flex-row gap-2">
                                                     <button onclick="openImageModal('{{ asset('storage/' . $item->reference_image) }}')"
@@ -594,7 +610,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                                         <i class="bi bi-download mr-2"></i>Download
                                                     </a>
                                                 </div>
-                                                
+
                                                 <!-- Simple Status -->
                                                 <div class="text-center">
                                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
@@ -606,7 +622,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                         </div>
                                     </div>
                                 @endif
-                                
+
                                 <!-- Custom Instructions Section -->
                                 @if(!empty($item->custom_instructions))
                                     <div class="bg-white rounded-xl border border-purple-200 p-4 sm:p-6 shadow-sm">
@@ -616,24 +632,24 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                             </div>
                                             <h4 class="font-bold text-purple-800 text-sm sm:text-base">Instruksi Khusus</h4>
                                         </div>
-                                        
+
                                         <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
                                             <div class="text-sm sm:text-base text-purple-800 leading-relaxed font-medium">
                                                 "{{ $item->custom_instructions }}"
                                             </div>
                                         </div>
-                                        
+
                                         <div class="mt-4 text-xs sm:text-sm text-purple-600">
                                             <i class="bi bi-info-circle mr-1"></i>
                                             Instruksi ini akan disampaikan kepada tim florist untuk memastikan bouquet sesuai dengan keinginan Anda.
                                         </div>
                                     </div>
                                 @endif
-                                
+
                                 <!-- Custom Bouquet Details Section -->
                                 @if($item->type === 'custom_bouquet')
                                     <x-custom-bouquet-order-detail :item="$item" />
-                                            
+
                                             <div class="space-y-3">
                                                 @foreach($customBouquet->items as $component)
                                                     <div class="flex items-center justify-between bg-purple-50 border border-purple-100 rounded-lg p-3">
@@ -659,20 +675,20 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                                     </div>
                                                 @endforeach
                                             </div>
-                                            
+
                                             <div class="mt-4 p-3 bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-lg">
                                                 <div class="flex justify-between items-center">
                                                     <span class="font-semibold text-purple-800 text-sm sm:text-base">Total Harga:</span>
                                                     <span class="font-bold text-lg text-purple-800">Rp {{ number_format((float) ($customBouquet->total_price ?? 0), 0, ',', '.') }}</span>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="mt-3 text-xs sm:text-sm text-purple-600">
                                                 <i class="bi bi-info-circle mr-1"></i>
                                                 Komponen-komponen yang Anda pilih untuk custom bouquet.
                                             </div>
                                         </div>
-                                    @endif
+                                @endif
                             </div>
                         </div>
                     @endforeach
@@ -690,175 +706,175 @@ $customBouquetItems = $order->items->filter(function ($item) {
 
             <!-- Informasi Pembayaran Section -->
             @if($showGrandTotal && $sisa > 0 && $order->payment_status !== 'paid')
-                <div "my-8">
-                    <div class="bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200 rounded-2xl p-4 sm:p-6">
-                        <div class="flex items-center justify-center mb-4">
-                            <div class="bg-orange-500 rounded-full p-2 mr-3">
-                                <i class="bi bi-credit-card-2-front text-white text-lg"></i>
-                            </div>
-                            <h3 class="text-lg sm:text-xl font-bold text-orange-800">Informasi Pembayaran</h3>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <!-- Transfer Bank BCA -->
-                            <div class="bg-white rounded-xl border-2 border-blue-200 p-4 shadow-sm">
-                                <div class="flex items-center mb-3">
-                                    <div class="bg-blue-600 rounded-lg p-2 mr-3">
-                                        <i class="bi bi-bank text-white"></i>
-                                    </div>
-                                    <h4 class="font-bold text-blue-800 text-sm sm:text-base">Transfer Bank BCA</h4>
-                                </div>
-                                
-                                <div class="space-y-2 text-xs sm:text-sm">
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600">No. Rekening:</span>
-                                        <span class="font-bold text-blue-800">0213341089</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600">Atas Nama:</span>
-                                        <span class="font-bold text-blue-800">Tia Hanifah</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-600">Bank:</span>
-                                        <span class="font-bold text-blue-800">BCA (Bank Central Asia)</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-4 bg-green-50 border border-green-200 rounded-lg p-3">
-                                    <div class="text-center">
-                                        <span class="text-xs text-gray-600">Jumlah Transfer:</span>
-                                        <div class="text-lg sm:text-xl font-bold text-green-600">
-                                            Rp{{ number_format($sisa, 0, ',', '.') }}
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-3 text-center">
-                                    <button onclick="copyToClipboard('0213341089')" 
-                                            class="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1 rounded-lg transition duration-200">
-                                        <i class="bi bi-clipboard"></i> Salin No. Rekening
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <!-- Petunjuk Pembayaran -->
-                            <div class="bg-white rounded-xl border-2 border-green-200 p-4 shadow-sm">
-                                <div class="flex items-center mb-3">
-                                    <div class="bg-green-600 rounded-lg p-2 mr-3">
-                                        <i class="bi bi-list-check text-white"></i>
-                                    </div>
-                                    <h4 class="font-bold text-green-800 text-sm sm:text-base">Petunjuk Pembayaran:</h4>
-                                </div>
-                                
-                                <ol class="text-xs sm:text-sm space-y-2 text-gray-700">
-                                    <li class="flex items-start">
-                                        <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">1</span>
-                                        <span>Transfer sesuai jumlah yang bertanda</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">2</span>
-                                        <span>Foto bukti transfer</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">3</span>
-                                        <span>Kirim bukti transfer via WhatsApp</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">4</span>
-                                        <span>Tunggu konfirmasi dari admin</span>
-                                    </li>
-                                </ol>
-                                
-                                <div class="mt-4 text-center">
-                                    @php
-    $waMessage = "🌸 *Halo, Seikat Bungo*\n";
-    $waMessage .= "══════════\n\n";
-    $waMessage .= "Saya ingin mengirim bukti pembayaran untuk:\n\n";
-    $waMessage .= "📋 *Pesanan :* {$order->public_code}\n";
-    $waMessage .= "🔗 *Link :* " . url("/order/{$order->public_code}") . "\n\n";
-    $waMessage .= "👤 *Nama Pemesan :* {$order->customer_name}\n";
-    $waMessage .= "📱 *WhatsApp Pemesan :* {$order->wa_number}\n";
-    if ($order->receiver_name) {
-        $waMessage .= "👥 *Nama Penerima :* {$order->receiver_name}\n";
-    }
-    if ($order->receiver_wa) {
-        $waMessage .= "📲 *WhatsApp Penerima :* {$order->receiver_wa}\n";
-    }
-    $waMessage .= "📅 *Tanggal :* " . \Carbon\Carbon::parse($order->pickup_date)->format('d-m-Y') . "\n";
-    $waMessage .= "⏰ *Waktu :* {$order->pickup_time}\n";
-    $waMessage .= "🚚 *Pengiriman :* {$order->delivery_method}\n";
-    $waMessage .= "📍 *Tujuan :* {$order->destination}\n\n";
+                                        <div "my-8">
+                                            <div class="bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200 rounded-2xl p-4 sm:p-6">
+                                                <div class="flex items-center justify-center mb-4">
+                                                    <div class="bg-orange-500 rounded-full p-2 mr-3">
+                                                        <i class="bi bi-credit-card-2-front text-white text-lg"></i>
+                                                    </div>
+                                                    <h3 class="text-lg sm:text-xl font-bold text-orange-800">Informasi Pembayaran</h3>
+                                                </div>
 
-    // Tambahkan breakdown harga dengan ongkir
-    $waMessage .= "💰 *Detail Harga:*\n";
-    $waMessage .= "• Total Produk: Rp " . number_format($itemsTotal, 0, ',', '.') . "\n";
-    if ($shippingFee > 0) {
-        $waMessage .= "• Ongkir: Rp " . number_format($shippingFee, 0, ',', '.') . "\n";
-    }
-    $waMessage .= "• *Total Keseluruhan: Rp " . number_format($grandTotal, 0, ',', '.') . "*\n\n";
+                                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                                    <!-- Transfer Bank BCA -->
+                                                    <div class="bg-white rounded-xl border-2 border-blue-200 p-4 shadow-sm">
+                                                        <div class="flex items-center mb-3">
+                                                            <div class="bg-blue-600 rounded-lg p-2 mr-3">
+                                                                <i class="bi bi-bank text-white"></i>
+                                                            </div>
+                                                            <h4 class="font-bold text-blue-800 text-sm sm:text-base">Transfer Bank BCA</h4>
+                                                        </div>
 
-    if ($showGrandTotal) {
-        $waMessage .= "💰 *Total Pesanan :* Rp " . number_format($grandTotal, 0, ',', '.') . "\n\n";
-        $waMessage .= "═══════════\n";
-        $waMessage .= "Mohon konfirmasi pembayaran 🙏\n";
-    } else {
-        $waMessage .= "⏳ *Status :* Menunggu admin menghitung ongkir\n\n";
-        $waMessage .= "═══════════\n";
-        $waMessage .= "Mohon tunggu info total final dari admin 🙏\n";
-    }
+                                                        <div class="space-y-2 text-xs sm:text-sm">
+                                                            <div class="flex justify-between">
+                                                                <span class="text-gray-600">No. Rekening:</span>
+                                                                <span class="font-bold text-blue-800">0213341089</span>
+                                                            </div>
+                                                            <div class="flex justify-between">
+                                                                <span class="text-gray-600">Atas Nama:</span>
+                                                                <span class="font-bold text-blue-800">Tia Hanifah</span>
+                                                            </div>
+                                                            <div class="flex justify-between">
+                                                                <span class="text-gray-600">Bank:</span>
+                                                                <span class="font-bold text-blue-800">BCA (Bank Central Asia)</span>
+                                                            </div>
+                                                        </div>
 
-    $waMessage .= "Terima kasih 😊";
-    $encodedMessage = urlencode($waMessage);
-                                    @endphp
-                                    <a href="https://wa.me/6285119990901?text={{ $encodedMessage }}" 
-                                       target="_blank"
-                                       class="bg-green-500 hover:bg-green-600 text-white text-xs px-4 py-2 rounded-lg transition duration-200 inline-flex items-center gap-2 shadow-md hover:shadow-lg">
-                                        <i class="bi bi-whatsapp text-lg"></i> 
-                                        <span class="font-medium">Kirim Bukti Transfer</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Button Petunjuk Pembayaran yang Prominent -->
-                        <div class="mt-6 text-center">
-                            <button onclick="scrollToPetunjukPembayaran()" 
-                                    class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center gap-3">
-                                <i class="bi bi-info-circle-fill text-xl"></i>
-                                <span class="text-base">Lihat Petunjuk Pembayaran Lengkap</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <script>
-                function scrollToPetunjukPembayaran() {
-                    // Cari element yang berisi "Petunjuk Pembayaran"
-                    const elements = document.querySelectorAll('h4');
-                    for (let element of elements) {
-                        if (element.textContent.includes('Petunjuk Pembayaran')) {
-                            element.scrollIntoView({ 
-                                behavior: 'smooth', 
-                                block: 'center' 
-                            });
-                            
-                            // Highlight effect
-                            const parentCard = element.closest('.bg-white');
-                            if (parentCard) {
-                                parentCard.style.transition = 'all 0.3s ease';
-                                parentCard.style.transform = 'scale(1.02)';
-                                parentCard.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
-                                
-                                setTimeout(() => {
-                                    parentCard.style.transform = 'scale(1)';
-                                    parentCard.style.boxShadow = '';
-                                }, 1000);
-                            }
-                            break;
-                        }
-                    }
+                                                        <div class="mt-4 bg-green-50 border border-green-200 rounded-lg p-3">
+                                                            <div class="text-center">
+                                                                <span class="text-xs text-gray-600">Jumlah Transfer:</span>
+                                                                <div class="text-lg sm:text-xl font-bold text-green-600">
+                                                                    Rp{{ number_format($sisa, 0, ',', '.') }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mt-3 text-center">
+                                                            <button onclick="copyToClipboard('0213341089')" 
+                                                                    class="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1 rounded-lg transition duration-200" style="background:#E59420">
+                                                                <i class="bi bi-clipboard"></i> Salin No. Rekening
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Petunjuk Pembayaran -->
+                                                    <div class="bg-white rounded-xl border-2 border-green-200 p-4 shadow-sm">
+                                                        <div class="flex items-center mb-3">
+                                                            <div class="bg-green-600 rounded-lg p-2 mr-3">
+                                                                <i class="bi bi-list-check text-white"></i>
+                                                            </div>
+                                                            <h4 class="font-bold text-green-800 text-sm sm:text-base">Petunjuk Pembayaran:</h4>
+                                                        </div>
+
+                                                        <ol class="text-xs sm:text-sm space-y-2 text-gray-700">
+                                                            <li class="flex items-start">
+                                                                <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">1</span>
+                                                                <span>Transfer sesuai jumlah yang bertanda</span>
+                                                            </li>
+                                                            <li class="flex items-start">
+                                                                <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">2</span>
+                                                                <span>Foto bukti transfer</span>
+                                                            </li>
+                                                            <li class="flex items-start">
+                                                                <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">3</span>
+                                                                <span>Kirim bukti transfer via WhatsApp</span>
+                                                            </li>
+                                                            <li class="flex items-start">
+                                                                <span class="bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 flex-shrink-0">4</span>
+                                                                <span>Tunggu konfirmasi dari admin</span>
+                                                            </li>
+                                                        </ol>
+
+                                                        <div class="mt-4 text-center">
+                                                            @php
+                $waMessage = "🌸 *Halo, Seikat Bungo*\n";
+                $waMessage .= "══════════\n\n";
+                $waMessage .= "Saya ingin mengirim bukti pembayaran untuk:\n\n";
+                $waMessage .= "📋 *Pesanan :* {$order->public_code}\n";
+                $waMessage .= "🔗 *Link :* " . url("/order/{$order->public_code}") . "\n\n";
+                $waMessage .= "👤 *Nama Pemesan :* {$order->customer_name}\n";
+                $waMessage .= "📱 *WhatsApp Pemesan :* {$order->wa_number}\n";
+                if ($order->receiver_name) {
+                    $waMessage .= "👥 *Nama Penerima :* {$order->receiver_name}\n";
                 }
-                </script>
+                if ($order->receiver_wa) {
+                    $waMessage .= "📲 *WhatsApp Penerima :* {$order->receiver_wa}\n";
+                }
+                $waMessage .= "📅 *Tanggal :* " . \Carbon\Carbon::parse($order->pickup_date)->format('d-m-Y') . "\n";
+                $waMessage .= "⏰ *Waktu :* {$order->pickup_time}\n";
+                $waMessage .= "🚚 *Pengiriman :* {$order->delivery_method}\n";
+                $waMessage .= "📍 *Tujuan :* {$order->destination}\n\n";
+
+                // Tambahkan breakdown harga dengan ongkir
+                $waMessage .= "💰 *Detail Harga:*\n";
+                $waMessage .= "• Total Produk: Rp " . number_format($itemsTotal, 0, ',', '.') . "\n";
+                if ($shippingFee > 0) {
+                    $waMessage .= "• Ongkir: Rp " . number_format($shippingFee, 0, ',', '.') . "\n";
+                }
+                $waMessage .= "• *Total Keseluruhan: Rp " . number_format($grandTotal, 0, ',', '.') . "*\n\n";
+
+                if ($showGrandTotal) {
+                    $waMessage .= "💰 *Total Pesanan :* Rp " . number_format($grandTotal, 0, ',', '.') . "\n\n";
+                    $waMessage .= "═══════════\n";
+                    $waMessage .= "Mohon konfirmasi pembayaran 🙏\n";
+                } else {
+                    $waMessage .= "⏳ *Status :* Menunggu admin menghitung ongkir\n\n";
+                    $waMessage .= "═══════════\n";
+                    $waMessage .= "Mohon tunggu info total final dari admin 🙏\n";
+                }
+
+                $waMessage .= "Terima kasih 😊";
+                $encodedMessage = urlencode($waMessage);
+                                                            @endphp
+                                                            <a href="https://wa.me/6285119990901?text={{ $encodedMessage }}" 
+                                                               target="_blank"
+                                                               class="bg-green-500 hover:bg-green-600 text-white text-xs px-4 py-2 rounded-lg transition duration-200 inline-flex items-center gap-2 shadow-md hover:shadow-lg">
+                                                                <i class="bi bi-whatsapp text-lg"></i> 
+                                                                <span class="font-medium">Kirim Bukti Transfer</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Button Petunjuk Pembayaran yang Prominent -->
+                                                <div class="mt-6 text-center">
+                                                    <button onclick="scrollToPetunjukPembayaran()" 
+                                                            class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 inline-flex items-center gap-3" style="background:#E59420">
+                                                        <i class="bi bi-info-circle-fill text-xl"></i>
+                                                        <span class="text-base">Lihat Petunjuk Pembayaran Lengkap</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                        function scrollToPetunjukPembayaran() {
+                                            // Cari element yang berisi "Petunjuk Pembayaran"
+                                            const elements = document.querySelectorAll('h4');
+                                            for (let element of elements) {
+                                                if (element.textContent.includes('Petunjuk Pembayaran')) {
+                                                    element.scrollIntoView({ 
+                                                        behavior: 'smooth', 
+                                                        block: 'center' 
+                                                    });
+
+                                                    // Highlight effect
+                                                    const parentCard = element.closest('.bg-white');
+                                                    if (parentCard) {
+                                                        parentCard.style.transition = 'all 0.3s ease';
+                                                        parentCard.style.transform = 'scale(1.02)';
+                                                        parentCard.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+
+                                                        setTimeout(() => {
+                                                            parentCard.style.transform = 'scale(1)';
+                                                            parentCard.style.boxShadow = '';
+                                                        }, 1000);
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        </script>
             @endif
             
             <!-- Pesan untuk pesanan yang sudah lunas -->
@@ -871,7 +887,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                             </div>
                             <h3 class="text-xl sm:text-2xl font-bold text-green-800">Pembayaran Lunas!</h3>
                         </div>
-                        
+
                         <div class="text-center">
                             <p class="text-green-700 text-sm sm:text-base mb-3">
                                 Terima kasih! Pembayaran pesanan Anda telah diterima dengan lengkap.
@@ -880,7 +896,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                 Pesanan Anda sedang diproses. Silakan pantau status pesanan di halaman ini.
                             </p>
                         </div>
-                        
+
                         @if($order->status === 'pending')
                             <div class="mt-4 text-center">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -923,7 +939,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                         <i class="bi bi-box-seam text-blue-500"></i>
                         Foto & Video Packing
                     </h3>
-                    
+
                     @php
     $packingFiles = [];
 
@@ -939,7 +955,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
         $packingFiles[] = $order->packing_photo;
     }
                     @endphp
-                    
+
                     @if(count($packingFiles) > 0)
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
                             @foreach($packingFiles as $index => $file)
@@ -949,7 +965,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
             $isVideo = in_array($ext, ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm']);
             $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp']);
                                 @endphp
-                                
+
                                 <div class="bg-white rounded-lg border border-gray-200 p-3 shadow-sm">
                                     @if($isVideo)
                                         <video controls class="w-full h-48 rounded-lg object-cover bg-black mb-2"
@@ -999,7 +1015,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                         </div>
                     @endif
                 </div>
-                
+
                 <!-- Image Modal for Order Detail -->
                 <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
                     <div class="relative max-w-4xl max-h-full">
@@ -1011,25 +1027,25 @@ $customBouquetItems = $order->items->filter(function ($item) {
                         <div id="modalTitle" class="absolute bottom-4 left-4 text-white bg-black bg-opacity-50 px-3 py-1 rounded-lg text-sm"></div>
                     </div>
                 </div>
-                
+
                 <script>
                     function openImageModal(src, title) {
                         document.getElementById('modalImage').src = src;
                         document.getElementById('modalTitle').textContent = title;
                         document.getElementById('imageModal').classList.remove('hidden');
                     }
-                    
+
                     function closeImageModal() {
                         document.getElementById('imageModal').classList.add('hidden');
                     }
-                    
+
                     // Close modal when clicking outside
                     document.getElementById('imageModal').addEventListener('click', function(e) {
                         if (e.target === this) {
                             closeImageModal();
                         }
                     });
-                    
+
                     // Close modal with Escape key
                     document.addEventListener('keydown', function(e) {
                         if (e.key === 'Escape') {
@@ -1047,7 +1063,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
     </div>
     <div class="w-full flex justify-center mt-4 mb-4">
         <a href="{{ route('public.flowers') }}"
-            class="inline-flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white font-bold px-4 py-2 rounded-lg shadow transition">
+            class="inline-flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white font-bold px-4 py-2 rounded-lg shadow transition" style="background:#247A72">
             <i class="bi bi-arrow-left-circle"></i> Kembali ke Daftar Bunga
         </a>
     </div>

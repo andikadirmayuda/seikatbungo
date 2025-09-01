@@ -153,41 +153,52 @@
             backdrop-filter: blur(8px);
             font-size: 0.8125rem;
             padding: 0.5rem 0.75rem;
-            color: #275a59;
-            border-bottom: 2px solid transparent;
+            color: #2D9C8F;
             transition: all 0.3s ease;
         }
 
-        .nav-tab.active {
-            color: #275a59;
-            border-bottom: 2px solid #275a59;
-            background: rgba(89, 170, 161, 0.1);
+        /* Fixed Navigation Container */
+        .nav-container {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(45, 156, 143, 0.1);
         }
 
-        @media (max-width: 360px) {
+        /* Responsive Navigation Heights */
+        @media (max-width: 639px) {
+            .nav-container {
+                top: 3.5rem;
+            }
+
             .nav-tab {
-                min-width: 80px !important;
-                padding: 0.5rem !important;
+                min-width: 70px !important;
+                padding: 0.375rem 0.5rem !important;
                 font-size: 0.75rem !important;
             }
         }
 
-        @media (min-width: 361px) and (max-width: 639px) {
+        @media (min-width: 640px) and (max-width: 767px) {
+            .nav-container {
+                top: 4rem;
+            }
+
             .nav-tab {
-                min-width: 90px !important;
-                padding: 0.5rem 0.75rem !important;
+                min-width: 80px !important;
+                padding: 0.5rem 0.625rem !important;
                 font-size: 0.8125rem !important;
             }
         }
 
-        @media (min-width: 640px) and (max-width: 767px) {
-            .nav-tab {
-                min-width: 100px !important;
-                padding: 0.625rem 1rem !important;
-            }
-        }
-
         @media (min-width: 768px) {
+            .nav-container {
+                top: 6rem;
+            }
+
             .nav-tab {
                 min-width: 120px;
                 padding: 0.75rem 1.25rem;
@@ -788,38 +799,120 @@
             animation: gradientShift 3s ease infinite;
         }
 
-        /* Navigation tab styling */
+        /* Enhanced Navigation Styles */
         .nav-tab {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.75rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .nav-tab:not(.active) {
-            background-color: rgba(45, 156, 143, 0.1);
-            color: #2D9C8F;
-            border: 1px solid rgba(45, 156, 143, 0.2);
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
         }
 
-        .nav-tab:not(.active):hover {
-            background-color: rgba(45, 156, 143, 0.2);
+        .nav-tab:hover::before {
+            left: 100%;
+        }
+
+        /* Enhanced responsive design */
+        @media (max-width: 640px) {
+            .nav-mobile-text {
+                font-size: 0.75rem;
+                line-height: 1rem;
+            }
+
+            .nav-icon {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 768px) {
+            .nav-tablet-spacing {
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+        }
+
+        /* Smooth hover animations */
+        .nav-hover-effect {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-hover-effect:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(45, 156, 143, 0.15);
-            color: #247A72;
         }
 
-        .nav-tab.active {
-            background-color: #2D9C8F;
-            color: white;
+        /* Active tab gradient animation */
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .nav-active-gradient {
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
         }
     </style>
 </head>
 
 <body class="min-h-screen gradient-bg text-black flex flex-col font-sans overflow-x-hidden">
+    <!-- Popup Tutorial Pemesanan -->
+    <div id="orderTutorialPopup" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+        style="display:none;">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6 relative animate-fade-in-down">
+            <button onclick="closeOrderTutorialPopup()"
+                class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-xl font-bold">&times;</button>
+            <div class="flex flex-col items-center">
+                <div class="mb-3">
+                    <svg width="60" height="60" fill="none" viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="30" fill="#2D9C8F" opacity="0.1" />
+                        <path d="M30 16v20M30 44h.02" stroke="#2D9C8F" stroke-width="3" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <h2 class="text-lg font-bold mb-2 text-center">Cara Memesan di Seikat Bungo</h2>
+                <ul class="text-sm text-gray-700 mb-4 list-disc list-inside text-left">
+                    <li>Pilih produk bunga yang Anda inginkan.</li>
+                    <li>Klik tombol <b>Tambah ke Keranjang</b>.</li>
+                    <li>Lanjutkan ke halaman keranjang untuk checkout.</li>
+                </ul>
+                <a href="/tutorial"
+                    class="mt-2 inline-block bg-[#2D9C8F] text-white px-4 py-2 rounded-lg font-semibold hover:bg-[#247A72] transition">Lihat
+                    Tutorial Lengkap</a>
+            </div>
+        </div>
+    </div>
     @include('public.partials.cart-modal')
     @include('public.partials.cart-panel')
     @include('components.full-image-modal')
+
+    <script>
+        // Tampilkan popup saat halaman dibuka (sekali per sesi)
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!sessionStorage.getItem('orderTutorialPopupShown')) {
+                document.getElementById('orderTutorialPopup').style.display = 'flex';
+                sessionStorage.setItem('orderTutorialPopupShown', '1');
+            }
+        });
+        function closeOrderTutorialPopup() {
+            document.getElementById('orderTutorialPopup').style.display = 'none';
+        }
+    </script>
 
     <!-- Header -->
     <header class="w-full glass-effect border-b border-gray-100 sticky top-0 z-40 transition-transform duration-300"
@@ -862,10 +955,10 @@
 
                             @if(session('last_public_order_code'))
                                 <a href="{{ route('public.order.detail', ['public_code' => session('last_public_order_code')]) }}"
-                                    class="relative text-white bg-[#275a59] hover:bg-[#1f4645] p-1.5 rounded-full hover:shadow-lg transition-all duration-200">
+                                    class="relative text-white bg-[#59aaa1] hover:bg-[#59aaa1]/10 p-1.5 rounded-full hover:shadow-lg transition-all duration-200">
                                     <i class="bi bi-receipt-cutoff text-xl"></i>
                                     <span
-                                        class="absolute -top-1 -right-1 bg-[#59aaa1] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">✓</span>
+                                        class="absolute -top-1 -right-1 bg-green-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">✓</span>
                                 </a>
                             @endif
 
@@ -879,7 +972,7 @@
                             </button>
 
                             <a href="{{ route('login') }}"
-                                class="text-[#275a59] hover:text-[#59aaa1] relative p-2 rounded-full hover:bg-[#59aaa1]/10 transition-all duration-200">
+                                class="text-[#275a59] hover:text-[#59aaa1] p-2 rounded-full hover:bg-[#59aaa1]/10 transition-all duration-200">
                                 <i class="bi bi-person-circle text-xl"></i>
                             </a>
                         </div>
@@ -935,18 +1028,21 @@
                     <nav class="flex items-center justify-center">
                         <div class="flex items-center justify-center space-x-2 sm:space-x-4 md:space-x-8">
                             <a href="{{ route('public.flowers') }}"
-                                class="nav-tab {{ $activeTab === 'flowers' ? 'active bg-[#275a59] text-white shadow-lg' : 'bg-[#ff8a00]/10 text-[#275a59] border border-[#ff8a00]/20' }} px-6 py-2 rounded-xl transition-all duration-300">
-                                <span class="text-sm font-medium">BUNGA</span>
+                                class="px-2 sm:px-4 py-1.5 text-center {{ $activeTab === 'flowers' ? 'bg-[#2D9C8F] text-white rounded-xl' : 'text-[#2D9C8F] hover:bg-[#2D9C8F]/10' }}">
+                                <span
+                                    class="text-sm font-medium {{ $activeTab === 'flowers' ? 'text-white' : '' }}">BUNGA
+                                    POTONG</span>
                             </a>
 
                             <a href="{{ route('public.bouquets') }}"
-                                class="nav-tab {{ $activeTab === 'bouquets' ? 'active bg-[#275a59] text-white shadow-lg' : 'bg-[#275a59]/10 text-[#275a59] border border-[#275a59]/20' }} px-6 py-2 rounded-xl transition-all duration-300">
-                                <span class="text-sm font-medium">BOUQUET</span>
+                                class="px-2 sm:px-4 py-1.5 text-center {{ $activeTab === 'bouquets' ? 'nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-[#2D9C8F] to-[#247A72] shadow-lg nav-active-gradient' : 'text-[#2D9C8F] hover:bg-[#2D9C8F]/10' }}">
+                                <span
+                                    class="text-sm font-medium {{ $activeTab === 'bouquets' ? 'text-white' : '' }}">BOUQUET</span>
                             </a>
 
                             <a href="{{ route('custom.bouquet.create') }}"
-                                class="nav-tab bg-[#ff8a00]/10 text-[#275a59] border border-[#ff8a00]/20 px-6 py-2 rounded-xl transition-all duration-300">
-                                <span class="text-sm font-medium">CUSTOM</span>
+                                class="px-2 sm:px-4 py-1.5 text-center text-[#2D9C8F] hover:bg-[#2D9C8F]/10 rounded-xl transition-all duration-300">
+                                <span class="text-sm font-medium">CUSTOM RANGKAI</span>
                             </a>
                         </div>
                     </nav>
@@ -964,15 +1060,35 @@
 
         <!-- Search and Filters -->
         <div class="mb-8 flex flex-col items-center">
-            <!-- Enhanced Search Bar -->
+            <!-- Enhanced Search Bar with Price Filter (Consistent with bouquets) -->
             <div class="w-full max-w-2xl mb-4">
-                <div class="relative">
-                    <i
-                        class="bi bi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
-                    <input type="text" id="searchInput"
-                        placeholder="{{ $activeTab === 'flowers' ? 'Cari bunga impian Anda...' : 'Cari bouquet impian Anda...' }}"
-                        class="w-full pl-12 pr-4 py-4 text-lg border-2 border-[#275a59] rounded-2xl focus:ring-2 focus:ring-[#59aaa1] focus:border-[#59aaa1] focus:outline-none shadow-lg transition-all duration-200 bg-white/90"
-                        oninput="filterItems()">
+                <div class="flex gap-3">
+                    <!-- Search Input -->
+                    <div class="flex-1 relative">
+                        <i
+                            class="bi bi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="text" id="searchInput"
+                            placeholder="{{ $activeTab === 'flowers' ? 'Cari bunga impian Anda...' : 'Cari bouquet impian Anda...' }}"
+                            class="w-full pl-12 pr-4 py-4 text-lg border-2 border-[#275a59] rounded-2xl focus:ring-2 focus:ring-[#59aaa1] focus:border-[#59aaa1] focus:outline-none shadow-lg transition-all duration-200 bg-white/90"
+                            oninput="filterItems()">
+                    </div>
+                    <!-- Price Filter Dropdown (only for flowers tab) -->
+                    @if($activeTab === 'flowers')
+                        <div class="relative">
+                            <select id="priceFilterSelect"
+                                class="appearance-none bg-white/90 border-2 border-[#2D9C8F] rounded-2xl px-4 py-4 pr-10 text-gray-700 focus:ring-2 focus:ring-[#2D9C8F] focus:border-[#2D9C8F] focus:outline-none shadow-lg transition-all duration-200 cursor-pointer"
+                                onchange="filterByPriceRange()">
+                                <option value="">Semua Harga</option>
+                                <option value="0-10000">&lt; Rp 10k</option>
+                                <option value="10000-30000">Rp 10k - 30k</option>
+                                <option value="30000-50000">Rp 30k - 50k</option>
+                                <option value="50000-100000">Rp 50k - 100k</option>
+                                <option value="100000-999999999">&gt; Rp 100k</option>
+                            </select>
+                            <i
+                                class="bi bi-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -980,12 +1096,12 @@
             @if($activeTab === 'flowers')
                 <div class="flex flex-wrap gap-3 justify-center">
                     <button type="button"
-                        class="chip-btn px-6 py-3 rounded-full border-2 border-[#275a59] bg-white text-gray-700 text-sm font-semibold shadow-md hover:shadow-lg hover:bg-[#59aaa1]/10 transition-all duration-200 active"
+                        class="chip-btn px-6 py-3 rounded-full border-2 border-[#275a59] bg-white text-gray-700 text-sm font-semibold shadow-md hover:shadow-lg hover:bg-[#59aaa1]/10 transition-all duration-200"
                         data-category="" onclick="selectCategory(this)">
                         <span class="mr-2">🌸</span>Semua
                     </button>
                     <button type="button"
-                        class="chip-btn px-6 py-3 rounded-full border-2 border-[#275a59] bg-white text-gray-700 text-sm font-semibold shadow-md hover:shadow-lg hover:bg-[#59aaa1]/10 transition-all duration-200"
+                        class="chip-btn px-6 py-3 rounded-full border-2 border-[#275a59] bg-white text-gray-700 text-sm font-semibold shadow-md hover:shadow-lg hover:bg-[#59aaa1]/10 transition-all duration-200 active"
                         data-category="Fresh Flowers" onclick="selectCategory(this)">
                         <span class="mr-2">🌿</span>Fresh Flowers
                     </button>
@@ -1130,7 +1246,7 @@
                                     <div class="flex items-center justify-between text-xs mb-1">
                                         <span class="text-gray-500">Stok:</span>
                                         <span
-                                            class="font-semibold {{ $flower->current_stock > 10 ? 'text-orange-600' : ($flower->current_stock > 0 ? 'text-yellow-600' : 'text-red-600') }}">
+                                            class="font-semibold sm:text-sm {{ $flower->current_stock > 10 ? 'text-orange-600' : ($flower->current_stock > 0 ? 'text-yellow-600' : 'text-red-600') }}">
                                             @php
                                                 // Cari harga ikat yang tersedia, prioritas ikat 3, ikat 5, ikat 10, ikat 20
                                                 $ikatPrice = $flower->prices->firstWhere('type', 'ikat_3')
@@ -1379,6 +1495,7 @@
     <script>
         let selectedCategory = '';
         let selectedBouquetCategory = '';
+        let selectedPriceRange = '';
         function filterItems() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             const activeTab = '{{ $activeTab }}';
@@ -1388,7 +1505,21 @@
                     const category = card.getAttribute('data-category');
                     const matchSearch = name.includes(search);
                     const matchCategory = !selectedCategory || category === selectedCategory;
-                    card.style.display = (matchSearch && matchCategory) ? '' : 'none';
+                    // Price filter
+                    let matchPrice = true;
+                    if (selectedPriceRange) {
+                        const [min, max] = selectedPriceRange.split('-').map(Number);
+                        // Ambil harga terendah dari data attribute (atau 0 jika tidak ada)
+                        let price = 0;
+                        try {
+                            const prices = window.flowerPrices[card.getAttribute('data-flower-id')] || [];
+                            if (Array.isArray(prices) && prices.length > 0) {
+                                price = Math.min(...prices.map(p => parseInt(p.price)));
+                            }
+                        } catch (e) { }
+                        matchPrice = price >= min && price <= max;
+                    }
+                    card.style.display = (matchSearch && matchCategory && matchPrice) ? '' : 'none';
                 });
             } else {
                 document.querySelectorAll('.bouquet-card').forEach(card => {
@@ -1399,6 +1530,11 @@
                     card.style.display = (matchSearch && matchCategory) ? '' : 'none';
                 });
             }
+        }
+
+        function filterByPriceRange() {
+            selectedPriceRange = document.getElementById('priceFilterSelect').value;
+            filterItems();
         }
         function selectCategory(btn) {
             selectedCategory = btn.getAttribute('data-category');
@@ -1423,13 +1559,13 @@
         }
         document.addEventListener('DOMContentLoaded', function () {
             const activeTab = '{{ $activeTab }}';
-            const firstCategoryBtn = document.querySelector('.chip-btn');
-            if (firstCategoryBtn) {
-                if (activeTab === 'flowers') {
-                    selectCategory(firstCategoryBtn);
-                } else {
-                    selectBouquetCategory(firstCategoryBtn);
-                }
+            if (activeTab === 'flowers') {
+                // Pilih tombol Fresh Flowers sebagai default
+                const freshBtn = Array.from(document.querySelectorAll('.chip-btn')).find(btn => btn.getAttribute('data-category') === 'Fresh Flowers');
+                if (freshBtn) selectCategory(freshBtn);
+            } else {
+                const firstCategoryBtn = document.querySelector('.chip-btn');
+                if (firstCategoryBtn) selectBouquetCategory(firstCategoryBtn);
             }
             const images = document.querySelectorAll('img');
             images.forEach(img => {

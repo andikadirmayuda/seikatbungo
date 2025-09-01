@@ -92,12 +92,21 @@ class PublicCheckoutController extends Controller
                 'wa_number' => 'required|string|max:20',
                 'receiver_name' => 'nullable|string|max:100',
                 'receiver_wa' => 'nullable|string|max:20',
-                'pickup_date' => 'required|date|after:today',
+                'pickup_date' => 'required|date|after_or_equal:today',
                 'pickup_time' => 'required',
                 'delivery_method' => 'required|string|in:Ambil Langsung Ke Toko,Gosend (Dipesan Pribadi),Gocar (Dipesan Pribadi),Gosend (Pesan Dari Toko),Gocar (Pesan Dari Toko),Travel (Di Pesan Sendiri - Khusus Luar Kota)',
-                'destination' => 'required|string',
+                'destination' => 'required_if:delivery_method,Gosend (Dipesan Pribadi),Gocar (Dipesan Pribadi),Gosend (Pesan Dari Toko),Gocar (Pesan Dari Toko),Travel (Di Pesan Sendiri - Khusus Luar Kota)|nullable|string',
                 'notes' => 'nullable|string|max:1000',
                 'custom_instructions' => 'nullable|string|max:500',
+            ], [
+                'customer_name.required' => 'Nama pemesan wajib diisi.',
+                'wa_number.required' => 'Nomor WhatsApp pemesan wajib diisi.',
+                'pickup_date.required' => 'Tanggal ambil/kirim wajib diisi.',
+                'pickup_date.after_or_equal' => 'Tanggal ambil/kirim minimal hari ini atau setelahnya.',
+                'pickup_time.required' => 'Waktu ambil/pengiriman wajib diisi.',
+                'delivery_method.required' => 'Metode pengiriman wajib dipilih.',
+                'delivery_method.in' => 'Metode pengiriman tidak valid.',
+                'destination.required_if' => 'Tujuan pengiriman wajib diisi jika metode pengiriman bukan "Ambil Langsung Ke Toko".',
             ]);
 
             // Generate kode unik pesanan
@@ -173,6 +182,8 @@ class PublicCheckoutController extends Controller
                     $attributes['product_id'] = null;
                 }
 
+                // Isi unit_equivalent dengan hasil getUnitEquivalent agar tidak null
+                $attributes['unit_equivalent'] = $this->getUnitEquivalent($item);
                 $orderItem = $order->items()->create($attributes);
             }
 

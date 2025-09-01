@@ -232,15 +232,16 @@
                     <!-- Track Order - Active -->
                     <a href="{{ route('public.order.track') }}"
                         class="text-white bg-rose-500 hover:bg-rose-600 p-2 rounded-full hover:shadow-lg transition-all duration-200"
-                        title="Lacak Pesanan">
+                        style="background:#247A72" title="Lacak Pesanan">
                         <i class="bi bi-truck text-xl"></i>
                     </a>
 
                     <!-- Order Detail - Muncul setelah checkout -->
                     @if(session('last_public_order_code'))
                         <a href="{{ route('public.order.detail', ['public_code' => session('last_public_order_code')]) }}"
-                            class="relative text-white bg-rose-500 hover:bg-rose-600 p-2 rounded-full hover:shadow-lg transition-all duration-200 order-detail-pulse"
-                            title="Lihat Detail Pesanan Terbaru - Kode: {{ session('last_public_order_code') }}">
+                            class="relative text-white bg-[#59aaa1] hover:bg-[#59aaa1]/10 p-2 rounded-full hover:shadow-lg transition-all duration-200 order-detail-pulse"
+                            title="Lihat Detail Pesanan Terbaru - Kode: {{ session('last_public_order_code') }}"
+                            style="background:#247A72">
                             <i class="bi bi-receipt-cutoff text-xl"></i>
                             <span
                                 class="absolute -top-1 -right-1 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold notification-badge">
@@ -303,9 +304,9 @@
             <div class="max-w-2xl mx-auto">
                 <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
                     <div class="text-center mb-6">
-                        <div
-                            class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-rose-100 to-pink-200 rounded-full mb-4">
-                            <i class="bi bi-search text-rose-600 text-2xl"></i>
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-rose-100 to-pink-200 rounded-full mb-4"
+                            style="background:#247A72">
+                            <i class="bi bi-search text-rose-600 text-2xl" style="color:#ffffff"></i>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-900 mb-2">Cari Pesanan Anda</h3>
                         <p class="text-gray-600">Masukkan nomor WhatsApp yang digunakan saat pemesanan</p>
@@ -333,7 +334,8 @@
                         </div>
 
                         <button type="submit"
-                            class="w-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-3">
+                            class="w-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-3"
+                            style="background:#247A72">
                             <i class="bi bi-search"></i>
                             <span>Lacak Pesanan</span>
                         </button>
@@ -448,7 +450,8 @@
 
                                         <div class="mt-6 lg:mt-0 lg:ml-6 flex flex-col sm:flex-row gap-3">
                                             <a href="{{ route('public.order.detail', ['public_code' => $order->public_code]) }}"
-                                                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105">
+                                                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white font-medium rounded-lg transition-all duration-200 hover:scale-105"
+                                                style="background:#247A72">
                                                 <i class="bi bi-eye"></i>
                                                 <span>Lihat Detail</span>
                                             </a>

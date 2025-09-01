@@ -58,3 +58,8 @@ Route::get('/order/{public_code}', [PublicOrderController::class, 'publicOrderDe
 
 // Tracking pesanan publik berdasarkan nomor WhatsApp
 Route::get('/track-order', [App\Http\Controllers\PublicOrderController::class, 'trackOrderForm'])->name('public.order.track');
+
+// Public tutorial page
+Route::get('/tutorial', function () {
+    return view('public.tutorial');
+});

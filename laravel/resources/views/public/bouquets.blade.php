@@ -357,14 +357,14 @@
                         <div class="hidden md:flex items-center space-x-3">
                             <!-- Track Order -->
                             <a href="{{ route('public.order.track') }}"
-                                class="text-gray-600 hover:text-rose-600 p-2 rounded-full hover:bg-rose-50 transition-all duration-200"
+                                class="text-[#275a59] hover:text-[#59aaa1] p-2 rounded-full hover:bg-[#59aaa1]/10 transition-all duration-200"
                                 title="Lacak Pesanan">
                                 <i class="bi bi-truck text-xl"></i>
                             </a>
 
                             @if(session('last_public_order_code'))
                                 <a href="{{ route('public.order.detail', ['public_code' => session('last_public_order_code')]) }}"
-                                    class="relative text-white bg-rose-500 hover:bg-rose-600 p-1.5 rounded-full hover:shadow-lg transition-all duration-200">
+                                    class="relative text-white bg-[#59aaa1] hover:bg-[#59aaa1]/10 p-1.5 rounded-full hover:shadow-lg transition-all duration-200">
                                     <i class="bi bi-receipt-cutoff text-xl"></i>
                                     <span
                                         class="absolute -top-1 -right-1 bg-green-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">✓</span>
@@ -373,7 +373,7 @@
 
                             <!-- Cart -->
                             <button onclick="toggleCart()"
-                                class="text-gray-600 hover:text-rose-600 relative p-2 rounded-full hover:bg-rose-50 transition-all duration-200"
+                                class="text-[#275a59] hover:text-[#59aaa1] relative p-2 rounded-full hover:bg-[#59aaa1]/10 transition-all duration-200"
                                 title="Keranjang Belanja">
                                 <i class="bi bi-bag text-xl"></i>
                                 <span id="cartBadge"
@@ -381,7 +381,7 @@
                             </button>
 
                             <a href="{{ route('login') }}"
-                                class="text-gray-600 hover:text-rose-600 p-2 rounded-full hover:bg-rose-50 transition-all duration-200">
+                                class="text-[#275a59] hover:text-[#59aaa1] p-2 rounded-full hover:bg-[#59aaa1]/10 transition-all duration-200">
                                 <i class="bi bi-person-circle text-xl"></i>
                             </a>
                         </div>
@@ -437,18 +437,18 @@
                     <nav class="flex items-center justify-center">
                         <div class="flex items-center justify-center space-x-2 sm:space-x-4 md:space-x-8">
                             <a href="{{ route('public.flowers') }}"
-                                class="px-2 sm:px-4 py-1.5 text-center {{ $activeTab === 'flowers' ? 'nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-[#2D9C8F] to-[#247A72] text-white shadow-lg nav-active-gradient' : 'text-[#2D9C8F] hover:bg-[#2D9C8F]/10' }}">
-                                <span class="text-sm font-medium">BUNGA</span>
+                                class="px-2 sm:px-4 py-1.5 text-center {{ $activeTab === 'flowers' ? 'nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-[#2D9C8F] to-[#247A72] shadow-lg nav-active-gradient' : 'text-[#2D9C8F] hover:bg-[#2D9C8F]/10' }}">
+                                <span class="text-sm font-medium {{ $activeTab === 'flowers' ? 'text-white' : '' }}">BUNGA POTONG</span>
                             </a>
 
                             <a href="{{ route('public.bouquets') }}"
-                                class="px-2 sm:px-4 py-1.5 text-center {{ $activeTab === 'bouquets' ? 'nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-[#2D9C8F] to-[#247A72] text-white shadow-lg nav-active-gradient' : 'text-[#2D9C8F] hover:bg-[#2D9C8F]/10' }}">
-                                <span class="text-sm font-medium">BOUQUET</span>
+                                class="px-2 sm:px-4 py-1.5 text-center {{ $activeTab === 'bouquets' ? 'nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-[#2D9C8F] to-[#247A72] shadow-lg nav-active-gradient' : 'text-[#2D9C8F] hover:bg-[#2D9C8F]/10' }}">
+                                <span class="text-sm font-medium {{ $activeTab === 'bouquets' ? 'text-white' : '' }}">BOUQUET</span>
                             </a>
 
                             <a href="{{ route('custom.bouquet.create') }}"
                                 class="px-2 sm:px-4 py-1.5 text-center text-[#2D9C8F] hover:bg-[#2D9C8F]/10 rounded-xl transition-all duration-300">
-                                <span class="text-sm font-medium">CUSTOM</span>
+                                <span class="text-sm font-medium">CUSTOM RANGKAI</span>
                             </a>
                         </div>
                     </nav>
@@ -533,7 +533,7 @@
                         <div
                             class="card-hover glass-effect rounded-2xl shadow-lg p-3 sm:p-4 h-full flex flex-col overflow-hidden">
                             <!-- Image -->
-                            <div class="relative h-36 sm:h-40 mb-3 sm:mb-4 rounded-xl overflow-hidden">
+                            <div class="relative h-48 sm:h-40 mb-3 sm:mb-4 rounded-xl overflow-hidden">
                                 @if($bouquet->image)
                                     <!-- View Button Overlay -->
                                     {{-- <button
