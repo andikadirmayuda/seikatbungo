@@ -516,10 +516,12 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                             <span class="text-green-600 text-sm font-bold">Rp{{ number_format($itemsTotal, 0, ',', '.') }}</span>
                         </div>
 
+                        @if($order->voucher_amount > 0)
                         <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
                             <span class="text-gray-600 text-sm">Potongan Voucher</span>
-                            <span class="text-red-600 text-sm font-bold">Rp0</span>
+                            <span class="text-purple-600 text-sm font-bold">-Rp{{ number_format($order->voucher_amount, 0, ',', '.') }}</span>
                         </div>
+                        @endif
                         
                         @if($needsShippingFee && !$shippingFeeSet)
                             <!-- Pemberitahuan menunggu ongkir (Mobile) -->

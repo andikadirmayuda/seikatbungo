@@ -592,11 +592,12 @@ $paymentStatusIndo = [
                 <div class="space-y-4">
                     @php 
                         $items_total = $total; // items total already calculated above
-$shipping_fee = $order->shipping_fee ?? 0;
-$grand_total = $items_total + $shipping_fee;
-$total_paid = $order->amount_paid ?? 0;
-$sisa_pembayaran = $order->payment_status === 'paid' ? 0 : max($grand_total - $total_paid, 0);
-$display_total_paid = $order->payment_status === 'paid' ? $grand_total : $total_paid;
+                        $shipping_fee = $order->shipping_fee ?? 0;
+                        $voucher_amount = $order->voucher_amount ?? 0;
+                        $grand_total = $items_total + $shipping_fee - $voucher_amount;
+                        $total_paid = $order->amount_paid ?? 0;
+                        $sisa_pembayaran = $order->payment_status === 'paid' ? 0 : max($grand_total - $total_paid, 0);
+                        $display_total_paid = $order->payment_status === 'paid' ? $grand_total : $total_paid;
                     @endphp
                     
                     <!-- Items Total -->
@@ -626,6 +627,23 @@ $display_total_paid = $order->payment_status === 'paid' ? $grand_total : $total_
                             </div>
                             <span class="text-lg sm:text-xl font-bold text-orange-600">
                                 Rp{{ number_format($shipping_fee, 0, ',', '.') }}
+                            </span>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if($voucher_amount > 0)
+                    <!-- Voucher Discount -->
+                    <div class="p-4 bg-white rounded-lg shadow-sm border border-purple-100">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 text-center sm:text-left">
+                            <div class="flex items-center justify-center sm:justify-start">
+                                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="bi bi-ticket-perforated text-purple-600 text-sm"></i>
+                                </div>
+                                <span class="text-base sm:text-lg font-semibold text-gray-700">Voucher</span>
+                            </div>
+                            <span class="text-lg sm:text-xl font-bold text-purple-600">
+                                -Rp{{ number_format($voucher_amount, 0, ',', '.') }}
                             </span>
                         </div>
                     </div>

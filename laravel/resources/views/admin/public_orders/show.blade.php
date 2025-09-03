@@ -756,13 +756,14 @@ $needsShippingFee = in_array($order->delivery_method, [
             @endforeach
 
             @php
-$totalOrder = $order->items->sum(function ($item) {
-    return ($item->price ?? 0) * ($item->quantity ?? 0);
-});
-$shippingFee = $order->shipping_fee ?? 0;
-$grandTotal = $totalOrder + $shippingFee;
-$totalPaid = $order->amount_paid ?? 0;
-$sisaPembayaran = $order->payment_status === 'paid' ? 0 : max($grandTotal - $totalPaid, 0);
+                $totalOrder = $order->items->sum(function ($item) {
+                    return ($item->price ?? 0) * ($item->quantity ?? 0);
+                });
+                $shippingFee = $order->shipping_fee ?? 0;
+                $voucherAmount = $order->voucher_amount ?? 0;
+                $grandTotal = $totalOrder + $shippingFee - $voucherAmount;
+                $totalPaid = $order->amount_paid ?? 0;
+                $sisaPembayaran = $order->payment_status === 'paid' ? 0 : max($grandTotal - $totalPaid, 0);
             @endphp
 
             <!-- Mobile Payment Summary Card -->
@@ -782,6 +783,12 @@ $sisaPembayaran = $order->payment_status === 'paid' ? 0 : max($grandTotal - $tot
                         <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
                             <span class="text-gray-600 text-sm">Ongkir</span>
                             <span class="text-orange-600 text-sm font-bold">Rp{{ number_format($shippingFee, 0, ',', '.') }}</span>
+                        </div>
+                    @endif
+                    @if($voucherAmount > 0)
+                        <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="text-gray-600 text-sm">Voucher</span>
+                            <span class="text-purple-600 text-sm font-bold">-Rp{{ number_format($voucherAmount, 0, ',', '.') }}</span>
                         </div>
                     @endif
                     <div class="flex justify-between items-center py-1.5 border-b border-gray-100 bg-gray-50 -mx-3 px-3">
@@ -828,14 +835,23 @@ $sisaPembayaran = $order->payment_status === 'paid' ? 0 : max($grandTotal - $tot
                                     class="block text-2xl font-bold text-orange-600">Rp{{ number_format($shippingFee, 0, ',', '.') }}</span>
                             </div>
                         </div>
+                    @endif
+                    @if($voucherAmount > 0)
                         <div class="text-center">
-                            <div class="bg-white rounded-lg p-4 shadow-sm border border-purple-200 bg-purple-50">
-                                <span class="block text-sm font-medium text-purple-600 mb-1">Total Keseluruhan</span>
+                            <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                                <span class="block text-sm font-medium text-gray-600 mb-1">Voucher</span>
                                 <span
-                                    class="block text-2xl font-bold text-purple-600">Rp{{ number_format($grandTotal, 0, ',', '.') }}</span>
+                                    class="block text-2xl font-bold text-purple-600">-Rp{{ number_format($voucherAmount, 0, ',', '.') }}</span>
                             </div>
                         </div>
                     @endif
+                    <div class="text-center">
+                        <div class="bg-white rounded-lg p-4 shadow-sm border border-purple-200 bg-purple-50">
+                            <span class="block text-sm font-medium text-purple-600 mb-1">Total Keseluruhan</span>
+                            <span
+                                class="block text-2xl font-bold text-purple-600">Rp{{ number_format($grandTotal, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
                     <div class="text-center">
                         <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
                             <span class="block text-sm font-medium text-gray-600 mb-1">Sudah Dibayar</span>
