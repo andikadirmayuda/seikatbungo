@@ -75,9 +75,18 @@
                 </x-sidebar-link>
             @endif
 
-
-
-
+            <!-- PROMOSI & VOUCHER -->
+            <li class="mt-4 mb-1 text-xs font-bold uppercase tracking-wider text-pink-500 flex items-center gap-2">
+                <i class="bi bi-ticket-perforated"></i> Promosi & Voucher
+            </li>
+            @if(auth()->user()->hasRole('owner') || auth()->user()->hasRole('admin'))
+                <x-sidebar-link :href="route('admin.vouchers.index')" :active="request()->routeIs('admin.vouchers.*')">
+                    <x-slot name="icon">
+                        <i class="bi bi-ticket-perforated-fill text-lg mr-1"></i>
+                    </x-slot>
+                    {{ __('Voucher') }}
+                </x-sidebar-link>
+            @endif
 
             <!-- PEMESANAN & PENJUALAN -->
             <li class="mt-4 mb-1 text-xs font-bold uppercase tracking-wider text-pink-500 flex items-center gap-2"><i

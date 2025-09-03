@@ -438,13 +438,71 @@
                                     @endforeach
                                 </div>
 
+                                <!-- Voucher Section -->
+                                <div class="border-t border-gray-200 pt-4 mb-4">
+                                    <form action="{{ route('voucher.validate') }}" method="POST" class="flex gap-2" id="voucherForm">
+                                        @csrf
+                                        <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
+                                        <div class="flex-1">
+                                            <input type="text" 
+                                                   name="voucher_code" 
+                                                   id="voucher_code"
+                                                   class="w-full px-4 py-2 border border-rose-200 rounded-xl input-focus focus:outline-none" 
+                                                   placeholder="Masukkan kode voucher">
+                                        </div>
+                                        <button type="submit" 
+                                                class="px-4 py-2 bg-rose-500 text-white rounded-xl hover:bg-rose-600 transition-colors">
+                                            Gunakan
+                                        </button>
+                                    </form>
+                                    
+                                    @if(session('voucher_error'))
+                                        <div class="mt-2 text-sm text-red-600">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                            {{ session('voucher_error') }}
+                                        </div>
+                                    @endif
+
+                                    @if(session('applied_voucher'))
+                                        <div class="mt-2 p-3 bg-purple-50 border border-purple-200 rounded-xl">
+                                            <div class="flex justify-between items-start">
+                                                <div>
+                                                    <div class="text-sm font-semibold text-purple-800">
+                                                        Voucher Aktif: {{ session('applied_voucher.code') }}
+                                                    </div>
+                                                    <div class="text-xs text-purple-600 mt-1">
+                                                        {{ session('applied_voucher.description') }}
+                                                    </div>
+                                                </div>
+                                                <form action="{{ route('checkout.remove-voucher') }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="text-red-500 hover:text-red-700">
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+
                                 <!-- Total -->
                                 <div class="border-t border-gray-200 pt-4">
                                     <div class="flex justify-between items-center">
                                         <span class="text-lg font-bold text-gray-800">Total:</span>
-                                        <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">
-                                            Rp {{ number_format($total, 0, ',', '.') }}
-                                        </span>
+                                        <div class="text-right">
+                                            @if(session('applied_voucher'))
+                                                <div class="text-sm text-gray-500 line-through">
+                                                    Rp {{ number_format($total, 0, ',', '.') }}
+                                                </div>
+                                                <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">
+                                                    Rp {{ number_format($total - session('applied_voucher.discount'), 0, ',', '.') }}
+                                                </span>
+                                            @else
+                                                <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">
+                                                    Rp {{ number_format($total, 0, ',', '.') }}
+                                                </span>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>

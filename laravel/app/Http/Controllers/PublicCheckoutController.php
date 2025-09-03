@@ -8,14 +8,28 @@ use App\Models\PublicOrder;
 use App\Models\OrderItem;
 use App\Models\InventoryLog;
 use App\Models\ProductPrice;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\PushNotificationService;
+use Illuminate\Support\Facades\Log as LaravelLog;
 use App\Services\CartValidationService;
+use App\Services\VoucherService;
 
 class PublicCheckoutController extends Controller
 {
+
+    /**
+     * Remove applied voucher from session
+     */
+    public function removeVoucher(Request $request)
+    {
+        session()->forget('applied_voucher');
+        // Jika ada key lain untuk voucher di session/cart, tambahkan di sini
+        return redirect()->back()->with('success', 'Voucher berhasil dihapus.');
+    }
+
     protected $cartValidationService;
 
     public function __construct(CartValidationService $cartValidationService)
@@ -60,10 +74,41 @@ class PublicCheckoutController extends Controller
                 'items' => $item['items'] ?? null,
                 'subtotal' => $item['price'] * $item['qty']
             ];
-            $totalAmount += $item['price'] * $item['qty'];
+            $itemTotal = $item['price'] * $item['qty'];
+            $totalAmount += $itemTotal;
+
+            Log::info('Adding item to total:', [
+                'item_name' => $item['name'],
+                'price' => $item['price'],
+                'qty' => $item['qty'],
+                'item_total' => $itemTotal,
+                'running_total' => $totalAmount
+            ]);
         }
 
-        return view('public.checkout', compact('cartData', 'totalAmount'));
+        Log::info('Final total amount:', ['total' => $totalAmount]);
+
+        // Ambil voucher aktif & berlaku
+        $now = now();
+        $vouchers = Voucher::where('is_active', true)
+            ->where('start_date', '<=', $now)
+            ->where('end_date', '>=', $now)
+            ->get()
+            ->keyBy(function ($v) {
+                return strtoupper($v->code);
+            })
+            ->map(function ($v) {
+                return [
+                    'description' => $v->description,
+                    'type' => $v->type,
+                    'value' => $v->value,
+                    'minimum' => $v->minimum_spend,
+                    'start' => $v->start_date ? $v->start_date->format('Y-m-d') : null,
+                    'end' => $v->end_date ? $v->end_date->format('Y-m-d') : null,
+                ];
+            })->toArray();
+
+        return view('public.checkout', compact('cartData', 'totalAmount', 'vouchers'));
     }
 
     /**
@@ -83,7 +128,9 @@ class PublicCheckoutController extends Controller
             Log::info('Checkout process input:', [
                 'all_input' => $request->all(),
                 'delivery_method' => $request->input('delivery_method'),
-                'cart_contents' => $cart
+                'cart_contents' => $cart,
+                'has_voucher_code' => $request->filled('voucher_code'),
+                'voucher_code' => $request->input('voucher_code')
             ]);
 
             // Validasi input
@@ -117,8 +164,103 @@ class PublicCheckoutController extends Controller
                 return $item['price'] * $item['qty'];
             });
 
+            // Validasi & hitung diskon voucher dari session jika ada
+            $voucherCode = null;
+            $voucherDescription = null;
+            $voucherType = null;
+            $voucherValue = null;
+            $voucherMinimum = null;
+            $voucherStart = null;
+            $voucherEnd = null;
+            $voucherDiscount = 0;
+
+            // Cek apakah ada voucher yang diapply di session
+            if (session()->has('applied_voucher')) {
+                $appliedVoucher = session('applied_voucher');
+                $voucherCode = $appliedVoucher['code'];
+                $voucherDescription = $appliedVoucher['description'];
+                $voucherType = $appliedVoucher['type'];
+                $voucherValue = $appliedVoucher['value'];
+                $voucherDiscount = $appliedVoucher['discount'];
+                $voucherMinimum = $appliedVoucher['minimum_spend'];
+
+                // Kurangi total dengan diskon voucher
+                $totalAmount -= $voucherDiscount;
+                if ($totalAmount < 0) $totalAmount = 0;
+
+                Log::info('Applied voucher from session:', [
+                    'voucher_code' => $voucherCode,
+                    'discount' => $voucherDiscount,
+                    'total_before' => $totalAmount + $voucherDiscount,
+                    'total_after' => $totalAmount
+                ]);
+            }
+            if ($request->filled('voucher_code')) {
+                $voucherCode = strtoupper(trim($request->input('voucher_code')));
+                Log::info('Validating voucher:', [
+                    'input_code' => $voucherCode,
+                    'total_amount' => $totalAmount
+                ]);
+
+                // Query voucher tanpa filter is_active dulu untuk debug
+                $voucher = Voucher::where('code', $voucherCode)->first();
+
+                if (!$voucher) {
+                    Log::error('Voucher not found:', ['code' => $voucherCode]);
+                    return redirect()->back()->withInput()->with('error', 'Kode voucher tidak ditemukan.');
+                }
+
+                Log::info('Voucher found:', [
+                    'code' => $voucher->code,
+                    'description' => $voucher->description,
+                    'is_active' => $voucher->is_active,
+                    'start_date' => $voucher->start_date,
+                    'end_date' => $voucher->end_date,
+                    'minimum_spend' => $voucher->minimum_spend,
+                    'current_total' => $totalAmount
+                ]);
+
+                if ($voucher) {
+                    Log::info('Voucher found:', [
+                        'voucher_id' => $voucher->id,
+                        'is_active' => $voucher->is_active,
+                        'start_date' => $voucher->start_date,
+                        'end_date' => $voucher->end_date,
+                        'usage_count' => $voucher->usage_count,
+                        'usage_limit' => $voucher->usage_limit
+                    ]);
+
+                    if (!$voucher->isValid()) {
+                        return redirect()->back()->withInput()->with('error', 'Voucher tidak valid atau sudah kadaluarsa.');
+                    }
+
+                    if ($totalAmount < $voucher->minimum_spend) {
+                        return redirect()->back()->withInput()->with('error', 'Total belanja belum memenuhi syarat minimum voucher.');
+                    }
+
+                    $voucherCode = $voucher->code;
+                    $voucherDescription = $voucher->description;
+                    $voucherType = $voucher->type;
+                    $voucherValue = $voucher->value;
+                    $voucherMinimum = $voucher->minimum_spend;
+
+                    // Hitung diskon
+                    $voucherDiscount = $voucher->calculateDiscount($totalAmount);
+                    $totalAmount -= $voucherDiscount;
+                    // Pastikan total minimal 0
+                    if ($totalAmount < 0) {
+                        $totalAmount = 0;
+                    }
+                } else {
+                    return redirect()->back()->withInput()->with('error', 'Kode voucher tidak valid.');
+                }
+            }
+
             // Buat order baru
-            $order = PublicOrder::create([
+            // Hitung total setelah voucher
+            $finalTotal = $totalAmount;
+
+            $orderData = [
                 'public_code' => $publicCode,
                 'customer_name' => $validated['customer_name'],
                 'wa_number' => $validated['wa_number'],
@@ -130,10 +272,41 @@ class PublicCheckoutController extends Controller
                 'destination' => $validated['destination'],
                 'notes' => $validated['notes'] ?? null,
                 'custom_instructions' => $validated['custom_instructions'] ?? null,
-                'total_amount' => $totalAmount,
+                'subtotal_amount' => $totalAmount + ($voucherDiscount ?? 0), // Total sebelum voucher
+                'total_amount' => $finalTotal, // Total setelah voucher
                 'status' => 'pending',
-                'payment_status' => 'waiting_confirmation'
-            ]);
+                'payment_status' => 'waiting_confirmation',
+            ];
+
+            // Tambahkan informasi voucher jika ada
+            if ($voucherCode) {
+                $orderData['voucher_code'] = $voucherCode;
+                $orderData['voucher_type'] = $voucherType;
+                $orderData['voucher_value'] = $voucherValue;
+                $orderData['voucher_minimum'] = $voucherMinimum;
+                $orderData['voucher_description'] = $voucherDescription;
+                $orderData['voucher_amount'] = $voucherDiscount;
+
+                Log::info('Saving order with voucher:', [
+                    'voucher_code' => $voucherCode,
+                    'voucher_discount' => $voucherDiscount,
+                    'total_before' => $orderData['subtotal_amount'],
+                    'total_after' => $orderData['total_amount']
+                ]);
+            }
+
+            $order = PublicOrder::create($orderData);
+
+            // Catat penggunaan voucher jika ada
+            if (isset($voucher)) {
+                $voucher->recordUsage($order->id);
+            }
+
+            // Hapus session voucher setelah order berhasil dibuat
+            if (session()->has('applied_voucher')) {
+                session()->forget('applied_voucher');
+                Log::info('Voucher session cleared after order creation');
+            }
 
             // Proses setiap item di cart
             foreach ($cart as $item) {

@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\OrderCustomBouquetController;
+use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\ArchiveSettingController;
 use App\Http\Controllers\HistorySettingController;
 use App\Http\Controllers\PublicSaleController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Admin\VoucherController as AdminVoucherController;
 use App\Http\Controllers\AdminPublicOrderController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\BouquetController;
@@ -25,6 +27,8 @@ use App\Http\Controllers\BouquetCategoryController;
 use App\Http\Controllers\BouquetSizeController;
 use App\Http\Controllers\BouquetComponentController;
 use App\Http\Controllers\PublicCartController;
+use App\Http\Controllers\PublicCheckoutController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +54,10 @@ Route::middleware(['web', 'auth'])->group(function () {
 // Include notification routes
 require __DIR__ . '/notification.php';
 
+// Voucher validation route
+Route::post('/voucher/validate', [VoucherController::class, 'validate'])->name('voucher.validate');
+Route::post('/checkout/remove-voucher', [PublicCheckoutController::class, 'removeVoucher'])->name('checkout.remove-voucher');
+
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -58,6 +66,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Admin Voucher Routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('vouchers', AdminVoucherController::class);
+    });
 
     // User Management Routes - Only accessible by owner and admin
     Route::middleware('role:owner,admin')->group(function () {
@@ -147,11 +160,6 @@ Route::prefix('reports')->name('reports.')->group(function () {
     // Route::get('/sales/excel', [ReportController::class, 'salesExcel'])->name('sales.excel');
 });
 
-// Order WhatsApp Form (tanpa login) - COMMENTED OUT DUE TO MISSING CONTROLLER
-// Route::post('/order-whatsapp', [\App\Http\Controllers\OrderWhatsAppController::class, 'store'])->name('order.whatsapp.store');
-// Form order WhatsApp publik (GET) dengan produk ready stock  
-// Route::get('/order-whatsapp', [\App\Http\Controllers\OrderWhatsAppController::class, 'form'])->name('order.whatsapp.form');
-
 
 // Admin Public Order Routes - Bisa diakses semua user yang login
 Route::middleware(['auth'])->group(function () {
@@ -215,5 +223,9 @@ Route::resource('bouquet-categories', BouquetCategoryController::class);
 Route::resource('bouquet-sizes', BouquetSizeController::class);
 Route::get('bouquet-components/manage/{bouquet}/{size}', [App\Http\Controllers\BouquetComponentController::class, 'manage'])->name('bouquet-components.manage');
 Route::resource('bouquet-components', BouquetComponentController::class);
+
+// Voucher validation route
+Route::post('/voucher/validate', [VoucherController::class, 'validate'])->name('voucher.validate');
+
 
 require __DIR__ . '/auth.php';

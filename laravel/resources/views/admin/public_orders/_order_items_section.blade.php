@@ -26,8 +26,7 @@
         <div class="space-y-2">
             <div class="flex justify-between items-center">
                 <span class="text-sm text-gray-600">Subtotal:</span>
-                <span
-                    class="text-sm font-medium text-gray-900">Rp{{ number_format($order->items->sum(function ($item) {
+                <span class="text-sm font-medium text-gray-900">Rp{{ number_format($order->items->sum(function ($item) {
     return $item->price * $item->quantity; }), 0, ',', '.') }}</span>
             </div>
             @if($order->shipping_fee > 0)

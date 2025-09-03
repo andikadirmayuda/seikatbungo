@@ -63,7 +63,36 @@ class PublicOrderController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.type' => 'nullable|string', // For identifying custom bouquets
             'items.*.custom_bouquet_id' => 'nullable|integer|exists:custom_bouquets,id',
+            'voucher_code' => 'nullable|string|exists:vouchers,code',
         ]);
+
+        $voucher = null;
+        $voucherAmount = 0;
+        if (!empty($validated['voucher_code'])) {
+            $voucher = \App\Models\Voucher::where('code', $validated['voucher_code'])->first();
+            if ($voucher && $voucher->isValid()) {
+                // Hitung subtotal produk dari database
+                $itemsTotal = 0;
+                foreach ($validated['items'] as $item) {
+                    $product = Product::findOrFail($item['product_id']);
+                    $userPrice = $product->prices()->where('type', $item['price_type'])->first();
+                    $hargaGrosir = $product->prices()->where('type', 'harga_grosir')->first();
+
+                    $qty = $item['quantity'];
+                    $minGrosirQty = $userPrice->min_grosir_qty ?? 0;
+
+                    if ($hargaGrosir && $minGrosirQty > 0 && $qty >= $minGrosirQty) {
+                        $price = $hargaGrosir->price;
+                    } else {
+                        $price = $userPrice ? $userPrice->price : 0;
+                    }
+
+                    $itemsTotal += $qty * $price;
+                }
+                $shippingFee = 0; // Jika ingin support potongan ongkir, ambil dari request jika ada
+                $voucherAmount = $voucher->calculateDiscount($itemsTotal, $shippingFee);
+            }
+        }
 
         DB::beginTransaction();
         try {
@@ -79,6 +108,8 @@ class PublicOrderController extends Controller
                 'wa_number' => $validated['wa_number'] ?? null,
                 'status' => 'pending',
                 'payment_status' => 'waiting_confirmation', // default status pembayaran
+                'voucher_code' => $voucher ? $voucher->code : null,
+                'voucher_amount' => $voucherAmount,
             ]);
 
             foreach ($validated['items'] as $item) {

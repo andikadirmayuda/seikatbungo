@@ -324,8 +324,9 @@ $shippingFeeSet = $shippingFee > 0;
 // Determine if we should show grand total
 $showGrandTotal = !$needsShippingFee || $shippingFeeSet;
 
-// Calculate grand total
-$grandTotal = $itemsTotal + $shippingFee;
+// Calculate grand total with voucher discount
+$voucherAmount = $order->voucher_amount ?? 0;
+$grandTotal = ($itemsTotal - $voucherAmount) + $shippingFee;
 
 // Payment calculations
 $totalPaid = $order->amount_paid ?? 0;
@@ -378,6 +379,14 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                             <th colspan="5" class="text-right px-4 py-3 font-semibold">Total Produk</th>
                             <th class="px-4 py-3 text-right font-bold text-green-600">Rp{{ number_format($itemsTotal, 0, ',', '.') }}</th>
                         </tr>
+                        @if(($order->voucher_amount ?? 0) > 0)
+                        <tr>
+                            <th colspan="5" class="text-right px-4 py-3 font-semibold">Potongan Voucher</th>
+                            <th class="px-4 py-3 text-right font-bold text-red-600">
+                                -Rp{{ number_format($order->voucher_amount, 0, ',', '.') }}
+                            </th>
+                        </tr>
+                        @endif
                         
                         @if($needsShippingFee && !$shippingFeeSet)
                             <!-- Pemberitahuan menunggu ongkir -->
@@ -505,6 +514,11 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                         <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
                             <span class="text-gray-600 text-sm">Total Produk</span>
                             <span class="text-green-600 text-sm font-bold">Rp{{ number_format($itemsTotal, 0, ',', '.') }}</span>
+                        </div>
+
+                        <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                            <span class="text-gray-600 text-sm">Potongan Voucher</span>
+                            <span class="text-red-600 text-sm font-bold">Rp0</span>
                         </div>
                         
                         @if($needsShippingFee && !$shippingFeeSet)

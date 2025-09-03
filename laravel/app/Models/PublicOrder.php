@@ -148,6 +148,13 @@ class PublicOrder extends Model
         'receiver_wa',
         'packing_photo',
         'packing_files',
+        'total_amount',
+        'voucher_code',
+        'voucher_type',
+        'voucher_value',
+        'voucher_minimum',
+        'voucher_description',
+        'voucher_amount',
         'shipping_fee',
         'stock_holded',
         'info',
@@ -182,11 +189,21 @@ class PublicOrder extends Model
             $this->load('items');
         }
 
+        // Hitung subtotal dari items
         $itemsTotal = $this->items->sum(function ($item) {
             return ($item->quantity ?? 0) * ($item->price ?? 0);
         });
 
-        return $itemsTotal + ($this->shipping_fee ?? 0);
+        // Tambahkan shipping fee jika ada
+        $subtotal = $itemsTotal + ($this->shipping_fee ?? 0);
+
+        // Kurangi dengan voucher jika ada
+        if ($this->voucher_code && $this->voucher_amount > 0) {
+            $subtotal -= $this->voucher_amount;
+        }
+
+        // Total tidak boleh minus
+        return max($subtotal, 0);
     }
 
     // Get order number from public_code or generate one
@@ -318,5 +335,50 @@ class PublicOrder extends Model
             self::PAYMENT_PARTIAL_PAID,
             self::PAYMENT_PAID
         ]) && empty($this->payment_proof);
+    }
+
+    /**
+     * Get subtotal (total before voucher)
+     */
+    public function getSubtotalAttribute()
+    {
+        if (!$this->relationLoaded('items')) {
+            $this->load('items');
+        }
+
+        return $this->items->sum(function ($item) {
+            return ($item->quantity ?? 0) * ($item->price ?? 0);
+        });
+    }
+
+    /**
+     * Get formatted voucher amount
+     */
+    public function getFormattedVoucherAmountAttribute()
+    {
+        if (!$this->voucher_amount) {
+            return null;
+        }
+
+        return 'Rp ' . number_format($this->voucher_amount, 0, ',', '.');
+    }
+
+    /**
+     * Get voucher details
+     */
+    public function getVoucherDetailsAttribute()
+    {
+        if (!$this->voucher_code) {
+            return null;
+        }
+
+        return [
+            'code' => $this->voucher_code,
+            'description' => $this->voucher_description,
+            'type' => $this->voucher_type,
+            'value' => $this->voucher_value,
+            'amount' => $this->voucher_amount,
+            'formatted_amount' => $this->formatted_voucher_amount
+        ];
     }
 }

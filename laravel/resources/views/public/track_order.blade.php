@@ -446,6 +446,28 @@
                                                     </div>
                                                 </div>
                                             @endif
+
+                                            @if($order->voucher_code)
+                                                <div class="mt-3 bg-purple-50 rounded-lg p-3">
+                                                    <div class="flex items-start gap-2">
+                                                        <i class="bi bi-ticket-perforated text-purple-400 mt-0.5"></i>
+                                                        <div>
+                                                            <p class="text-sm font-medium text-purple-700">Voucher:</p>
+                                                            <div class="flex items-center gap-2 mt-1">
+                                                                <span class="text-sm font-semibold text-purple-600">{{ $order->voucher_code }}</span>
+                                                                @if($order->voucher_discount > 0)
+                                                                    <span class="text-xs text-purple-500">
+                                                                        (-Rp {{ number_format($order->voucher_discount, 0, ',', '.') }})
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+                                                            @if($order->voucher_description)
+                                                                <p class="text-xs text-purple-600 mt-1">{{ $order->voucher_description }}</p>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
 
                                         <div class="mt-6 lg:mt-0 lg:ml-6 flex flex-col sm:flex-row gap-3">
