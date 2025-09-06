@@ -25,7 +25,8 @@
         }
     </script>
     <style>
-        body, .font-sans {
+        body,
+        .font-sans {
             font-family: 'Figtree', sans-serif;
         }
 
@@ -70,6 +71,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -98,9 +100,9 @@
 
                 <!-- Back Button -->
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('public.flowers') }}" 
-                       class="text-gray-600 hover:text-rose-600 p-2 rounded-full hover:bg-rose-50 transition-all duration-200"
-                       title="Kembali Berbelanja">
+                    <a href="{{ route('public.flowers') }}"
+                        class="text-gray-600 hover:text-rose-600 p-2 rounded-full hover:bg-rose-50 transition-all duration-200"
+                        title="Kembali Berbelanja">
                         <i class="bi bi-arrow-left text-xl"></i>
                     </a>
                 </div>
@@ -112,11 +114,13 @@
     <div class="container mx-auto px-4 py-8 max-w-4xl">
         <!-- Page Header -->
         <div class="text-center mb-8 form-enter">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-rose-500 to-pink-600 rounded-full mb-4 shadow-lg" style="background: #247A72;">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-rose-500 to-pink-600 rounded-full mb-4 shadow-lg"
+                style="background: #247A72;">
                 <i class="bi bi-cart-check text-2xl text-white"></i>
             </div>
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-                Checkout <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600" style="color: #247A72;">Pesanan</span>
+                Checkout <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600"
+                    style="color: #247A72;">Pesanan</span>
             </h1>
             <p class="text-gray-600">Lengkapi data pesanan Anda untuk melanjutkan</p>
         </div>
@@ -137,220 +141,230 @@
                 </div>
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Keranjang Belanja Kosong</h3>
                 <p class="text-gray-600 mb-6">Silakan tambahkan produk ke keranjang terlebih dahulu</p>
-                <a href="{{ route('public.flowers') }}" 
-                   class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold rounded-xl hover:from-rose-600 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+                <a href="{{ route('public.flowers') }}"
+                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-semibold rounded-xl hover:from-rose-600 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl">
                     <i class="bi bi-shop mr-2"></i>
                     Mulai Berbelanja
                 </a>
             </div>
         @else
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <!-- Form Section -->
-                        <div class="lg:col-span-2">
-                            <form method="POST" action="{{ route('public.checkout.process') }}" class="bg-white rounded-2xl shadow-lg border border-rose-100 p-6 form-enter">
-                                @csrf
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+                <!-- Form Section -->
+                <div class="lg:col-span-2">
+                    <form method="POST" action="{{ route('public.checkout.process') }}"
+                        class="bg-white rounded-2xl shadow-lg border border-rose-100 p-6 form-enter">
+                        @csrf
 
-                                @if(session('debug'))
-                                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-3 rounded-xl mb-6">
-                                        <i class="bi bi-info-circle mr-2"></i>
-                                        Debug: {{ json_encode(session('debug')) }}
-                                    </div>
-                                @endif
+                        @if(session('debug'))
+                            <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-3 rounded-xl mb-6">
+                                <i class="bi bi-info-circle mr-2"></i>
+                                Debug: {{ json_encode(session('debug')) }}
+                            </div>
+                        @endif
 
-                                <!-- Form Header -->
-                                <div class="mb-6 pb-4 border-b border-gray-100">
-                                    <h2 class="text-xl font-bold text-gray-800 flex items-center">
-                                        <i class="bi bi-person-lines-fill mr-2 text-rose-500"></i>
-                                        Data Pemesanan
-                                    </h2>
-                                    <p class="text-gray-500 text-sm mt-1">Isi data dengan lengkap dan benar</p>
-                                </div>
-
-                                <!-- Form Fields -->
-                                <div class="space-y-6">
-                                    <!-- Nama Lengkap -->
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            <i class="bi bi-person mr-1 text-rose-500"></i>
-                                            Nama Lengkap Pemesan
-                                        </label>
-                                        <input type="text" name="customer_name" 
-                                               class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" 
-                                               placeholder="Masukkan nama lengkap Anda" required>
-                                    </div>
-
-                                    <!-- No. WhatsApp -->
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            <i class="bi bi-whatsapp mr-1 text-rose-500"></i>
-                                            No. WhatsApp Pemesan
-                                        </label>
-                                        <input type="text" name="wa_number" 
-                                               class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" 
-                                               placeholder="Contoh: 08123456789" required>
-                                    </div>
-
-                                    <!-- Nama Penerima (Opsional) -->
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            <i class="bi bi-person-check mr-1 text-rose-500"></i>
-                                            Nama Penerima <span class="text-gray-400 font-normal">(Opsional/Jika Ada)</span>
-                                        </label>
-                                        <input type="text" name="receiver_name" 
-                                               class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" 
-                                               placeholder="Masukkan nama penerima jika berbeda dengan pemesan">
-                                    </div>
-
-                                    <!-- No. WhatsApp Penerima (Opsional) -->
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            <i class="bi bi-whatsapp mr-1 text-rose-500"></i>
-                                            No. WhatsApp Penerima <span class="text-gray-400 font-normal">(Opsional/Jika Ada)</span>
-                                        </label>
-                                        <input type="text" name="receiver_wa" 
-                                               class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" 
-                                               placeholder="Masukkan nomor WA penerima jika berbeda dengan pemesan">
-                                    </div>
-
-                                    <!-- Tanggal & Waktu -->
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                                <i class="bi bi-calendar-event mr-1 text-rose-500"></i>
-                                                Tanggal Ambil/Kirim
-                                            </label>
-                                            <input type="date" name="pickup_date" id="pickup_date"
-                                                   class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" required>
-                                            <p class="text-xs text-gray-500 mt-1">
-                                                <i class="bi bi-clock-history mr-1"></i>
-                                                Hari: <span id="day_name" class="font-medium text-rose-600">-</span>
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                                <i class="bi bi-clock mr-1 text-rose-500"></i>
-                                                Waktu Ambil/Pengiriman
-                                            </label>
-                                            <input type="time" name="pickup_time" 
-                                                   class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" required>
-                                                <p class="text-xs text-gray-500 mt-1">
-                                                    <i class="bi bi-clock-history mr-1"></i>
-                                                    Waktu: <span id="pickup_time_display" class="font-medium text-rose-600">-</span>
-                                                </p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Metode Pengiriman -->
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            <i class="bi bi-truck mr-1 text-rose-500"></i>
-                                            Metode Pengiriman
-                                        </label>
-                                        <select name="delivery_method" id="delivery_method"
-                                                class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" required>
-                                            <option value="">Pilih metode pengiriman</option>
-                                            <option value="Ambil Langsung Ke Toko">🏪 (1) Ambil Langsung Ke Toko</option>
-                                            <option value="Gosend (Dipesan Pribadi)">🚗 (2) Gosend (Dipesan Pribadi)</option>
-                                            <option value="Gocar (Dipesan Pribadi)">🚕 (3) Gocar (Dipesan Pribadi)</option>
-                                            <option value="Gosend (Pesan Dari Toko)">🛻 (4) Gosend (Pesan Dari Toko)</option>
-                                            <option value="Gocar (Pesan Dari Toko)">🚕 (5) Gocar (Pesan Dari Toko)</option>
-                                            <option value="Travel (Di Pesan Sendiri)">🚌 (6) Travel (Di Pesan Sendiri - Khusus Luar Kota)</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Tujuan Pengiriman -->
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            <i class="bi bi-geo-alt mr-1 text-rose-500"></i>
-                                            Tujuan Pengiriman
-                                        </label>
-                                        <textarea name="destination" 
-                                                  class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" 
-                                                  rows="3" placeholder="Masukkan alamat lengkap pengiriman"></textarea>
-                                    </div>
-
-                                    <!-- Catatan Pesanan -->
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                            <i class="bi bi-chat-left-text mr-1 text-rose-500"></i>
-                                            Catatan untuk Pesanan <span class="text-gray-400 font-normal">(Opsional)</span>
-                                        </label>
-                                        <textarea name="notes" 
-                                                  class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" 
-                                                  rows="4" placeholder="Contoh: Bunga untuk acara ulang tahun, warna dominan pink, jangan terlalu besar, dll."></textarea>
-                                        <p class="text-xs text-gray-500 mt-1">
-                                            <i class="bi bi-info-circle mr-1"></i>
-                                            Berikan detail khusus yang Anda inginkan untuk pesanan ini
-                                        </p>
-                                    </div>
-
-                                    @php
-    $hasCustomBouquet = false;
-    foreach ($cartData as $item) {
-        if (isset($item['type']) && $item['type'] === 'custom_bouquet') {
-            $hasCustomBouquet = true;
-            break;
-        }
-    }
-                                    @endphp
-
-                                    @if($hasCustomBouquet)
-                                        <!-- Instruksi Custom Bouquet -->
-                                        <div class="bg-purple-50 border border-purple-200 rounded-xl p-4">
-                                            <label class="block text-sm font-semibold text-purple-700 mb-2">
-                                                <i class="bi bi-palette mr-1 text-purple-500"></i>
-                                                Instruksi Khusus untuk Custom Bouquet <span class="text-purple-400 font-normal">(Opsional)</span>
-                                            </label>
-                                            <textarea name="custom_instructions" 
-                                                      class="w-full px-4 py-3 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none" 
-                                                      rows="3" placeholder="Contoh: Kartu Ucapan, Tambahkan pita warna emas, bungkus dengan kertas transparan, dominasi warna ungu, dll."></textarea>
-                                            <p class="text-xs text-purple-600 mt-1">
-                                                <i class="bi bi-lightbulb mr-1"></i>
-                                                Berikan detail tambahan untuk custom bouquet Anda (Kartu Ucapan,warna preferensi, style wrapping, dll.)
-                                            </p>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <!-- Info Note -->
-                                <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-                                    <div class="flex items-start">
-                                        <i class="bi bi-info-circle text-blue-600 mr-2 mt-0.5"></i>
-                                        <div class="text-sm text-blue-700">
-                                            <p class="font-semibold mb-1">Informasi Penting:</p>
-                                            <p>Setelah mengirim pesanan, Anda akan diarahkan ke halaman detail pesanan untuk memantau status dan proses pembayaran.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Submit Button -->
-                                <button type="submit" 
-                                        class="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl card-hover">
-                                    <i class="bi bi-send mr-2"></i>
-                                    Kirim Pesanan & Lihat Detail
-                                </button>
-                            </form>
+                        <!-- Form Header -->
+                        <div class="mb-6 pb-4 border-b border-gray-100">
+                            <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="bi bi-person-lines-fill mr-2 text-rose-500"></i>
+                                Data Pemesanan
+                            </h2>
+                            <p class="text-gray-500 text-sm mt-1">Isi data dengan lengkap dan benar</p>
                         </div>
 
-                        <!-- Order Summary Section -->
-                        <div class="lg:col-span-1">
-                            <div class="bg-white rounded-2xl shadow-lg border border-rose-100 p-6 form-enter sticky top-24">
-                                <!-- Summary Header -->
-                                <div class="mb-6 pb-4 border-b border-gray-100">
-                                    <h3 class="text-xl font-bold text-gray-800 flex items-center">
-                                        <i class="bi bi-bag mr-2 text-rose-500"></i>
-                                        Ringkasan Keranjang
-                                    </h3>
-                                </div>
+                        <!-- Form Fields -->
+                        <div class="space-y-6">
+                            <!-- Nama Lengkap -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="bi bi-person mr-1 text-rose-500"></i>
+                                    Nama Lengkap Pemesan
+                                </label>
+                                <input type="text" name="customer_name"
+                                    class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none"
+                                    placeholder="Masukkan nama lengkap Anda" required>
+                            </div>
 
-                                <!-- Cart Items -->
-                                <div class="space-y-4 mb-6">
-                                    @php $total = 0; @endphp
-                                    @foreach($cartData as $item)
-                                        @php 
-                                            $subtotal = $item['price'] * $item['quantity'];
-        $total += $subtotal;
-                                        @endphp
+                            <!-- No. WhatsApp -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="bi bi-whatsapp mr-1 text-rose-500"></i>
+                                    No. WhatsApp Pemesan
+                                </label>
+                                <input type="text" name="wa_number"
+                                    class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none"
+                                    placeholder="Contoh: 08123456789" required>
+                            </div>
+
+                            <!-- Nama Penerima (Opsional) -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="bi bi-person-check mr-1 text-rose-500"></i>
+                                    Nama Penerima <span class="text-gray-400 font-normal">(Opsional/Jika Ada)</span>
+                                </label>
+                                <input type="text" name="receiver_name"
+                                    class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none"
+                                    placeholder="Masukkan nama penerima jika berbeda dengan pemesan">
+                            </div>
+
+                            <!-- No. WhatsApp Penerima (Opsional) -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="bi bi-whatsapp mr-1 text-rose-500"></i>
+                                    No. WhatsApp Penerima <span class="text-gray-400 font-normal">(Opsional/Jika Ada)</span>
+                                </label>
+                                <input type="text" name="receiver_wa"
+                                    class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none"
+                                    placeholder="Masukkan nomor WA penerima jika berbeda dengan pemesan">
+                            </div>
+
+                            <!-- Tanggal & Waktu -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <i class="bi bi-calendar-event mr-1 text-rose-500"></i>
+                                        Tanggal Ambil/Kirim
+                                    </label>
+                                    <input type="date" name="pickup_date" id="pickup_date"
+                                        class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none"
+                                        required>
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        <i class="bi bi-clock-history mr-1"></i>
+                                        Hari: <span id="day_name" class="font-medium text-rose-600">-</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <i class="bi bi-clock mr-1 text-rose-500"></i>
+                                        Waktu Ambil/Pengiriman
+                                    </label>
+                                    <input type="time" name="pickup_time"
+                                        class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none"
+                                        required>
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        <i class="bi bi-clock-history mr-1"></i>
+                                        Waktu: <span id="pickup_time_display" class="font-medium text-rose-600">-</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Metode Pengiriman -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="bi bi-truck mr-1 text-rose-500"></i>
+                                    Metode Pengiriman
+                                </label>
+                                <select name="delivery_method" id="delivery_method"
+                                    class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none"
+                                    required>
+                                    <option value="">Pilih metode pengiriman</option>
+                                    <option value="Ambil Langsung Ke Toko">🏪 (1) Ambil Langsung Ke Toko</option>
+                                    <option value="Gosend (Dipesan Pribadi)">🚗 (2) Gosend (Dipesan Pribadi)</option>
+                                    <option value="Gocar (Dipesan Pribadi)">🚕 (3) Gocar (Dipesan Pribadi)</option>
+                                    <option value="Gosend (Pesan Dari Toko)">🛻 (4) Gosend (Pesan Dari Toko)</option>
+                                    <option value="Gocar (Pesan Dari Toko)">🚕 (5) Gocar (Pesan Dari Toko)</option>
+                                    <option value="Travel (Di Pesan Sendiri)">🚌 (6) Travel (Di Pesan Sendiri - Khusus Luar
+                                        Kota)</option>
+                                </select>
+                            </div>
+
+                            <!-- Tujuan Pengiriman -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="bi bi-geo-alt mr-1 text-rose-500"></i>
+                                    Tujuan Pengiriman
+                                </label>
+                                <textarea name="destination"
+                                    class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none"
+                                    rows="3" placeholder="Masukkan alamat lengkap pengiriman"></textarea>
+                            </div>
+
+                            <!-- Catatan Pesanan -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                    <i class="bi bi-chat-left-text mr-1 text-rose-500"></i>
+                                    Catatan untuk Pesanan <span class="text-gray-400 font-normal">(Opsional)</span>
+                                </label>
+                                <textarea name="notes"
+                                    class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none"
+                                    rows="4"
+                                    placeholder="Contoh: Bunga untuk acara ulang tahun, warna dominan pink, jangan terlalu besar, dll."></textarea>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    <i class="bi bi-info-circle mr-1"></i>
+                                    Berikan detail khusus yang Anda inginkan untuk pesanan ini
+                                </p>
+                            </div>
+
+                            @php
+                                $hasCustomBouquet = false;
+                                foreach ($cartData as $item) {
+                                    if (isset($item['type']) && $item['type'] === 'custom_bouquet') {
+                                        $hasCustomBouquet = true;
+                                        break;
+                                    }
+                                }
+                            @endphp
+
+                            @if($hasCustomBouquet)
+                                <!-- Instruksi Custom Bouquet -->
+                                <div class="bg-purple-50 border border-purple-200 rounded-xl p-4">
+                                    <label class="block text-sm font-semibold text-purple-700 mb-2">
+                                        <i class="bi bi-palette mr-1 text-purple-500"></i>
+                                        Instruksi Khusus untuk Custom Bouquet <span
+                                            class="text-purple-400 font-normal">(Opsional)</span>
+                                    </label>
+                                    <textarea name="custom_instructions"
+                                        class="w-full px-4 py-3 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none"
+                                        rows="3"
+                                        placeholder="Contoh: Kartu Ucapan, Tambahkan pita warna emas, bungkus dengan kertas transparan, dominasi warna ungu, dll."></textarea>
+                                    <p class="text-xs text-purple-600 mt-1">
+                                        <i class="bi bi-lightbulb mr-1"></i>
+                                        Berikan detail tambahan untuk custom bouquet Anda (Kartu Ucapan,warna preferensi, style
+                                        wrapping, dll.)
+                                    </p>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Info Note -->
+                        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                            <div class="flex items-start">
+                                <i class="bi bi-info-circle text-blue-600 mr-2 mt-0.5"></i>
+                                <div class="text-sm text-blue-700">
+                                    <p class="font-semibold mb-1">Informasi Penting:</p>
+                                    <p>Setelah mengirim pesanan, Anda akan diarahkan ke halaman detail pesanan untuk
+                                        memantau status dan proses pembayaran.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit"
+                            class="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl card-hover">
+                            <i class="bi bi-send mr-2"></i>
+                            Kirim Pesanan & Lihat Detail
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Order Summary Section -->
+                <div class="lg:col-span-1 lg:max-w-2xl xl:max-w-3xl" style="min-width:400px;max-width:480px;">
+                    <div class="bg-white rounded-2xl shadow-lg border border-rose-100 p-6 form-enter sticky top-24 w-full" style="min-width:400px;max-width:480px;">
+                        <!-- Summary Header -->
+                        <div class="mb-6 pb-4 border-b border-gray-100">
+                            <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="bi bi-bag mr-2 text-rose-500"></i>
+                                Ringkasan Keranjang
+                            </h3>
+                        </div>
+
+                        <!-- Cart Items -->
+                        <div class="space-y-4 mb-6">
+                            @php $total = 0; @endphp
+                            @foreach($cartData as $item)
+                                @php 
+                                                                $subtotal = $item['price'] * $item['quantity'];
+                                    $total += $subtotal;
+                                @endphp
                                         <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
                                             <div class="flex-1">
                                                 <div class="flex items-center gap-2 mb-1">
@@ -404,7 +418,7 @@
                                                                 <span class="text-xs font-medium text-purple-700">Warna Pita:</span>
                                                                 <div class="flex items-center gap-2">
                                                                     <div class="w-4 h-4 rounded-full" 
-                                                                        style="background-color: {{ App\Enums\RibbonColor::getColorCode($item['ribbon_color']) }}">
+                                                                        style="background-color: {{ App\Enums\RibbonColor::getColorCode($item['ribbon_color']) }};">
                                                                     </div>
                                                                     <span class="text-xs text-purple-800">
                                                                         {{ App\Enums\RibbonColor::getColorName($item['ribbon_color']) }}
@@ -412,7 +426,6 @@
                                                                 </div>
                                                             </div>
                                                         @endif
-                                                        </p>
                                                     </div>
                                                 @endif
                                                 @if(isset($item['type']) && $item['type'] === 'custom_bouquet' && isset($item['image']) && !empty($item['image']))
@@ -435,79 +448,172 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
-                                </div>
+                            @endforeach
+                            </div>
 
-                                <!-- Voucher Section -->
-                                <div class="border-t border-gray-200 pt-4 mb-4">
+                            <!-- Voucher Section -->
+                            <div class="border-t border-gray-200 pt-4 mb-4">
+                                <!-- Enhanced voucher input section with better styling -->
+                                <div class="mb-4">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                        <i class="bi bi-ticket-perforated mr-1 text-rose-500"></i>
+                                        Kode Voucher Diskon
+                                    </label>
                                     <form action="{{ route('voucher.validate') }}" method="POST" class="flex gap-2" id="voucherForm">
                                         @csrf
                                         <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
                                         <div class="flex-1">
-                                            <input type="text" 
-                                                   name="voucher_code" 
-                                                   id="voucher_code"
-                                                   class="w-full px-4 py-2 border border-rose-200 rounded-xl input-focus focus:outline-none" 
-                                                   placeholder="Masukkan kode voucher">
+                                                <input type="text" name="voucher_code" class="w-full px-4 py-3 border border-rose-200 rounded-xl input-focus focus:outline-none" placeholder="Masukkan kode voucher" required>
                                         </div>
                                         <button type="submit" 
-                                                class="px-4 py-2 bg-rose-500 text-white rounded-xl hover:bg-rose-600 transition-colors">
+                                                    class="px-6 py-3 bg-gradient-to-r from-rose-500 to-orange-500 text-white font-semibold rounded-xl hover:from-rose-600 hover:to-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl">
+                                            <i class="bi bi-check2 mr-1"></i>
                                             Gunakan
                                         </button>
                                     </form>
-                                    
-                                    @if(session('voucher_error'))
-                                        <div class="mt-2 text-sm text-red-600">
-                                            <i class="bi bi-exclamation-circle"></i>
-                                            {{ session('voucher_error') }}
-                                        </div>
-                                    @endif
 
-                                    @if(session('applied_voucher'))
-                                        <div class="mt-2 p-3 bg-purple-50 border border-purple-200 rounded-xl">
-                                            <div class="flex justify-between items-start">
-                                                <div>
-                                                    <div class="text-sm font-semibold text-purple-800">
-                                                        Voucher Aktif: {{ session('applied_voucher.code') }}
-                                                    </div>
-                                                    <div class="text-xs text-purple-600 mt-1">
-                                                        {{ session('applied_voucher.description') }}
-                                                    </div>
+                                    <!-- Voucher tips -->
+                                    <div class="mt-2 text-xs text-gray-500 flex items-center">
+                                        <i class="bi bi-lightbulb mr-1"></i>
+                                        Dapatkan diskon menarik dengan memasukkan kode voucher
+                                    </div>
+                                </div>
+
+                                @if(session('voucher_error'))
+                                    <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl">
+                                        <div class="flex items-center text-red-700">
+                                            <i class="bi bi-exclamation-triangle mr-2"></i>
+                                            <span class="text-sm font-medium">{{ session('voucher_error') }}</span>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                @if(session('applied_voucher'))
+                                    <div class="mt-4">
+                                        <!-- Dynamic voucher design by type -->
+                                        @php
+                                            $voucher = session('applied_voucher');
+                                            $type = $voucher['type'] ?? '';
+                                            $icon = 'bi-ticket-perforated';
+                                            $label = 'Voucher Diskon';
+                                            $mainValue = '';
+                                            $mainDesc = '';
+                                            $extra = '';
+                                            switch($type) {
+                                                case 'percent':
+                                                case 'percentage':
+                                                    $icon = 'bi-percent';
+                                                    $label = 'Diskon Persentase';
+                                                    $mainValue = ($voucher['value'] ?? 0) . '%';
+                                                    $mainDesc = 'Potongan langsung dari total belanja';
+                                                    break;
+                                                case 'nominal':
+                                                    $icon = 'bi-cash-coin';
+                                                    $label = 'Diskon Nominal';
+                                                    $mainValue = 'Rp ' . number_format($voucher['value'] ?? 0, 0, ',', '.');
+                                                    $mainDesc = 'Potongan harga langsung';
+                                                    break;
+                                                case 'cashback':
+                                                    $icon = 'bi-wallet2';
+                                                    $label = 'Cashback';
+                                                    $mainValue = 'Rp ' . number_format($voucher['value'] ?? 0, 0, ',', '.');
+                                                    $mainDesc = 'Cashback setelah transaksi selesai';
+                                                    break;
+                                                case 'shipping':
+                                                    $icon = 'bi-truck';
+                                                    $label = 'Potongan Ongkir';
+                                                    $mainValue = 'Rp ' . number_format($voucher['value'] ?? 0, 0, ',', '.');
+                                                    $mainDesc = 'Potongan biaya pengiriman';
+                                                    break;
+                                                case 'seasonal':
+                                                    $icon = 'bi-calendar-heart';
+                                                    $label = 'Voucher Event';
+                                                    $mainValue = $voucher['description'] ?? 'Voucher Musiman';
+                                                    $mainDesc = $voucher['event_name'] ?? 'Event Spesial';
+                                                    break;
+                                                case 'first_purchase':
+                                                    $icon = 'bi-stars';
+                                                    $label = 'Voucher Pembelian Pertama';
+                                                    $mainValue = 'Rp ' . number_format($voucher['value'] ?? 0, 0, ',', '.');
+                                                    $mainDesc = 'Khusus untuk pembelian pertama';
+                                                    break;
+                                                case 'loyalty':
+                                                    $icon = 'bi-gem';
+                                                    $label = 'Voucher Member';
+                                                    $mainValue = 'Rp ' . number_format($voucher['value'] ?? 0, 0, ',', '.');
+                                                    $mainDesc = 'Khusus member/loyal customer';
+                                                    $extra = $voucher['member_level'] ?? '';
+                                                    break;
+                                                default:
+                                                    $icon = 'bi-ticket-perforated';
+                                                    $label = 'Voucher Diskon';
+                                                    $mainValue = $voucher['description'] ?? '';
+                                                    $mainDesc = '';
+                                            }
+                                        @endphp
+                                        <div class="flex w-full max-w-md mx-auto rounded-2xl shadow-xl bg-white glass-effect border border-gray-200 overflow-hidden relative" style="min-height:120px;">
+                                            <!-- Left: Logo & Info -->
+                                            <div class="flex flex-col justify-center items-center w-2/5 py-5 px-4 bg-gradient-to-br from-emerald-500 to-teal-700 text-white relative">
+                                                <div class="rounded-full bg-white/30 p-2 mb-2">
+                                                    <i class="bi {{ $icon }} text-2xl text-white"></i>
                                                 </div>
-                                                <form action="{{ route('checkout.remove-voucher') }}" method="POST">
+                                                <div class="font-bold text-lg tracking-wide">{{ $voucher['code'] }}</div>
+                                                <div class="text-xs font-semibold mt-1">{{ $label }}</div>
+                                                <div class="text-xs opacity-80 mt-1">{{ $mainDesc }}</div>
+                                                @if($extra)
+                                                    <div class="text-xs mt-1 bg-white/20 rounded px-2 py-1">{{ $extra }}</div>
+                                                @endif
+                                            </div>
+                                            <!-- Middle: Potongan Dotted -->
+                                            <div class="flex flex-col justify-center items-center w-2 bg-white">
+                                                <div class="h-6 w-2 rounded-full bg-gray-100 mb-1"></div>
+                                                <div class="h-6 w-2 rounded-full bg-gray-100 mb-1"></div>
+                                                <div class="h-6 w-2 rounded-full bg-gray-100"></div>
+                                            </div>
+                                            <!-- Right: Diskon & Info -->
+                                            <div class="flex-1 py-5 px-4 flex flex-col justify-center items-start bg-gradient-to-br from-orange-400 to-rose-500 text-white relative">
+                                                <div class="font-bold text-2xl mb-1 flex items-center"><i class="bi {{ $icon }} mr-2"></i>{{ $mainValue }}</div>
+                                                <div class="text-xs font-semibold mb-1">Min. Belanja Rp {{ number_format($voucher['minimum_spend'] ?? 0,0,',','.') }}</div>
+                                                <div class="text-xs mb-1"><i class="bi bi-calendar-event mr-1"></i>
+                                                    {{ $voucher['validity'] ?? '' }}
+                                                </div>
+                                                <form action="{{ route('checkout.remove-voucher') }}" method="POST" class="absolute top-2 right-2">
                                                     @csrf
-                                                    <button type="submit" class="text-red-500 hover:text-red-700">
-                                                        <i class="bi bi-x-circle"></i>
-                                                    </button>
+                                                    <button type="submit" title="Hapus Voucher" class="bg-white/30 hover:bg-white/50 text-white rounded-full p-1 transition"><i class="bi bi-x-lg"></i></button>
                                                 </form>
                                             </div>
                                         </div>
-                                    @endif
-                                </div>
-
-                                <!-- Total -->
-                                <div class="border-t border-gray-200 pt-4">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-lg font-bold text-gray-800">Total:</span>
-                                        <div class="text-right">
-                                            @if(session('applied_voucher'))
-                                                <div class="text-sm text-gray-500 line-through">
-                                                    Rp {{ number_format($total, 0, ',', '.') }}
-                                                </div>
-                                                <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">
-                                                    Rp {{ number_format($total - session('applied_voucher.discount'), 0, ',', '.') }}
-                                                </span>
-                                            @else
-                                                <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">
-                                                    Rp {{ number_format($total, 0, ',', '.') }}
-                                                </span>
-                                            @endif
+                                        <!-- Success message -->
+                                        <div class="mt-3 text-center">
+                                            <span class="inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-xl text-sm font-semibold"><i class="bi bi-check-circle mr-2"></i>Voucher berhasil diterapkan!</span>
                                         </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Total -->
+                            <div class="border-t border-gray-200 pt-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-bold text-gray-800">Total:</span>
+                                    <div class="text-right">
+                                        @if(session('applied_voucher'))
+                                            <div class="text-sm text-gray-500 line-through">
+                                                Rp {{ number_format($total, 0, ',', '.') }}
+                                            </div>
+                                            <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">
+                                                Rp {{ number_format($total - session('applied_voucher.discount'), 0, ',', '.') }}
+                                            </span>
+                                        @else
+                                            <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">
+                                                Rp {{ number_format($total, 0, ',', '.') }}
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
         @endif
     </div>
 
@@ -532,36 +638,36 @@
     </script>
 
     <script>
-    const pickupTimeInput = document.querySelector('input[name="pickup_time"]');
-    const pickupTimeDisplay = document.getElementById('pickup_time_display');
+        const pickupTimeInput = document.querySelector('input[name="pickup_time"]');
+        const pickupTimeDisplay = document.getElementById('pickup_time_display');
 
-    pickupTimeInput.addEventListener('input', () => {
-        const timeValue = pickupTimeInput.value;
-        if (!timeValue) {
-            pickupTimeDisplay.textContent = "-";
-            return;
-        }
+        pickupTimeInput.addEventListener('input', () => {
+            const timeValue = pickupTimeInput.value;
+            if (!timeValue) {
+                pickupTimeDisplay.textContent = "-";
+                return;
+            }
 
-        // Pisahkan jam & menit
-        const [hours, minutes] = timeValue.split(":").map(Number);
-        let period = "";
+            // Pisahkan jam & menit
+            const [hours, minutes] = timeValue.split(":").map(Number);
+            let period = "";
 
-        if (hours >= 4 && hours < 11) {
-            period = "Pagi";       // 04:00 - 10:59
-        } else if (hours >= 11 && hours < 15) {
-            period = "Siang";      // 11:00 - 14:59
-        } else if (hours >= 15 && hours < 18) {
-            period = "Sore";       // 15:00 - 17:59
-        } else {
-            period = "Malam";      // 18:00 - 03:59
-        }
+            if (hours >= 4 && hours < 11) {
+                period = "Pagi";       // 04:00 - 10:59
+            } else if (hours >= 11 && hours < 15) {
+                period = "Siang";      // 11:00 - 14:59
+            } else if (hours >= 15 && hours < 18) {
+                period = "Sore";       // 15:00 - 17:59
+            } else {
+                period = "Malam";      // 18:00 - 03:59
+            }
 
-        // Format jam supaya ada leading zero (contoh 08:05)
-        const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            // Format jam supaya ada leading zero (contoh 08:05)
+            const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 
-        pickupTimeDisplay.textContent = `${formattedTime} (${period})`;
-    });
-</script>
+            pickupTimeDisplay.textContent = `${formattedTime} (${period})`;
+        });
+    </script>
 </body>
 
 </html>

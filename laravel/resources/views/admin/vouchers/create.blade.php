@@ -61,20 +61,22 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nilai Voucher</label>
-                        <input type="number" step="0.01" name="value" class="form-input w-full" required
-                            value="{{ old('value') }}">
+                        <input type="text" id="value_display" class="form-input w-full" value="{{ old('value') }}">
+                        <input type="hidden" name="value" id="value">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Minimum Belanja</label>
-                        <input type="number" step="0.01" name="minimum_spend" class="form-input w-full" required
-                            value="{{ old('minimum_spend') }}">
+                        <input type="text" id="minimum_purchase_display" class="form-input w-full"
+                            value="{{ old('minimum_purchase') }}">
+                        <input type="hidden" name="minimum_purchase" id="minimum_purchase">
                     </div>
-                    <div id="maxDiscountGroup" style="display:none;">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Maksimum Potongan (untuk
-                            persentase)</label>
-                        <input type="number" step="0.01" name="maximum_discount" class="form-input w-full"
-                            value="{{ old('maximum_discount') }}">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Batas Penggunaan</label>
+                        <input type="text" id="usage_limit_display" class="form-input w-full"
+                            value="{{ old('usage_limit') }}">
+                        <input type="hidden" name="usage_limit" id="usage_limit">
                     </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Batas Penggunaan</label>
                         <input type="number" name="usage_limit" class="form-input w-full"
@@ -146,6 +148,31 @@
             const select = document.querySelector('select[name="type"]');
             if (select) toggleVoucherFields(select);
             select.addEventListener('change', function () { toggleVoucherFields(this); });
+        });
+    </script>
+    <script>
+        function formatNumber(value) {
+            return value.replace(/\D/g, "") // hanya angka
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function attachFormatter(displayId, hiddenId) {
+            const displayInput = document.getElementById(displayId);
+            const hiddenInput = document.getElementById(hiddenId);
+
+            if (displayInput) {
+                displayInput.addEventListener("input", function () {
+                    let raw = this.value.replace(/\./g, "");
+                    this.value = formatNumber(raw);
+                    hiddenInput.value = raw; // simpan angka murni untuk dikirim
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            attachFormatter("value_display", "value");
+            attachFormatter("minimum_purchase_display", "minimum_purchase");
+            attachFormatter("usage_limit_display", "usage_limit");
         });
     </script>
 @endpush

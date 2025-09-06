@@ -533,7 +533,9 @@
                         <div
                             class="card-hover glass-effect rounded-2xl shadow-lg p-3 sm:p-4 h-full flex flex-col overflow-hidden">
                             <!-- Image -->
-                            <div class="relative h-48 sm:h-40 mb-3 sm:mb-4 rounded-xl overflow-hidden">
+                            <!--<div class="relative h-48 sm:h-40 mb-3 sm:mb-4 rounded-xl overflow-hidden">-->
+                            <div class="relative h-48 md:h-80 sm:h-40 mb-3 sm:mb-4 rounded-xl overflow-hidden">
+
                                 @if($bouquet->image)
                                     <!-- View Button Overlay -->
                                     {{-- <button

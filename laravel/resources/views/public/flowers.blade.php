@@ -317,7 +317,7 @@
 
         .grosir-label {
             position: absolute;
-            top: 120px;
+            top: 250px;
             right: 16px;
             display: flex;
             align-items: center;
@@ -336,7 +336,7 @@
 
         @media (max-width: 640px) {
             .grosir-label {
-                top: 90px;
+                top: 150px;
                 right: 8px;
                 min-width: 54px;
                 min-height: 22px;
@@ -1143,7 +1143,7 @@
                         <div
                             class="card-hover glass-effect rounded-2xl shadow-lg p-3 sm:p-4 h-full flex flex-col overflow-hidden">
                             <!-- Image -->
-                            <div class="relative h-36 sm:h-40 mb-3 sm:mb-4 rounded-xl overflow-hidden">
+                            <div class="relative h-48 md:h-80 sm:h-40 mb-3 sm:mb-4 rounded-xl overflow-hidden">
                                 @if($flower->image)
                                     <img src="{{ asset('storage/' . $flower->image) }}" alt="{{ $flower->name }}"
                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
