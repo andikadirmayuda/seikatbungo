@@ -148,9 +148,9 @@
                 </a>
             </div>
         @else
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
                 <!-- Form Section -->
-                <div class="lg:col-span-2">
+                <div class="lg:col-span-3">
                     <form method="POST" action="{{ route('public.checkout.process') }}"
                         class="bg-white rounded-2xl shadow-lg border border-rose-100 p-6 form-enter">
                         @csrf
@@ -347,8 +347,8 @@
                 </div>
 
                 <!-- Order Summary Section -->
-                <div class="lg:col-span-1 lg:max-w-2xl xl:max-w-3xl" style="min-width:400px;max-width:480px;">
-                    <div class="bg-white rounded-2xl shadow-lg border border-rose-100 p-6 form-enter sticky top-24 w-full" style="min-width:400px;max-width:480px;">
+                <div class="md:col-span-1 lg:col-span-2 w-full">
+                    <div class="bg-white rounded-2xl shadow-lg border border-rose-100 p-6 form-enter sticky top-24 w-full">
                         <!-- Summary Header -->
                         <div class="mb-6 pb-4 border-b border-gray-100">
                             <h3 class="text-xl font-bold text-gray-800 flex items-center">
