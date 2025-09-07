@@ -93,9 +93,9 @@ class WhatsAppNotificationService
             $formattedGrandTotal = "Rp " . number_format($grandTotal, 0, ',', '.');
 
             // Build pesan untuk customer
-            $message = "🌸 *Halo {$order->customer_name}!*\n\n";
-            $message .= "Terima kasih telah memesan di *Seikat Bungo* 🌺\n\n";
-            $message .= "📋 *Detail Pesanan Anda:*\n";
+            $message = "*Halo {$order->customer_name}!*\n\n";
+            $message .= "Terima kasih telah memesan di *Seikat Bungo*\n\n";
+            $message .= "*Detail Pesanan Anda:*\n";
             $message .= "• Kode Pesanan: *{$order->public_code}*\n";
             $message .= "• Tanggal Pesan: {$createdAt}\n";
             $message .= "• Tanggal Ambil: {$pickupDate}\n";
@@ -105,24 +105,24 @@ class WhatsAppNotificationService
             }
             $message .= "• Status: *" . self::translateStatus($order->status ?? 'pending') . "*\n\n";
 
-            $message .= "💰 *Rincian Harga:*\n";
+            $message .= "*Rincian Harga:*\n";
             $message .= "• Subtotal Produk: {$formattedItemsTotal}\n";
             if ($shippingFee > 0) {
                 $message .= "• Ongkir: {$formattedShippingFee}\n";
             }
             $message .= "• *Total Keseluruhan: {$formattedGrandTotal}*\n\n";
 
-            $message .= "🔗 *Lihat Detail Lengkap:*\n";
+            $message .= "*Lihat Detail Lengkap:*\n";
             $message .= "{$orderDetailUrl}\n\n";
 
-            $message .= "📱 *Fitur yang tersedia:*\n";
+            $message .= "*Fitur yang tersedia:*\n";
             $message .= "• Lihat status pesanan real-time\n";
             $message .= "• Download invoice\n";
             $message .= "• Lihat detail produk & harga\n";
             $message .= "• Upload bukti pembayaran\n\n";
 
-            $message .= "💝 Terima kasih atas kepercayaan Anda!\n";
-            $message .= "Tim *Seikat Bungo* 🌸";
+            $message .= "Terima kasih atas kepercayaan Anda!\n";
+            $message .= "Tim *Seikat Bungo*";
 
             return $message;
         } catch (\Exception $e) {

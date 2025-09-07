@@ -150,7 +150,7 @@
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
                 <!-- Form Section -->
-                <div class="lg:col-span-3">
+                <div class="md:col-span-1 lg:col-span-3">
                     <form method="POST" action="{{ route('public.checkout.process') }}"
                         class="bg-white rounded-2xl shadow-lg border border-rose-100 p-6 form-enter">
                         @csrf
@@ -362,7 +362,7 @@
                             @php $total = 0; @endphp
                             @foreach($cartData as $item)
                                 @php 
-                                                                $subtotal = $item['price'] * $item['quantity'];
+                                                                                                                        $subtotal = $item['price'] * $item['quantity'];
                                     $total += $subtotal;
                                 @endphp
                                         <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
@@ -499,7 +499,7 @@
                                             $mainValue = '';
                                             $mainDesc = '';
                                             $extra = '';
-                                            switch($type) {
+                                            switch  ($type) {
                                                 case 'percent':
                                                 case 'percentage':
                                                     $icon = 'bi-percent';
@@ -573,7 +573,7 @@
                                             <!-- Right: Diskon & Info -->
                                             <div class="flex-1 py-5 px-4 flex flex-col justify-center items-start bg-gradient-to-br from-orange-400 to-rose-500 text-white relative">
                                                 <div class="font-bold text-2xl mb-1 flex items-center"><i class="bi {{ $icon }} mr-2"></i>{{ $mainValue }}</div>
-                                                <div class="text-xs font-semibold mb-1">Min. Belanja Rp {{ number_format($voucher['minimum_spend'] ?? 0,0,',','.') }}</div>
+                                                <div class="text-xs font-semibold mb-1">Min. Belanja Rp {{ number_format($voucher['minimum_spend'] ?? 0,  0 , ', ', '.') }}</div>
                                                 <div class="text-xs mb-1"><i class="bi bi-calendar-event mr-1"></i>
                                                     {{ $voucher['validity'] ?? '' }}
                                                 </div>

@@ -744,11 +744,11 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                                         <div class="space-y-2 text-xs sm:text-sm">
                                                             <div class="flex justify-between">
                                                                 <span class="text-gray-600">No. Rekening:</span>
-                                                                <span class="font-bold text-blue-800">0213341089</span>
+                                                                <span class="font-bold text-blue-800">6521066528</span>
                                                             </div>
                                                             <div class="flex justify-between">
                                                                 <span class="text-gray-600">Atas Nama:</span>
-                                                                <span class="font-bold text-blue-800">Tia Hanifah</span>
+                                                                <span class="font-bold text-blue-800">MUHAMMAD RIDHO PUTRA</span>
                                                             </div>
                                                             <div class="flex justify-between">
                                                                 <span class="text-gray-600">Bank:</span>

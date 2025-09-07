@@ -156,7 +156,7 @@
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <span
                                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                                                                        {{ $sale->payment_method === 'transfer' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
+                                                                                                            {{ $sale->payment_method === 'transfer' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
                                                         {{ ucfirst($sale->payment_method) }}
                                                     </span>
                                                 </td>
@@ -168,12 +168,12 @@
                                                             <i class="bi bi-eye mr-1"></i>
                                                             <span class="hidden xl:inline">Detail</span>
                                                         </a>
-                                                        <a href="{{ route('sales.show', $sale->id) }}?print=1"
+                                                        {{-- <a href="{{ route('sales.show', $sale->id) }}?print=1"
                                                             class="inline-flex items-center px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-md transition-colors duration-150"
                                                             title="Print">
                                                             <i class="bi bi-printer mr-1"></i>
                                                             <span class="hidden xl:inline">Print</span>
-                                                        </a>
+                                                        </a> --}}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -224,7 +224,7 @@
                                                 </div>
                                                 <span
                                                     class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
-                                                                                                    {{ $sale->payment_method === 'transfer' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
+                                                                                                        {{ $sale->payment_method === 'transfer' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
                                                     {{ ucfirst($sale->payment_method) }}
                                                 </span>
                                             </div>

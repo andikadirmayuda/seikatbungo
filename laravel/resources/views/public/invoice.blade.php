@@ -381,7 +381,14 @@ $paymentStatusIndo = [
                                             </span>
                                             @if(!empty($item->details))
                                                 @php
-            $details = json_decode($item->details, true) ?? [];
+                                                    if (is_string($item->details)) {
+                                                        $decoded = json_decode($item->details, true);
+                                                        $details = is_array($decoded) ? $decoded : [];
+                                                    } elseif (is_array($item->details)) {
+                                                        $details = $item->details;
+                                                    } else {
+                                                        $details = [];
+                                                    }
                                                 @endphp
                                                 <div class="mt-2 space-y-1 bg-gray-50 p-3 rounded-lg">
                                                     @foreach($details as $key => $value)
@@ -741,12 +748,13 @@ $paymentStatusIndo = [
                 
                 @php
     $packingFiles = [];
-
     // Prioritize new multiple files format
     if (!empty($order->packing_files)) {
-        $files = is_string($order->packing_files) ? json_decode($order->packing_files, true) : $order->packing_files;
-        if (is_array($files)) {
-            $packingFiles = $files;
+        if (is_string($order->packing_files)) {
+            $decoded = json_decode($order->packing_files, true);
+            $packingFiles = is_array($decoded) ? $decoded : [];
+        } elseif (is_array($order->packing_files)) {
+            $packingFiles = $order->packing_files;
         }
     }
     // Fallback to old single photo format only if no packing_files
@@ -884,12 +892,12 @@ $paymentStatusIndo = [
                     </div>
 
                     <!-- Print Button -->
-                    <div class="no-print mt-6">
+                    {{-- <div class="no-print mt-6">
                         <button onclick="window.print()"
                             class="inline-flex items-center px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 hover:shadow-md">
                             <i class="bi bi-printer mr-2"></i>Cetak Invoice
                         </button>
-                    </div>
+                    </div> --}}
 
                     <!-- Digital Invoice Info -->
                     <div class="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">

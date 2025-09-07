@@ -35,7 +35,7 @@
                 <div>
                     <h2 class="font-semibold text-lg mb-1">Tambahkan ke Keranjang</h2>
                     <p>Setelah menemukan produk yang diinginkan, klik tombol <b>Tambah ke Keranjang</b>. Jika produk
-                        memiliki beberapa pilihan harga (misal: ikat 3, ikat 5), pilih varian yang sesuai sebelum
+                        memiliki beberapa pilihan harga (misal: ikat 3, ikat 5), pilih tipe Harga yang sesuai sebelum
                         menambahkannya ke keranjang.</p>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 <div>
                     <h2 class="font-semibold text-lg mb-1">Lihat & Edit Keranjang</h2>
                     <p>Klik ikon keranjang di pojok kanan atas untuk melihat daftar produk yang sudah Anda pilih. Anda
-                        dapat mengubah jumlah, menghapus produk, atau menambahkan catatan khusus pada pesanan.</p>
+                        dapat mengubah jumlah, menghapus produk</p>
                 </div>
             </div>
             <div class="bg-white rounded-lg shadow p-5 flex items-start gap-4">
@@ -67,8 +67,9 @@
                         class="bg-[#2D9C8F] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg">5</span>
                 </div>
                 <div>
-                    <h2 class="font-semibold text-lg mb-1">Pilih Pengiriman & Pembayaran</h2>
-                    <p>Pilih metode pengiriman yang tersedia sesuai lokasi Anda</p>
+                    <h2 class="font-semibold text-lg mb-1">Form Pemesanan & Pilih Voucher Yang Tersedia</h2>
+                    <p>Setelah Dari Keranjang Beranda anda akan menuju halaman form pemesanan, yang harus diisi
+                        semua data pemesanan nya, dan masukan kode voucher yang berlaku jika tersedia</p>
                 </div>
             </div>
             <div class="bg-white rounded-lg shadow p-5 flex items-start gap-4">
@@ -78,15 +79,15 @@
                 </div>
                 <div>
                     <h2 class="font-semibold text-lg mb-1">Konfirmasi & Selesaikan Pesanan</h2>
-                    <p>Periksa kembali detail pesanan Anda, lalu klik <b>Kirim Pesanan</b> untuk menyelesaikan
-                        transaksi. Kemudian Anda akan diarahkan ke halaman detail Pemesanan.</p>
+                    <p>Periksa kembali data yang ada isi, lalu klik <b>Kirim Pesanan</b> untuk menyelesaikan
+                        pemesanan. Kemudian Anda akan diarahkan ke halaman detail Pemesanan.</p>
                 </div>
             </div>
         </div>
         <div class="mt-8 p-4 bg-[#F5A623]/10 border-l-4 border-[#F5A623] rounded">
-            <b>Tips:</b> Pastikan data pengiriman benar, dan melakukan pembayaran, sesuai agar pesanan cepat sampai.
+            <b>Tips:</b> Pastikan data pengiriman benar, dan melakukan pembayaran, agar pesanan cepat diproses,
             Jika ada kendala, hubungi layanan
-            pelanggan kami.
+            kami.
         </div>
         <div class="mt-8 text-center">
             <a href="/"
