@@ -6,8 +6,8 @@
                     <i class="bi bi-ticket-perforated text-pink-600 text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Tambah Voucher Baru</h1>
-                    <p class="text-sm text-gray-500 mt-1">Buat voucher diskon baru untuk pelanggan</p>
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Buat Voucher</h1>
+                    <p class="text-sm text-gray-500 mt-1">Tambah voucher diskon baru</p>
                 </div>
             </div>
             <a href="{{ route('admin.vouchers.index') }}"
@@ -31,9 +31,6 @@
             </div>
         @endif
         <div class="bg-white shadow rounded-lg p-6">
-            <h2 class="text-2xl font-bold mb-6 text-pink-700 flex items-center gap-2">
-                <i class="bi bi-ticket-perforated"></i> Tambah Voucher Baru
-            </h2>
             <form action="{{ route('admin.vouchers.store') }}" method="POST">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -50,33 +47,32 @@
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tipe Voucher</label>
                         <select name="type" class="form-select w-full" required onchange="toggleVoucherFields(this)">
                             <option value="">Pilih Tipe</option>
-                            <option value="percent">Diskon Persentase</option>
-                            <option value="nominal">Diskon Nominal</option>
-                            <option value="cashback">Cashback</option>
-                            <option value="shipping">Potongan Ongkir</option>
-                            <option value="seasonal">Voucher Musiman/Event</option>
-                            <option value="first_purchase">Voucher Pembelian Pertama</option>
-                            <option value="loyalty">Voucher Member/Loyal Customer</option>
+                            <option value="percent" {{ old('type') == 'percent' ? 'selected' : '' }}>Diskon Persentase
+                            </option>
+                            <option value="nominal" {{ old('type') == 'nominal' ? 'selected' : '' }}>Diskon Nominal
+                            </option>
+                            <option value="cashback" {{ old('type') == 'cashback' ? 'selected' : '' }}>Cashback</option>
+                            <option value="shipping" {{ old('type') == 'shipping' ? 'selected' : '' }}>Potongan Ongkir
+                            </option>
+                            <option value="seasonal" {{ old('type') == 'seasonal' ? 'selected' : '' }}>Voucher
+                                Musiman/Event</option>
+                            <option value="first_purchase" {{ old('type') == 'first_purchase' ? 'selected' : '' }}>Voucher
+                                Pembelian Pertama</option>
+                            <option value="loyalty" {{ old('type') == 'loyalty' ? 'selected' : '' }}>Voucher Member/Loyal
+                                Customer</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nilai Voucher</label>
-                        <input type="text" id="value_display" class="form-input w-full" value="{{ old('value') }}">
-                        <input type="hidden" name="value" id="value">
+                        <input type="number" step="0.01" name="value" class="form-input w-full" required
+                            value="{{ old('value') }}">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Minimum Belanja</label>
-                        <input type="text" id="minimum_purchase_display" class="form-input w-full"
-                            value="{{ old('minimum_purchase') }}">
-                        <input type="hidden" name="minimum_purchase" id="minimum_purchase">
+                        <input type="number" step="0.01" name="minimum_spend" class="form-input w-full" required
+                            value="{{ old('minimum_spend') }}">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Batas Penggunaan</label>
-                        <input type="text" id="usage_limit_display" class="form-input w-full"
-                            value="{{ old('usage_limit') }}">
-                        <input type="hidden" name="usage_limit" id="usage_limit">
-                    </div>
-
+                    <!-- Field Maksimum Potongan (untuk persentase) dihapus sesuai permintaan -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Batas Penggunaan</label>
                         <input type="number" name="usage_limit" class="form-input w-full"
@@ -93,31 +89,16 @@
                             value="{{ old('end_date') }}">
                     </div>
                     <div class="flex items-center mt-4">
-                        <input type="checkbox" name="is_active" class="form-checkbox" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
+                        <input type="checkbox" name="active" class="form-checkbox" value="1" {{ old('active', '1') ? 'checked' : '' }}>
                         <span class="ml-2 text-sm text-gray-700">Aktif</span>
                     </div>
                 </div>
-
                 <!-- Field khusus tipe voucher -->
                 <div id="seasonalFields" style="display:none;" class="mt-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Event</label>
-                    <input type="text" name="event_name" class="form-input w-full" value="{{ old('event_name') }}">
-                    <label class="block text-sm font-medium text-gray-700 mb-1 mt-2">Tipe Event</label>
-                    <input type="text" name="event_type" class="form-input w-full" value="{{ old('event_type') }}">
+                    <!-- (Field Nama Event & Tipe Event dihapus sesuai permintaan) -->
                 </div>
-                <div id="firstPurchaseFields" style="display:none;" class="mt-4">
-                    <label class="inline-flex items-center">
-                        <input type="checkbox" name="first_purchase_only" class="form-checkbox" value="1" {{ old('first_purchase_only') ? 'checked' : '' }}>
-                        <span class="ml-2 text-sm text-gray-700">Hanya untuk pembelian pertama</span>
-                    </label>
-                </div>
-                <div id="loyaltyFields" style="display:none;" class="mt-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Minimum Poin Member</label>
-                    <input type="number" name="minimum_points" class="form-input w-full"
-                        value="{{ old('minimum_points') }}">
-                    <label class="block text-sm font-medium text-gray-700 mb-1 mt-2">Level Member</label>
-                    <input type="text" name="member_level" class="form-input w-full" value="{{ old('member_level') }}">
-                </div>
+
+
                 <div class="mt-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Syarat & Ketentuan</label>
                     <textarea name="terms_and_conditions" class="form-textarea w-full"
@@ -127,52 +108,29 @@
                     <a href="{{ route('admin.vouchers.index') }}"
                         class="px-4 py-2 bg-gray-200 text-gray-700 rounded mr-2">Batal</a>
                     <button type="submit"
-                        class="px-6 py-2 bg-pink-600 text-white rounded hover:bg-pink-700 font-semibold">Simpan</button>
+                        class="px-6 py-2 bg-pink-600 text-white rounded hover:bg-pink-700 font-semibold">Buat
+                        Voucher</button>
                 </div>
             </form>
         </div>
-
     </div>
-</x-app-layout>
+    @push('scripts')
+        <script>
+            function toggleVoucherFields(select) {
+                const type = select.value;
+                // Field Maksimum Potongan (untuk persentase) dihapus, tidak perlu toggle display
+                document.getElementById('seasonalFields').style.display = (type === 'seasonal') ? 'block' : 'none';
+                document.getElementById('firstPurchaseFields').style.display = (type === 'first_purchase') ? 'block' : 'none';
+                document.getElementById('loyaltyFields').style.display = (type === 'loyalty') ? 'block' : 'none';
 
-@push('scripts')
-    <script>
-        function toggleVoucherFields(select) {
-            const type = select.value;
-            document.getElementById('maxDiscountGroup').style.display = (type === 'percent') ? 'block' : 'none';
-            document.getElementById('seasonalFields').style.display = (type === 'seasonal') ? 'block' : 'none';
-            document.getElementById('firstPurchaseFields').style.display = (type === 'first_purchase') ? 'block' : 'none';
-            document.getElementById('loyaltyFields').style.display = (type === 'loyalty') ? 'block' : 'none';
-        }
-        document.addEventListener('DOMContentLoaded', function () {
-            const select = document.querySelector('select[name="type"]');
-            if (select) toggleVoucherFields(select);
-            select.addEventListener('change', function () { toggleVoucherFields(this); });
-        });
-    </script>
-    <script>
-        function formatNumber(value) {
-            return value.replace(/\D/g, "") // hanya angka
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-
-        function attachFormatter(displayId, hiddenId) {
-            const displayInput = document.getElementById(displayId);
-            const hiddenInput = document.getElementById(hiddenId);
-
-            if (displayInput) {
-                displayInput.addEventListener("input", function () {
-                    let raw = this.value.replace(/\./g, "");
-                    this.value = formatNumber(raw);
-                    hiddenInput.value = raw; // simpan angka murni untuk dikirim
-                });
+                // Atur required pada event_name dan event_type jika seasonal
+                // (Field Nama Event & Tipe Event dihapus, tidak perlu toggle display/required)
             }
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            attachFormatter("value_display", "value");
-            attachFormatter("minimum_purchase_display", "minimum_purchase");
-            attachFormatter("usage_limit_display", "usage_limit");
-        });
-    </script>
-@endpush
+            document.addEventListener('DOMContentLoaded', function () {
+                const select = document.querySelector('select[name="type"]');
+                if (select) toggleVoucherFields(select);
+                select.addEventListener('change', function () { toggleVoucherFields(this); });
+            });
+        </script>
+    @endpush
+</x-app-layout>
