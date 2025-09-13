@@ -283,6 +283,27 @@ $paymentStatusIndo = [
             </div>
             <!-- Items Table -->
             <div class="px-6 py-6 border-b border-gray-200">
+
+                <!-- Greeting Card Block (if any) -->
+                @php
+$greetingCards = collect($order->items)->filter(fn($item) => !empty($item->greeting_card));
+                @endphp
+                @if($greetingCards->count() > 0)
+                    <div class="mb-6">
+                        <div class="flex items-center mb-2">
+                            <i class="bi bi-card-text text-pink-600 text-lg mr-2"></i>
+                            <span class="font-semibold text-pink-800 text-base">Kartu Ucapan</span>
+                        </div>
+                        <div class="space-y-2">
+                            @foreach($greetingCards as $item)
+                                <div class="p-3 bg-pink-50 border border-pink-200 rounded flex items-start gap-2">
+                                    <span class="font-semibold text-pink-700 text-xs min-w-[80px]">Kartu Ucapan</span> </n>
+                                    <span class="text-pink-800 text-xs whitespace-pre-wrap break-words" style="word-break: break-all;">{{ $item->greeting_card }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
                 <h2 class="text-lg font-medium text-gray-900 mb-4">
                     <i class="bi bi-cart-check mr-2 text-green-600"></i>Detail Produk
                 </h2>
@@ -337,7 +358,15 @@ $paymentStatusIndo = [
                                             <!-- Detail Custom Bouquet -->
                                             <div class="mt-3 space-y-2 bg-gray-50 p-3 rounded-lg">
                                                 @php
-        $details = json_decode($item->details ?? '{}', true) ?? [];
+        // Pastikan hanya decode jika string, jika array langsung pakai
+        if (is_string($item->details)) {
+            $decoded = json_decode($item->details, true);
+            $details = is_array($decoded) ? $decoded : [];
+        } elseif (is_array($item->details)) {
+            $details = $item->details;
+        } else {
+            $details = [];
+        }
                                                 @endphp
                                                 
                                                 @if(!empty($details['flowers']))
@@ -381,14 +410,15 @@ $paymentStatusIndo = [
                                             </span>
                                             @if(!empty($item->details))
                                                 @php
-                                                    if (is_string($item->details)) {
-                                                        $decoded = json_decode($item->details, true);
-                                                        $details = is_array($decoded) ? $decoded : [];
-                                                    } elseif (is_array($item->details)) {
-                                                        $details = $item->details;
-                                                    } else {
-                                                        $details = [];
-                                                    }
+                // Pastikan hanya decode jika string, jika array langsung pakai
+                if (is_string($item->details)) {
+                    $decoded = json_decode($item->details, true);
+                    $details = is_array($decoded) ? $decoded : [];
+                } elseif (is_array($item->details)) {
+                    $details = $item->details;
+                } else {
+                    $details = [];
+                }
                                                 @endphp
                                                 <div class="mt-2 space-y-1 bg-gray-50 p-3 rounded-lg">
                                                     @foreach($details as $key => $value)
@@ -489,6 +519,12 @@ $paymentStatusIndo = [
                                 </span>
                                 <div>
                                     <h4 class="text-sm font-semibold text-gray-900">{{ $item->product_name }}</h4>
+                                    {{-- @if(!empty($item->greeting_card))
+                                        <div class="mt-2 p-2 bg-pink-50 border border-pink-200 rounded flex items-start gap-2">
+                                            <i class="bi bi-card-text text-pink-600 text-base mt-0.5"></i>
+                                            <div class="text-pink-800 text-xs whitespace-pre-wrap break-words">{{ $item->greeting_card }}</div>
+                                        </div>
+                                    @endif --}}
                                     
                                     <!-- Badge tipe produk untuk mobile -->
                                     @if(isset($item->item_type))
@@ -599,12 +635,12 @@ $paymentStatusIndo = [
                 <div class="space-y-4">
                     @php 
                         $items_total = $total; // items total already calculated above
-                        $shipping_fee = $order->shipping_fee ?? 0;
-                        $voucher_amount = $order->voucher_amount ?? 0;
-                        $grand_total = $items_total + $shipping_fee - $voucher_amount;
-                        $total_paid = $order->amount_paid ?? 0;
-                        $sisa_pembayaran = $order->payment_status === 'paid' ? 0 : max($grand_total - $total_paid, 0);
-                        $display_total_paid = $order->payment_status === 'paid' ? $grand_total : $total_paid;
+$shipping_fee = $order->shipping_fee ?? 0;
+$voucher_amount = $order->voucher_amount ?? 0;
+$grand_total = $items_total + $shipping_fee - $voucher_amount;
+$total_paid = $order->amount_paid ?? 0;
+$sisa_pembayaran = $order->payment_status === 'paid' ? 0 : max($grand_total - $total_paid, 0);
+$display_total_paid = $order->payment_status === 'paid' ? $grand_total : $total_paid;
                     @endphp
                     
                     <!-- Items Total -->
@@ -764,7 +800,10 @@ $paymentStatusIndo = [
                 @endphp
                 
                 @if(count($packingFiles) > 0)
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-center items-center" style="display: grid;">
+                        @if(count($packingFiles) === 1)
+                            <div class="col-span-full flex justify-center">
+                        @endif
                         @foreach($packingFiles as $index => $file)
                             @php
             $filePath = asset('storage/' . $file);
@@ -816,6 +855,9 @@ $paymentStatusIndo = [
                                 @endif
                             </div>
                         @endforeach
+                        @if(count($packingFiles) === 1)
+                            </div>
+                        @endif
                     </div>
                 @else
                     <div class="flex justify-center">
@@ -874,7 +916,7 @@ $paymentStatusIndo = [
                             <i class="bi bi-heart-fill text-pink-600 text-xl mr-2"></i>
                             <p class="text-lg font-semibold text-gray-900">Terima Kasih!</p>
                         </div>
-                        <p class="text-sm text-gray-600">Telah mempercayai Seikat Bungo untuk pesanan Anda</p>
+                        <p class="text-sm text-gray-600">Telah Berbelanja Di Seikat Bungo.</p>
                     </div>
 
                     <div class="text-sm text-gray-600 space-y-2">

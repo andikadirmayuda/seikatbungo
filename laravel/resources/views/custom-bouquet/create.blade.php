@@ -787,6 +787,36 @@
 
         <!-- Search and Filters -->
         <div class="mb-8 flex flex-col items-center">
+            <!-- Enhanced Search Bar with Price Filter (Consistent with bouquets) -->
+            <div class="w-full max-w-2xl mb-4">
+                <div class="flex gap-3">
+                    <!-- Search Input -->
+                    <div class="flex-1 relative">
+                        <i
+                            class="bi bi-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <input type="text" id="searchInput" placeholder="{{'Cari bunga Custom impian Anda...'  }}"
+                            class="w-full pl-12 pr-4 py-4 text-lg border-2 border-[#275a59] rounded-2xl focus:ring-2 focus:ring-[#59aaa1] focus:border-[#59aaa1] focus:outline-none shadow-lg transition-all duration-200 bg-white/90"
+                            oninput="filterItems()">
+                    </div>
+                    <!-- Price Filter Dropdown (only for flowers tab) -->
+                    {{-- @if($activeTab === 'flowers') --}}
+                    <div class="relative">
+                        <select id="priceFilterSelect"
+                            class="appearance-none bg-white/90 border-2 border-[#2D9C8F] rounded-2xl px-4 py-4 pr-10 text-gray-700 focus:ring-2 focus:ring-[#2D9C8F] focus:border-[#2D9C8F] focus:outline-none shadow-lg transition-all duration-200 cursor-pointer"
+                            onchange="filterByPriceRange()">
+                            <option value="">Semua Harga</option>
+                            <option value="0-10000">&lt; Rp 10k</option>
+                            <option value="10000-30000">Rp 10k - 30k</option>
+                            <option value="30000-50000">Rp 30k - 50k</option>
+                            <option value="50000-100000">Rp 50k - 100k</option>
+                            <option value="100000-999999999">&gt; Rp 100k</option>
+                        </select>
+                        <i
+                            class="bi bi-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                    {{-- @endif --}}
+                </div>
+            </div>
             <!-- Enhanced Filter Chips -->
             <div class="flex flex-wrap gap-3 justify-center">
                 <button
@@ -1005,8 +1035,50 @@
             // Builder actions
             initializeBuilderActions();
 
+            // Search & Price Filter
+            initializeSearchAndPriceFilter();
+
             // Load existing items if any
             loadCustomBouquetDetails();
+        }
+
+        function initializeSearchAndPriceFilter() {
+            const searchInput = document.getElementById('searchInput');
+            const priceFilter = document.getElementById('priceFilterSelect');
+            const productCards = document.querySelectorAll('.product-card');
+
+            function filterCustomBouquetProducts() {
+                const searchTerm = (searchInput.value || '').toLowerCase();
+                const priceRange = priceFilter.value;
+                let minPrice = 0, maxPrice = Infinity;
+                if (priceRange) {
+                    const parts = priceRange.split('-');
+                    minPrice = parseInt(parts[0], 10);
+                    maxPrice = parseInt(parts[1], 10);
+                }
+                productCards.forEach(card => {
+                    const name = (card.querySelector('h3')?.textContent || '').toLowerCase();
+                    const category = (card.dataset.category || '').toLowerCase();
+                    let match = true;
+                    if (searchTerm && !name.includes(searchTerm) && !category.includes(searchTerm)) {
+                        match = false;
+                    }
+                    if (priceRange && match) {
+                        // Cek semua harga custom pada card
+                        let found = false;
+                        card.querySelectorAll('.text-price').forEach(span => {
+                            const priceText = span.textContent.replace(/[^\d]/g, '');
+                            const price = parseInt(priceText, 10) || 0;
+                            if (price >= minPrice && price <= maxPrice) found = true;
+                        });
+                        if (!found) match = false;
+                    }
+                    card.style.display = match ? '' : 'none';
+                });
+            }
+
+            if (searchInput) searchInput.addEventListener('input', filterCustomBouquetProducts);
+            if (priceFilter) priceFilter.addEventListener('change', filterCustomBouquetProducts);
         }
 
         function initializeCategoryTabs() {
@@ -1147,7 +1219,7 @@
             <div class="ml-3 flex-1">
                 <div class="flex justify-between items-center">
                     <span class="text-sm font-medium text-gray-900">${price.display_name}</span>
-                    <span class="text-sm font-semibold text-rose-600">Rp ${price.price.toLocaleString('id-ID')}</span>
+                    <span class="text-sm font-semibold text-rose-600">Rp ${Number(price.price).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
                 </div>
                 <div class="text-xs text-gray-500">Setara ${price.unit_equivalent} ${product.base_unit}</div>
             </div>
@@ -1350,7 +1422,7 @@
                     </div>
                 </div>
                 <div class="text-right ml-3">
-                    <div class="text-sm font-bold text-purple-600">Rp ${item.subtotal.toLocaleString('id-ID')}</div>
+                    <div class="text-sm font-bold text-purple-600">Rp ${Number(item.subtotal).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</div>
                     <button class="text-xs text-red-600 hover:text-red-800 mt-1 bg-red-50 hover:bg-red-100 px-2 py-1 rounded transition-colors" onclick="removeItem(${item.id})">
                         🗑️ Hapus
                     </button>
@@ -1481,7 +1553,7 @@
         }
 
         function updateTotalPrice(totalPrice) {
-            const formattedPrice = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+            const formattedPrice = `Rp ${Number(totalPrice).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
             document.getElementById('totalPrice').textContent = formattedPrice;
             document.getElementById('builderHeaderPrice').textContent = formattedPrice;
 

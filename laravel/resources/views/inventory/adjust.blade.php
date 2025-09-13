@@ -21,6 +21,84 @@
             background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 50%, #f0fdf4 100%);
         }
 
+        /* Tom Select custom style - agar konsisten dengan form */
+        .ts-wrapper.single .ts-control {
+            min-height: 48px;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1.5px solid #f9a8d4;
+            font-size: 1rem;
+            background: #fff;
+            color: #374151;
+            box-shadow: none;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .ts-wrapper.single .ts-control:focus,
+        .ts-wrapper.single.focus .ts-control {
+            border-color: #f43f5e;
+            box-shadow: 0 0 0 2px rgba(244, 63, 94, 0.15);
+        }
+
+        .ts-dropdown {
+            border-radius: 0.75rem;
+            border: 1.5px solid #f9a8d4;
+            box-shadow: 0 8px 24px 0 rgba(244, 63, 94, 0.07);
+            font-size: 1rem;
+            margin-top: 2px;
+        }
+
+        .ts-dropdown .active {
+            background: linear-gradient(90deg, #f9a8d4 0%, #f43f5e 100%);
+            color: #fff;
+        }
+
+        .ts-dropdown .option {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin: 2px 4px;
+            transition: background 0.15s;
+        }
+
+        .ts-wrapper .ts-control .item {
+            background: linear-gradient(90deg, #f9a8d4 0%, #f43f5e 100%);
+            color: #fff;
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            font-weight: 500;
+        }
+
+        .ts-wrapper .ts-control .item[data-value=""] {
+            background: none;
+            color: #9ca3af;
+            font-style: italic;
+            display: none;
+            /* Sembunyikan placeholder di input setelah dipilih */
+        }
+
+        /* Icon search di input Tom Select */
+        .ts-wrapper.single .ts-control::before {
+            content: '\f52a';
+            /* bi-search icon unicode */
+            font-family: 'bootstrap-icons';
+            color: #f43f5e;
+            font-size: 1.1em;
+            margin-right: 0.5em;
+            display: inline-block;
+            vertical-align: middle;
+            opacity: 0.7;
+        }
+
+        .ts-wrapper.single.has-items .ts-control::before {
+            display: none;
+        }
+        }
+
+        .ts-wrapper.single .ts-control input {
+            padding: 0.25rem 0;
+            font-size: 1rem;
+        }
+
         .glass-effect {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -144,9 +222,9 @@
                                 Pilih Produk
                             </label>
                             <select id="product_id" name="product_id"
-                                class="w-full px-4 py-3 border border-pink-200 rounded-xl input-focus focus:outline-none"
-                                required>
-                                <option value="">-- Pilih Produk --</option>
+                                class="w-full border-pink-200 rounded-xl input-focus focus:outline-none bg-white" required>
+                                {{-- <option value="" selected hidden>-- Pilih Produk --</option> --}}
+                                {{-- <option value="" selected hidden></option> --}}
                                 @foreach($products as $prod)
                                     <option value="{{ $prod->id }}" data-action="{{ route('inventory.adjust', $prod) }}">
                                         {{ $prod->name }} ({{ $prod->code }})
@@ -212,8 +290,37 @@
 
 
     @if(!isset($product) || !$product)
+        <!-- Tom Select JS & CSS CDN -->
+        <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                // Inisialisasi Tom Select
+                new TomSelect('#product_id', {
+                    create: false,
+                    sortField: {
+                        field: 'text',
+                        direction: 'asc'
+                    },
+                    placeholder: '-- Pilih Produk --',
+                    placeholder: 'Cari produk...',
+                    allowEmptyOption: true,
+                    hideSelected: true,
+                    maxOptions: 1000,
+                    render: {
+                        option: function (data, escape) {
+                            if (data.value === "") {
+                                return `<div class='text-gray-400 italic'>${escape(data.text)}</div>`;
+                            }
+                            return `<div class='flex items-center'><i class='bi bi-box mr-2 text-pink-500'></i> ${escape(data.text)}</div>`;
+                        },
+                        item: function (data, escape) {
+                            if (data.value === "") return "";
+                            return `<div class='flex items-center'><i class='bi bi-box mr-2 text-pink-100'></i> ${escape(data.text)}</div>`;
+                        }
+                    }
+                });
+
                 const select = document.getElementById('product_id');
                 const form = document.getElementById('adjustForm');
                 const stockInfo = document.getElementById('current-stock-info');

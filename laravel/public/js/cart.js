@@ -250,7 +250,7 @@ function getGreetingCardHTML(item) {
                 <i class="bi bi-card-text text-pink-600 mr-1"></i>
                 <span class="text-xs font-medium text-pink-700">Kartu Ucapan:</span>
             </div>
-            <p class="text-xs text-pink-800 italic whitespace-pre-wrap">"${item.greeting_card}"</p>
+            <p class="text-xs text-pink-800 italic whitespace-pre-wrap" style="word-break: break-all;">"${item.greeting_card}"</p>
         </div>
     `;
 }

@@ -144,7 +144,8 @@ class PublicCheckoutController extends Controller
                 'delivery_method' => 'required|string|in:Ambil Langsung Ke Toko,Gosend (Dipesan Pribadi),Gocar (Dipesan Pribadi),Gosend (Pesan Dari Toko),Gocar (Pesan Dari Toko),Travel (Di Pesan Sendiri - Khusus Luar Kota)',
                 'destination' => 'required_if:delivery_method,Gosend (Dipesan Pribadi),Gocar (Dipesan Pribadi),Gosend (Pesan Dari Toko),Gocar (Pesan Dari Toko),Travel (Di Pesan Sendiri - Khusus Luar Kota)|nullable|string',
                 'notes' => 'nullable|string|max:1000',
-                'custom_instructions' => 'nullable|string|max:500',
+                'custom_instructions' => 'nullable|array',
+                'custom_instructions.*' => 'nullable|string|max:500',
             ], [
                 'customer_name.required' => 'Nama pemesan wajib diisi.',
                 'wa_number.required' => 'Nomor WhatsApp pemesan wajib diisi.',
@@ -271,7 +272,7 @@ class PublicCheckoutController extends Controller
                 'delivery_method' => $validated['delivery_method'],
                 'destination' => $validated['destination'],
                 'notes' => $validated['notes'] ?? null,
-                'custom_instructions' => $validated['custom_instructions'] ?? null,
+                // custom_instructions tidak disimpan di order, hanya per item
                 'subtotal_amount' => $totalAmount + ($voucherDiscount ?? 0), // Total sebelum voucher
                 'total_amount' => $finalTotal, // Total setelah voucher
                 'status' => 'pending',
@@ -308,8 +309,22 @@ class PublicCheckoutController extends Controller
                 Log::info('Voucher session cleared after order creation');
             }
 
+
+            // Inject greeting_card dari input checkout ke cart custom bouquet (mapping by cart key)
+            $greetingCards = $request->input('greeting_card', []);
+            $cartKeys = array_keys($cart);
+            foreach ($cart as $cartKey => &$item) {
+                if (isset($item['type']) && $item['type'] === 'custom_bouquet') {
+                    // Cek jika input greeting_card dikirim dengan key yang sama
+                    if (isset($greetingCards[$cartKey])) {
+                        $item['greeting_card'] = $greetingCards[$cartKey];
+                    }
+                }
+            }
+            unset($item);
+
             // Proses setiap item di cart
-            foreach ($cart as $item) {
+            foreach ($cart as $idx => $item) {
                 // Cek stok sebelum proses
                 $this->checkAndReduceStock($item, $order->id);
 
@@ -332,14 +347,14 @@ class PublicCheckoutController extends Controller
                     'components_summary' => $item['components_summary'] ?? null,
                     'custom_bouquet_id' => $item['custom_bouquet_id'] ?? null,
                     'reference_image' => $item['reference_image'] ?? null,
-                    'custom_instructions' => $item['custom_instructions'] ?? null,
+                    'custom_instructions' => isset($validated['custom_instructions'][$idx]) ? $validated['custom_instructions'][$idx] : null,
                     'details' => [
                         'items' => isset($item['items']) ? $item['items'] : [],
                         'ribbon_color' => $item['ribbon_color'] ?? null,
                         'reference_image' => $item['reference_image'] ?? null,
                         'type' => $cartType,
                         'components' => isset($item['components']) ? $item['components'] : [],
-                        'custom_instructions' => $item['custom_instructions'] ?? null,
+                        'custom_instructions' => isset($validated['custom_instructions'][$idx]) ? $validated['custom_instructions'][$idx] : null,
                         'size_id' => $item['size_id'] ?? null
                     ]
                 ];

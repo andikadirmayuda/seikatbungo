@@ -42,6 +42,7 @@ class PublicOrderItem extends Model
         'custom_bouquet_id',
         'reference_image',
         'custom_instructions',
+        'greeting_card',
         'details',
         'metadata'
     ];

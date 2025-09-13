@@ -371,7 +371,22 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                                 <td class="py-3 px-4 text-right align-top whitespace-nowrap">{{ $item->unit_equivalent ?? '-' }}</td>
                                 <td class="py-3 px-4 text-right align-top whitespace-nowrap">{{ $item->quantity }}</td>
                                 <td class="py-3 px-4 text-right align-top whitespace-nowrap">Rp{{ number_format($subtotal, 0, ',', '.') }}</td>
+                                
                             </tr>
+                            @if(!empty($item->greeting_card))
+                                <tr>
+                                    <td colspan="6" class="px-4 py-2">
+                                        <div class="mt-2 p-2 bg-pink-50 border border-pink-200 rounded-lg">
+                                            <div class="flex items-start">
+                                                <i class="bi bi-card-text text-pink-400 mr-2"></i>
+                                                <div class="text-sm text-pink-700 italic leading-relaxed break-words" style="word-break: break-all;">
+                                                    <strong>Kartu Ucapan: </strong> {{ $item->greeting_card }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                         </tbody>
                     <tfoot class="bg-gray-50">
@@ -443,22 +458,22 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
                 <!-- Mobile: Card Layout -->
             <div class="sm:hidden space-y-3 mb-6">
                 @foreach($order->items as $item)
-                    @php 
-                                                            $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
+                                    @php 
+                                        $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
     $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
     $cleanName = trim($cleanName) ?: $item->product_name;
-                    @endphp
-                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-                        <!-- Product Header -->
-                        <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-3 py-3 border-b border-gray-200">
-                            <div class="flex items-start justify-between">
-                                <div class="flex-1 min-w-0 pr-2">
-                                    <h3 class="font-semibold text-gray-800 text-sm leading-relaxed break-words whitespace-normal">
-                                        {{ $cleanName }}
-                                    </h3>
-                                    @if($item->price_type && $item->price_type !== '-')
-                                        <span class="inline-block mt-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-md font-medium">
-                                            @php
+                                    @endphp
+                                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                        <!-- Product Header -->
+                                        <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-3 py-3 border-b border-gray-200">
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex-1 min-w-0 pr-2">
+                                                    <h3 class="font-semibold text-gray-800 text-sm leading-relaxed break-words whitespace-normal">
+                                                        {{ $cleanName }}
+                                                    </h3>
+                                                    @if($item->price_type && $item->price_type !== '-')
+                                                        <span class="inline-block mt-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-md font-medium">
+                                                            @php
         $priceType = $item->price_type;
         if (Str::startsWith($priceType, 'ikat_')) {
             $jumlah = (int) str_replace('ikat_', '', $priceType);
@@ -466,40 +481,51 @@ $displayTotalPaid = $order->payment_status === 'paid' ? $grandTotal : $totalPaid
         } else {
             echo $priceType;
         }
-                                            @endphp
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
+                                                            @endphp
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
 
-                        <!-- Product Details -->
-                        <div class="p-3">
-                            <!-- Harga dan Satuan -->
-                            <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
-                                <div class="flex-1">
-                                    <span class="text-gray-500 text-xs">Harga Satuan</span>
-                                    <p class="text-gray-800 text-sm font-semibold">Rp{{ number_format($item->price ?? 0, 0, ',', '.') }}</p>
-                                </div>
-                                <div class="flex-1 text-right">
-                                    <span class="text-gray-500 text-xs">Satuan</span>
-                                    <p class="text-gray-800 text-sm font-semibold">{{ $item->unit_equivalent ?? '-' }}</p>
-                                </div>
-                            </div>
+                                        <!-- Product Details -->
+                                        <div class="p-3">
+                                            <!-- Harga dan Satuan -->
+                                            <div class="flex justify-between items-center py-1.5 border-b border-gray-100">
+                                                <div class="flex-1">
+                                                    <span class="text-gray-500 text-xs">Harga Satuan</span>
+                                                    <p class="text-gray-800 text-sm font-semibold">Rp{{ number_format($item->price ?? 0, 0, ',', '.') }}</p>
+                                                </div>
+                                                <div class="flex-1 text-right">
+                                                    <span class="text-gray-500 text-xs">Satuan</span>
+                                                    <p class="text-gray-800 text-sm font-semibold">{{ $item->unit_equivalent ?? '-' }}</p>
+                                                </div>
+                                            </div>
 
-                            <!-- Jumlah dan Subtotal -->
-                            <div class="flex justify-between items-center py-1.5">
-                                <div class="flex-1">
-                                    <span class="text-gray-500 text-xs">Jumlah</span>
-                                    <p class="text-gray-800 text-sm font-semibold">{{ $item->quantity }}</p>
-                                </div>
-                                <div class="flex-1 text-right">
-                                    <span class="text-gray-500 text-xs">Subtotal</span>
-                                    <p class="text-green-600 text-sm font-bold">Rp{{ number_format($subtotal, 0, ',', '.') }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                            <!-- Jumlah dan Subtotal -->
+                                            <div class="flex justify-between items-center py-1.5">
+                                                <div class="flex-1">
+                                                    <span class="text-gray-500 text-xs">Jumlah</span>
+                                                    <p class="text-gray-800 text-sm font-semibold">{{ $item->quantity }}</p>
+                                                </div>
+                                                <div class="flex-1 text-right">
+                                                    <span class="text-gray-500 text-xs">Subtotal</span>
+                                                    <p class="text-green-600 text-sm font-bold">Rp{{ number_format($subtotal, 0, ',', '.') }}</p>
+                                                </div>
+                                            </div>
+                                        <!-- Kartu Ucapan (Mobile) -->
+                                        @if(!empty($item->greeting_card))
+                                            <div class="mt-2 p-2 bg-pink-50 border border-pink-200 rounded-lg">
+                                                <div class="flex items-start">
+                                                    <i class="bi bi-card-text text-pink-400 mr-2"></i>
+                                                    <div class="text-sm text-pink-700 italic leading-relaxed break-words" style="word-break: break-all;">
+                                                        <strong>Kartu Ucapan: </strong> {{ $item->greeting_card }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                        </div>
+                                    </div>
                 @endforeach
                 
                 <!-- Total Summary Card -->
@@ -803,44 +829,44 @@ $customBouquetItems = $order->items->filter(function ($item) {
 
                                                         <div class="mt-4 text-center">
                                                             @php
-                $waMessage = "🌸 *Halo, Seikat Bungo*\n";
-                $waMessage .= "══════════\n\n";
-                $waMessage .= "Saya ingin mengirim bukti pembayaran untuk:\n\n";
-                $waMessage .= "📋 *Pesanan :* {$order->public_code}\n";
-                $waMessage .= "🔗 *Link :* " . url("/order/{$order->public_code}") . "\n\n";
-                $waMessage .= "👤 *Nama Pemesan :* {$order->customer_name}\n";
-                $waMessage .= "📱 *WhatsApp Pemesan :* {$order->wa_number}\n";
-                if ($order->receiver_name) {
-                    $waMessage .= "👥 *Nama Penerima :* {$order->receiver_name}\n";
-                }
-                if ($order->receiver_wa) {
-                    $waMessage .= "📲 *WhatsApp Penerima :* {$order->receiver_wa}\n";
-                }
-                $waMessage .= "📅 *Tanggal :* " . \Carbon\Carbon::parse($order->pickup_date)->format('d-m-Y') . "\n";
-                $waMessage .= "⏰ *Waktu :* {$order->pickup_time}\n";
-                $waMessage .= "🚚 *Pengiriman :* {$order->delivery_method}\n";
-                $waMessage .= "📍 *Tujuan :* {$order->destination}\n\n";
+    $waMessage = "🌸 *Halo, Seikat Bungo*\n";
+    $waMessage .= "══════════\n\n";
+    $waMessage .= "Saya ingin mengirim bukti pembayaran untuk:\n\n";
+    $waMessage .= "📋 *Pesanan :* {$order->public_code}\n";
+    $waMessage .= "🔗 *Link :* " . url("/order/{$order->public_code}") . "\n\n";
+    $waMessage .= "👤 *Nama Pemesan :* {$order->customer_name}\n";
+    $waMessage .= "📱 *WhatsApp Pemesan :* {$order->wa_number}\n";
+    if ($order->receiver_name) {
+        $waMessage .= "👥 *Nama Penerima :* {$order->receiver_name}\n";
+    }
+    if ($order->receiver_wa) {
+        $waMessage .= "📲 *WhatsApp Penerima :* {$order->receiver_wa}\n";
+    }
+    $waMessage .= "📅 *Tanggal :* " . \Carbon\Carbon::parse($order->pickup_date)->format('d-m-Y') . "\n";
+    $waMessage .= "⏰ *Waktu :* {$order->pickup_time}\n";
+    $waMessage .= "🚚 *Pengiriman :* {$order->delivery_method}\n";
+    $waMessage .= "📍 *Tujuan :* {$order->destination}\n\n";
 
-                // Tambahkan breakdown harga dengan ongkir
-                $waMessage .= "💰 *Detail Harga:*\n";
-                $waMessage .= "• Total Produk: Rp " . number_format($itemsTotal, 0, ',', '.') . "\n";
-                if ($shippingFee > 0) {
-                    $waMessage .= "• Ongkir: Rp " . number_format($shippingFee, 0, ',', '.') . "\n";
-                }
-                $waMessage .= "• *Total Keseluruhan: Rp " . number_format($grandTotal, 0, ',', '.') . "*\n\n";
+    // Tambahkan breakdown harga dengan ongkir
+    $waMessage .= "💰 *Detail Harga:*\n";
+    $waMessage .= "• Total Produk: Rp " . number_format($itemsTotal, 0, ',', '.') . "\n";
+    if ($shippingFee > 0) {
+        $waMessage .= "• Ongkir: Rp " . number_format($shippingFee, 0, ',', '.') . "\n";
+    }
+    $waMessage .= "• *Total Keseluruhan: Rp " . number_format($grandTotal, 0, ',', '.') . "*\n\n";
 
-                if ($showGrandTotal) {
-                    $waMessage .= "💰 *Total Pesanan :* Rp " . number_format($grandTotal, 0, ',', '.') . "\n\n";
-                    $waMessage .= "═══════════\n";
-                    $waMessage .= "Mohon konfirmasi pembayaran 🙏\n";
-                } else {
-                    $waMessage .= "⏳ *Status :* Menunggu admin menghitung ongkir\n\n";
-                    $waMessage .= "═══════════\n";
-                    $waMessage .= "Mohon tunggu info total final dari admin 🙏\n";
-                }
+    if ($showGrandTotal) {
+        $waMessage .= "💰 *Total Pesanan :* Rp " . number_format($grandTotal, 0, ',', '.') . "\n\n";
+        $waMessage .= "═══════════\n";
+        $waMessage .= "Mohon konfirmasi pembayaran 🙏\n";
+    } else {
+        $waMessage .= "⏳ *Status :* Menunggu admin menghitung ongkir\n\n";
+        $waMessage .= "═══════════\n";
+        $waMessage .= "Mohon tunggu info total final dari admin 🙏\n";
+    }
 
-                $waMessage .= "Terima kasih 😊";
-                $encodedMessage = urlencode($waMessage);
+    $waMessage .= "Terima kasih 😊";
+    $encodedMessage = urlencode($waMessage);
                                                             @endphp
                                                             <a href="https://wa.me/6285119990901?text={{ $encodedMessage }}" 
                                                                target="_blank"
@@ -973,7 +999,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                     @endphp
 
                     @if(count($packingFiles) > 0)
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                        <div class="max-w-4xl mx-auto @if(count($packingFiles) === 1) flex justify-center @else grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 @endif">
                             @foreach($packingFiles as $index => $file)
                                 @php
             $filePath = asset('storage/' . $file);
@@ -1072,8 +1098,22 @@ $customBouquetItems = $order->items->filter(function ($item) {
             @endif
             <div class="text-center text-gray-500 text-xs sm:text-sm mt-8">
                 <p class="font-medium">Terima kasih telah memesan di Seikat Bungo!</p>
-                <p class="mt-1 sm:mt-2">Jika ada pertanyaan, silakan hubungi admin kami.</p>
+                {{-- <p class="mt-1 sm:mt-2">Jika ada pertanyaan, silakan hubungi admin kami.</p> --}}
                 <p class="mt-2 sm:mt-4">Seikat Bungo &copy; {{ date('Y') }}</p>
+                {{-- <div class="w-100 h-0.5 bg-pink-400 mx-auto mb-3 mt-6"></div> --}}
+                <br>
+                <br>
+                
+                <p class="mt-1 sm:mt-1">
+                    <small>
+                        <i class="bi bi-laptop"></i> Designed & Developed by :
+                        <a href="https://www.instagram.com/xzxzvxzo/" 
+                        class="text-purple-600 hover:underline font-bold" style="color:#247A72"
+                        target="_blank">
+                        adrmyd
+                        </a>
+                    </small>
+                </p>
             </div>
         </div>
     </div>

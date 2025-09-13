@@ -298,7 +298,7 @@ class AdminPublicOrderController extends Controller
     }
     public function index()
     {
-        $orders = PublicOrder::orderByDesc('created_at')->paginate(20);
+        $orders = PublicOrder::orderByDesc('created_at')->get();
         return view('admin.public_orders.index', compact('orders'));
     }
 

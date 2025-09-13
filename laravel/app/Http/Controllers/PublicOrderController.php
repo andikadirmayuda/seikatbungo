@@ -144,6 +144,16 @@ class PublicOrderController extends Controller
                     'notes' => 'Pesanan publik',
                 ]);
 
+                // Ambil greeting_card dari request jika ada (khusus custom bouquet)
+                $greetingCard = null;
+                if (isset($item['type']) && $item['type'] === 'custom_bouquet') {
+                    // Cek index item di array items
+                    $itemIdx = array_search($item, $validated['items'], true);
+                    if ($itemIdx !== false && isset($request->greeting_card[$itemIdx])) {
+                        $greetingCard = $request->greeting_card[$itemIdx];
+                    }
+                }
+
                 $order->items()->create([
                     'product_id' => $product->id,
                     'product_name' => $product->name,
@@ -151,6 +161,7 @@ class PublicOrderController extends Controller
                     'unit_equivalent' => $unitEquivalent,
                     'quantity' => $qty,
                     'price' => $price,
+                    'greeting_card' => $greetingCard,
                 ]);
             }
             DB::commit();

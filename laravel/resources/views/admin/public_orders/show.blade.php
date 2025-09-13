@@ -688,6 +688,19 @@ $needsShippingFee = in_array($order->delivery_method, [
                                     Rp{{ number_format(($item->price ?? 0) * ($item->quantity ?? 0), 0, ',', '.') }}
                                 </td>
                             </tr>
+                            @if(!empty($item->greeting_card))
+                            <tr>
+                                <td colspan="6" class="px-6 pb-4 pt-0 align-top">
+                                    <div class="mt-2 p-3 bg-pink-50 border border-pink-200 rounded-lg flex items-start gap-2">
+                                        <i class="bi bi-card-text text-pink-600 text-lg mt-0.5"></i>
+                                        <div>
+                                            <span class="font-semibold text-pink-700">Kartu Ucapan:</span>
+                                            <span class="text-pink-800 italic whitespace-pre-wrap" style="word-break: break-all;">{{ $item->greeting_card }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -698,8 +711,8 @@ $needsShippingFee = in_array($order->delivery_method, [
                 @foreach($order->items as $item)
                     @php 
                         $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
-    $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
-    $cleanName = trim($cleanName) ?: $item->product_name;
+                        $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
+                        $cleanName = trim($cleanName) ?: $item->product_name;
                     @endphp
                     <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                         <!-- Product Header -->
@@ -717,7 +730,17 @@ $needsShippingFee = in_array($order->delivery_method, [
                                 </div>
                             </div>
                         </div>
-                        
+                        @if(!empty($item->greeting_card))
+                            <div class="p-3 pt-2 pb-0">
+                                <div class="p-3 bg-pink-50 border border-pink-200 rounded-lg flex items-start gap-2">
+                                    <i class="bi bi-card-text text-pink-600 text-lg mt-0.5"></i>
+                                    <div>
+                                        <span class="font-semibold text-pink-700">Kartu Ucapan:</span>
+                                        <span class="text-pink-800 italic whitespace-pre-wrap" style="word-break: break-all;">{{ $item->greeting_card }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                         <!-- Product Details -->
                         <div class="p-3">
                             <!-- Harga dan Satuan -->
@@ -731,7 +754,6 @@ $needsShippingFee = in_array($order->delivery_method, [
                                     <p class="text-gray-800 text-sm font-semibold">{{ $item->unit_equivalent ?? '-' }}</p>
                                 </div>
                             </div>
-                            
                             <!-- Jumlah dan Subtotal -->
                             <div class="flex justify-between items-center py-1.5">
                                 <div class="flex-1">
@@ -1116,7 +1138,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                 @endphp
 
                 @if(count($packingFiles) > 0)
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="@if(count($packingFiles) === 1) flex justify-center @else grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 @endif">
                         @foreach($packingFiles as $index => $file)
                             @php
             $filePath = asset('storage/' . $file);

@@ -85,11 +85,13 @@ class WhatsAppNotificationService
             }
 
             $shippingFee = $order->shipping_fee ?? 0;
-            $grandTotal = $itemsTotal + $shippingFee;
+            $voucherAmount = $order->voucher_amount ?? 0;
+            $grandTotal = $itemsTotal + $shippingFee - $voucherAmount;
 
             // Format harga
             $formattedItemsTotal = "Rp " . number_format($itemsTotal, 0, ',', '.');
             $formattedShippingFee = "Rp " . number_format($shippingFee, 0, ',', '.');
+            $formattedVoucher = "Rp " . number_format($voucherAmount, 0, ',', '.');
             $formattedGrandTotal = "Rp " . number_format($grandTotal, 0, ',', '.');
 
             // Build pesan untuk customer
@@ -110,6 +112,9 @@ class WhatsAppNotificationService
             if ($shippingFee > 0) {
                 $message .= "• Ongkir: {$formattedShippingFee}\n";
             }
+            if ($voucherAmount > 0) {
+                $message .= "• Voucher: -{$formattedVoucher}\n";
+            }
             $message .= "• *Total Keseluruhan: {$formattedGrandTotal}*\n\n";
 
             $message .= "*Lihat Detail Lengkap:*\n";
@@ -121,8 +126,8 @@ class WhatsAppNotificationService
             $message .= "• Lihat detail produk & harga\n";
             $message .= "• Upload bukti pembayaran\n\n";
 
-            $message .= "Terima kasih atas kepercayaan Anda!\n";
-            $message .= "Tim *Seikat Bungo*";
+            $message .= "Terima kasih atas kepercayaan Anda!\n\n";
+            $message .= "*Seikat Bungo*";
 
             return $message;
         } catch (\Exception $e) {
@@ -208,19 +213,22 @@ class WhatsAppNotificationService
                 $orderItems = "• Tidak ada item\n";
             }
 
-            // Add shipping fee info if exists
-            $shippingInfo = "";
+
+            // Shipping fee, voucher, dan subtotal
             $shippingFee = $order->shipping_fee ?? 0;
+            $voucherAmount = $order->voucher_amount ?? 0;
+            $shippingInfo = "";
+            $formattedItemsTotal = "Rp " . number_format($itemsTotal, 0, ',', '.');
+            $shippingInfo .= "• Subtotal Produk: {$formattedItemsTotal}\n";
             if ($shippingFee > 0) {
-                $shippingInfo = "• Ongkir: Rp " . number_format($shippingFee, 0, ',', '.') . "\n";
+                $shippingInfo .= "• Ongkir: Rp " . number_format($shippingFee, 0, ',', '.') . "\n";
+            }
+            if ($voucherAmount > 0) {
+                $shippingInfo .= "• Voucher: -Rp " . number_format($voucherAmount, 0, ',', '.') . "\n";
             }
 
-            // Use model total method that includes shipping fee, with fallback
-            try {
-                $grandTotal = $order->total ?? ($itemsTotal + $shippingFee);
-            } catch (\Exception $e) {
-                $grandTotal = $itemsTotal + $shippingFee;
-            }
+            // Total akhir
+            $grandTotal = $itemsTotal + $shippingFee - $voucherAmount;
             $formattedTotal = "Rp " . number_format($grandTotal, 0, ',', '.');
 
             // Catatan (jika ada)
@@ -246,7 +254,7 @@ class WhatsAppNotificationService
                 '{invoice_link}'
             ], [
                 $orderDetails,
-                $orderItems . $shippingInfo, // Add shipping info to items section
+                $orderItems . $shippingInfo, // Add shipping & voucher info to items section
                 $formattedTotal,
                 $notes,
                 $invoiceLink

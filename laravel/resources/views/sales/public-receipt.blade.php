@@ -392,12 +392,12 @@
                     </div>
 
                     <!-- Print Button -->
-                    <div class="no-print mt-6">
+                    {{-- <div class="no-print mt-6">
                         <button onclick="window.print()"
                             class="inline-flex items-center px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 hover:shadow-md">
                             <i class="bi bi-printer mr-2"></i>Cetak Struk
                         </button>
-                    </div>
+                    </div> --}}
 
                     <!-- Digital Receipt Info -->
                     <div class="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
@@ -407,6 +407,17 @@
                                 pembelian</span>
                         </div>
                     </div>
+                    <br>
+                    <!-- Developer Credit -->
+                    <p class="mt-1 sm:mt-1">
+                        <small>
+                            <i class="bi bi-laptop"></i> Designed & Developed by :
+                            <a href="https://www.instagram.com/xzxzvxzo/"
+                                class="text-purple-600 hover:underline font-bold" style="color:#247A72" target="_blank">
+                                adrmyd
+                            </a>
+                        </small>
+                    </p>
                 </div>
             </div>
         </div>

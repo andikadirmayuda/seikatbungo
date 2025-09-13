@@ -107,7 +107,7 @@
                             <!-- Product Selection Form with proper layout -->
                             <div class="space-y-6">
                                 <!-- Step 1: Category Selection -->
-                                <div>
+                                {{-- <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-3">
                                         <i class="bi bi-tags mr-2 text-indigo-600"></i>1. Kategori Produk
                                     </label>
@@ -119,10 +119,10 @@
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 <!-- Step 2: Product Search -->
-                                <div>
+                                {{-- <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-3">
                                         <i class="bi bi-search mr-2 text-green-600"></i>2. Cari Produk
                                     </label>
@@ -140,12 +140,12 @@
                                             <i class="bi bi-x-circle-fill text-lg"></i>
                                         </button>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <!-- Step 3: Product Selection -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-3">
-                                        <i class="bi bi-box mr-2 text-purple-600"></i>3. Pilih Produk
+                                        <i class="bi bi-box mr-2 text-purple-600"></i>Pilih Produk
                                     </label>
                                     <div class="relative">
                                         <button type="button" 
@@ -167,17 +167,29 @@
                                                     <div class="grid grid-cols-2 gap-2" id="productsGrid">
                                                         @foreach($products as $product)
                                                             <button type="button"
-                                                                class="product-option text-left px-3 py-2 rounded-md hover:bg-pink-50 transition-colors {{ $product->current_stock == 0 ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                                                class="product-option text-left flex items-center gap-3 px-3 py-2 rounded-md hover:bg-pink-50 transition-colors {{ $product->current_stock == 0 ? 'opacity-50 cursor-not-allowed' : '' }}"
                                                                 data-product-id="{{ $product->id }}"
                                                                 data-category="{{ $product->category_id }}"
                                                                 data-name="{{ strtolower($product->name ?? '') }}"
                                                                 data-code="{{ strtolower($product->code ?? '') }}"
                                                                 data-original-name="{{ $product->name ?? '' }}"
                                                                 {{ $product->current_stock == 0 ? 'disabled' : '' }}>
-                                                                {{ $product->name }}
-                                                                @if($product->current_stock == 0)
-                                                                    <span class="text-red-500 text-sm">(Stok Habis)</span>
+                                                                @if(!empty($product->image_url))
+                                                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-8 h-8 object-cover rounded border border-gray-200">
+                                                                @else
+                                                                    <span class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded border border-gray-200 text-gray-400"><i class="bi bi-box"></i></span>
                                                                 @endif
+                                                                <div class="flex flex-col flex-1 min-w-0">
+                                                                    <span class="font-medium text-gray-900 truncate">{{ $product->name }}</span>
+                                                                    <span class="text-xs text-gray-500 truncate">Kode: {{ $product->code ?? '-' }}</span>
+                                                                </div>
+                                                                <div class="flex flex-col items-end ml-2">
+                                                                    @if($product->current_stock > 0)
+                                                                        <span class="text-xs text-gray-500">Stok: {{ $product->current_stock }}</span>
+                                                                    @else
+                                                                        <span class="text-xs font-semibold text-red-600 bg-red-100 rounded px-2 py-0.5">Habis</span>
+                                                                    @endif
+                                                                </div>
                                                             </button>
                                                         @endforeach
                                                     </div>
@@ -202,7 +214,7 @@
                                 <!-- Price Type Selection -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-3">
-                                        <i class="bi bi-cash-coin mr-2 text-yellow-600"></i>4. Tipe Harga
+                                        <i class="bi bi-cash-coin mr-2 text-yellow-600"></i>Tipe Harga
                                     </label>
                                     <select
                                         class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
@@ -211,14 +223,22 @@
                                     </select>
                                 </div>
 
-                                <!-- Quantity Input -->
+                                <!-- Quantity Input with Plus/Minus -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-3">
-                                        <i class="bi bi-123 mr-2 text-red-600"></i>5. Jumlah
+                                        <i class="bi bi-123 mr-2 text-red-600"></i>Jumlah
                                     </label>
-                                    <input type="number"
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
-                                        id="quantityInput" min="1" value="1" placeholder="Masukkan jumlah">
+                                    <div class="flex w-full rounded-lg shadow-sm overflow-hidden">
+                                        <button type="button" id="quantityMinusBtn" class="inline-flex items-center justify-center w-12 h-12 border border-gray-300 bg-white text-gray-700 rounded-l-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-pink-500 flex-shrink-0">
+                                            <i class="bi bi-dash"></i>
+                                        </button>
+                                        <input type="number"
+                                            class="flex-grow text-center border-t border-b border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
+                                            id="quantityInput" min="1" value="1" placeholder="Masukkan jumlah" style="height: 48px; min-width: 48px;" />
+                                        <button type="button" id="quantityPlusBtn" class="inline-flex items-center justify-center w-12 h-12 border border-gray-300 bg-white text-gray-700 rounded-r-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-pink-500 flex-shrink-0">
+                                            <i class="bi bi-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <!-- Add to Cart Button -->
@@ -459,8 +479,11 @@
             const dropdownButton = document.getElementById('productDropdownButton');
             const dropdownPanel = document.getElementById('productDropdownPanel');
             const searchInput = document.getElementById('productSearch');
-            const productOptions = document.querySelectorAll('.product-option');
             const hiddenInput = document.getElementById('productSelect');
+
+            function getProductButtons() {
+                return dropdownPanel.querySelectorAll('.product-option');
+            }
 
             // Toggle dropdown
             dropdownButton.addEventListener('click', function() {
@@ -477,29 +500,29 @@
                 }
             });
 
-            // Handle product search
+            // Handle product search (fix: filter button, not parent)
             searchInput.addEventListener('input', function(e) {
                 const searchTerm = e.target.value.toLowerCase();
-                productOptions.forEach(option => {
-                    const productName = option.getAttribute('data-name');
-                    const productCode = option.getAttribute('data-code');
+                getProductButtons().forEach(option => {
+                    const productName = option.getAttribute('data-name') || '';
+                    const productCode = option.getAttribute('data-code') || '';
                     if (productName.includes(searchTerm) || productCode.includes(searchTerm)) {
-                        option.parentElement.classList.remove('hidden');
+                        option.classList.remove('hidden');
                     } else {
-                        option.parentElement.classList.add('hidden');
+                        option.classList.add('hidden');
                     }
                 });
             });
 
             // Handle product selection
-            productOptions.forEach(option => {
+            getProductButtons().forEach(option => {
                 option.addEventListener('click', function() {
                     if (!this.hasAttribute('disabled')) {
                         const productId = this.getAttribute('data-product-id');
                         const productName = this.getAttribute('data-original-name');
                         dropdownButton.innerHTML = `<span class="text-gray-900">${productName}</span>`;
                         hiddenInput.value = productId;
-                        hiddenInput.dispatchEvent(new Event('change')); // Trigger change event
+                        hiddenInput.dispatchEvent(new Event('change'));
                         dropdownPanel.classList.add('hidden');
                     }
                 });
@@ -524,7 +547,20 @@
         // Elements
         const productSelect = document.getElementById('productSelect');
         const priceTypeSelect = document.getElementById('priceTypeSelect');
-        const quantityInput = document.getElementById('quantityInput');
+    const quantityInput = document.getElementById('quantityInput');
+    const quantityMinusBtn = document.getElementById('quantityMinusBtn');
+    const quantityPlusBtn = document.getElementById('quantityPlusBtn');
+        // Handler for plus/minus buttons
+        if (quantityMinusBtn && quantityPlusBtn && quantityInput) {
+            quantityMinusBtn.onclick = function() {
+                let val = parseInt(quantityInput.value) || 1;
+                if (val > 1) quantityInput.value = val - 1;
+            };
+            quantityPlusBtn.onclick = function() {
+                let val = parseInt(quantityInput.value) || 1;
+                quantityInput.value = val + 1;
+            };
+        }
         const addItemBtn = document.getElementById('addItemBtn');
         const subtotalInput = document.getElementById('subtotalInput');
         const totalInput = document.getElementById('totalInput');

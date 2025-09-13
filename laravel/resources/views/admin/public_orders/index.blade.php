@@ -178,9 +178,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="mt-4 flex justify-center" id="pagination-links">
-                            {{ $orders->links() }}
-                        </div>
+                        <!-- Pagination removed as requested -->
                     </div>
                 </div>
             </div>

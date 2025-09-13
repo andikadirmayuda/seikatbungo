@@ -277,6 +277,7 @@
 
     @if($sale->wa_number)
         <script>
+
             function shareToWhatsApp() {
                 // Ubah tampilan button sementara
                 const shareBtn = document.getElementById('shareBtn');
@@ -294,29 +295,29 @@
                 const publicReceiptUrl = '{{ route("sales.public_receipt", $sale->public_code) }}';
 
                 // Pesan WhatsApp
-                const message = `Halo! Berikut adalah struk pembelian Anda:
+                const message = `Halo! Berikut adalah struk pembelian Anda:\n\n*No. Transaksi:* ${orderNumber}\n*Tanggal:* ${orderDate}\n*Total:* ${total}\n\n*Link Struk Digital:*\n\n${publicReceiptUrl}\n\nKlik link di atas untuk melihat detail struk pembelian Anda.\n\nTerima kasih telah berbelanja di Seikat Bungo! 🌸`;
 
-                                📋 *No. Transaksi:* ${orderNumber}
-                                📅 *Tanggal:* ${orderDate}
-                                💰 *Total:* ${total}
-
-                                🔗 *Link Struk Digital:*
-                                ${publicReceiptUrl}
-
-                                Klik link di atas untuk melihat detail struk pembelian Anda.
-
-                                Terima kasih telah berbelanja di Seikat Bungo! 🌸`;
-
-                // Format nomor WhatsApp (hilangkan +, spasi, dan awalan 0)
-                let cleanWaNumber = waNumber.replace(/[\s\+\-\(\)]/g, '');
+                // Format nomor WhatsApp (hilangkan semua karakter non-digit kecuali angka)
+                let cleanWaNumber = waNumber.replace(/[^\d]/g, '');
                 if (cleanWaNumber.startsWith('0')) {
                     cleanWaNumber = '62' + cleanWaNumber.substring(1);
+                } else if (!cleanWaNumber.startsWith('62')) {
+                    // Jika user input tanpa 0 atau 62, anggap salah
+                    showNotification('Format nomor WhatsApp harus diawali 08 atau 62', 'error');
+                    shareBtn.innerHTML = originalContent;
+                    shareBtn.disabled = false;
+                    return;
+                }
+                // Validasi panjang nomor minimal 10 digit setelah 62
+                if (!/^62\d{9,}$/.test(cleanWaNumber)) {
+                    showNotification('Nomor WhatsApp tidak valid! Pastikan minimal 10 digit setelah 62.', 'error');
+                    shareBtn.innerHTML = originalContent;
+                    shareBtn.disabled = false;
+                    return;
                 }
 
                 // Buka WhatsApp dengan pesan
                 const whatsappUrl = `https://wa.me/${cleanWaNumber}?text=${encodeURIComponent(message)}`;
-
-                // Buka di tab baru
                 window.open(whatsappUrl, '_blank');
 
                 // Kembalikan button ke kondisi normal setelah 2 detik
@@ -335,11 +336,11 @@
                 notification.className = `fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg transform transition-all duration-300 ${type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'
                     }`;
                 notification.innerHTML = `
-                                                <div class="flex items-center">
-                                                    <i class="bi bi-check-circle-fill mr-2"></i>
-                                                    <span class="text-sm font-medium">${message}</span>
-                                                </div>
-                                            `;
+                                                                            <div class="flex items-center">
+                                                                                <i class="bi bi-check-circle-fill mr-2"></i>
+                                                                                <span class="text-sm font-medium">${message}</span>
+                                                                            </div>
+                                                                        `;
 
                 document.body.appendChild(notification);
 
