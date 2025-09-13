@@ -17,6 +17,25 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Custom scrollbar for mobile: lebih kecil */
+            ::-webkit-scrollbar {
+                width: 4px;
+                height: 4px;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #b5e2dd;
+                border-radius: 4px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #f3f3f3;
+                border-radius: 4px;
+            }
+            /* Firefox */
+            html {
+                scrollbar-width: thin;
+                scrollbar-color: #b5e2dd #f3f3f3;
+            }
+
         /* Navigation Styles */
         .nav-tab {
             position: relative;
@@ -754,6 +773,22 @@
             </div>
         </div>
     </footer>
+    <!-- End of Footer -->
+
+    <!-- Scroll to Bottom Button -->
+    <button id="scrollToBottomBtn" title="Scroll ke bawah"
+        class="fixed top-1/2 right-6 -translate-y-1/2 z-50 bg-[#2D9C8F] text-white rounded-full shadow-lg p-3 flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none hover:bg-[#247A72] focus:outline-none"
+        style="width: 30px; height: 30px;">
+        <i class="bi bi-arrow-down text-2xl"></i>
+    </button>
+    
+    
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTopBtn" title="Kembali ke atas"
+        class="fixed top-1/2 right-6 -translate-y-1/2 z-50 bg-[#2D9C8F] text-white rounded-full shadow-lg p-3 flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none hover:bg-[#247A72] focus:outline-none"
+        style="width: 30px; height: 30px;">
+        <i class="bi bi-arrow-up text-2xl"></i>
+    </button>
 
     <!-- Include Cart Components -->
     @include('public.partials.cart-modal')
@@ -763,6 +798,51 @@
 
     <script src="{{ asset('js/cart.js') }}?v={{ time() }}"></script>
     <script>
+
+        // Scroll to Bottom Button Logic
+            const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+            function checkScrollButtons() {
+                // Scroll to Top
+                if (window.scrollY > 200) {
+                    scrollToTopBtn.classList.add('opacity-100');
+                    scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                } else {
+                    scrollToTopBtn.classList.remove('opacity-100');
+                    scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                }
+                // Scroll to Bottom
+                const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+                if (window.scrollY < scrollable - 100) {
+                    scrollToBottomBtn.classList.add('opacity-100');
+                    scrollToBottomBtn.classList.remove('opacity-0', 'pointer-events-none');
+                } else {
+                    scrollToBottomBtn.classList.remove('opacity-100');
+                    scrollToBottomBtn.classList.add('opacity-0', 'pointer-events-none');
+                }
+            }
+            window.addEventListener('scroll', checkScrollButtons);
+            // Inisialisasi saat load
+            document.addEventListener('DOMContentLoaded', checkScrollButtons);
+            scrollToBottomBtn.addEventListener('click', function () {
+                window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+            });
+
+            // Scroll to Top Button Logic
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 200) {
+                    scrollToTopBtn.classList.add('opacity-100');
+                    scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                } else {
+                    scrollToTopBtn.classList.remove('opacity-100');
+                    scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                }
+            });
+            scrollToTopBtn.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        
+
         // Search functionality
         function searchBouquets() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();

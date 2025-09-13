@@ -72,6 +72,28 @@
         }
     </script>
     <style>
+        /* Custom scrollbar for mobile: lebih kecil */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #b5e2dd;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f3f3f3;
+            border-radius: 4px;
+        }
+
+        /* Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #b5e2dd #f3f3f3;
+        }
+
         body,
         .font-sans {
             font-family: 'Figtree', sans-serif;
@@ -465,6 +487,32 @@
 
         .animate-fade-in-down {
             animation: fadeInDown 0.2s ease-out;
+        }
+
+        /* Professional Name Styles */
+        .professional-name {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .professional-name:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .professional-name:hover i {
+            color: #247A72;
+            /* hijau soft */
         }
     </style>
 </head>
@@ -1002,10 +1050,105 @@
             </div>
         </div>
     </div>
+    <footer class="bg-gradient-to-r from-[#2D9C8F] to-[#247A72] text-white py-12 mt-16">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="w-16 h-16 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <img src="{{ asset('logo-seikat-bungo.png') }}" alt="Logo" class="brand-logo rounded-full w-12 h-12">
+            </div>
+            <h3 class="text-2xl font-bold mb-2">Seikat Bungo</h3>
+            <p class="text-white mb-4 max-w-2xl mx-auto">
+                Menghadirkan keindahan bunga segar berkualitas premium untuk setiap momen berharga dalam
+                hidup Anda
+            </p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://www.instagram.com/seikatbungo/" class="text-white hover:text-white transition-colors">
+                    <i class="bi bi-instagram text-xl"></i>
+                </a>
+                <a href="https://www.tiktok.com/@seikatbungo" class="text-white hover:text-white transition-colors"
+                    target="_blank" rel="noopener noreferrer">
+                    <i class="bi bi-tiktok text-xl"></i>
+                </a>
+                <a href="https://wa.me/6285119990901?text=Halo%20Seikat%20Bungo%20!"
+                    class="text-white hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+                    <i class="bi bi-whatsapp text-xl"></i>
+                </a>
+            </div>
+            <p class="text-white text-sm">© 2025 Seikat Bungo. All rights reserved.</p>
+            <br>
+            <br>
+            <div class="text-xs text-white flex items-center justify-center mt-4">
+                <i class="bi bi-laptop mr-2"></i>
+                Designed and Developed by :
+                <a href="https://www.instagram.com/adrmyd/" target="_blank" class="professional-name ml-2">
+                    <i class="bi bi-code-slash mr-1"></i> adrmyd
+                </a>
+            </div>
+        </div>
+    </footer>
+    <!-- Scroll to Bottom Button -->
+    <button id="scrollToBottomBtn" title="Scroll ke bawah"
+        class="fixed top-1/2 right-6 -translate-y-1/2 z-50 bg-[#2D9C8F] text-white rounded-full shadow-lg p-3 flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none hover:bg-[#247A72] focus:outline-none"
+        style="width: 30px; height: 30px;">
+        <i class="bi bi-arrow-down text-2xl"></i>
+    </button>
+
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTopBtn" title="Kembali ke atas"
+        class="fixed top-1/2 right-6 -translate-y-1/2 z-50 bg-[#2D9C8F] text-white rounded-full shadow-lg p-3 flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none hover:bg-[#247A72] focus:outline-none"
+        style="width: 30px; height: 30px;">
+        <i class="bi bi-arrow-up text-2xl"></i>
+    </button>
 
     </div>
 
     <script>
+
+
+        // Scroll to Bottom Button Logic
+        const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+        function checkScrollButtons() {
+            // Scroll to Top
+            if (window.scrollY > 200) {
+                scrollToTopBtn.classList.add('opacity-100');
+                scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollToTopBtn.classList.remove('opacity-100');
+                scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+            // Scroll to Bottom
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            if (window.scrollY < scrollable - 100) {
+                scrollToBottomBtn.classList.add('opacity-100');
+                scrollToBottomBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollToBottomBtn.classList.remove('opacity-100');
+                scrollToBottomBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+        window.addEventListener('scroll', checkScrollButtons);
+        // Inisialisasi saat load
+        document.addEventListener('DOMContentLoaded', checkScrollButtons);
+        scrollToBottomBtn.addEventListener('click', function () {
+            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+        });
+
+        // Scroll to Top Button Logic
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 200) {
+                scrollToTopBtn.classList.add('opacity-100');
+                scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollToTopBtn.classList.remove('opacity-100');
+                scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+        scrollToTopBtn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+
         // Global variables
         let currentCustomBouquetId = {{ $customBouquet->id }};
         let selectedProduct = null;

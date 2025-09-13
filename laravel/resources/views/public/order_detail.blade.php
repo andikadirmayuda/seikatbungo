@@ -12,6 +12,42 @@
     <link rel="stylesheet" href="{{ asset('css/notifications.css') }}">
 </head>
 
+<style>
+
+/* Professional Name Styles */
+    .professional-name {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 1.5px 6px;
+        font-size: 0.60rem;
+        border: 1px solid rgba(0, 0, 0, 0.18);
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #666666;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    @media (max-width: 600px) {
+        .professional-name {
+            font-size: 0.52rem;
+            padding: 1px 4px;
+            border-width: 1px;
+        }
+    }
+    .professional-name:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #58B8AB;
+    box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    transform: translateY(-2px);
+    color: #58B8AB;
+    }
+    .professional-name:hover i {
+        color: #58B8AB; /* hijau soft */
+    }
+
+</style>
+
 <body class="bg-gray-100 min-h-screen">
     <div
         class="container mx-auto px-2 sm:px-4 py-4 sm:py-8 flex justify-center items-center min-h-screen text-[13px] sm:text-base">
@@ -1103,17 +1139,13 @@ $customBouquetItems = $order->items->filter(function ($item) {
                 {{-- <div class="w-100 h-0.5 bg-pink-400 mx-auto mb-3 mt-6"></div> --}}
                 <br>
                 <br>
-                
-                <p class="mt-1 sm:mt-1">
-                    <small>
-                        <i class="bi bi-laptop"></i> Designed & Developed by :
-                        <a href="https://www.instagram.com/xzxzvxzo/" 
-                        class="text-purple-600 hover:underline font-bold" style="color:#247A72"
-                        target="_blank">
-                        adrmyd
-                        </a>
-                    </small>
-                </p>
+            <div class="text-gray flex items-center justify-center mt-4" style="font-size:0.65rem;">
+                <i class="bi bi-laptop mr-2"></i>
+                Designed and Developed by :
+                <a href="https://www.instagram.com/adrmyd/" target="_blank" class="professional-name ml-2">
+                    <i class="bi bi-code-slash mr-1"></i> adrmyd
+                </a>
+            </div>
             </div>
         </div>
     </div>
