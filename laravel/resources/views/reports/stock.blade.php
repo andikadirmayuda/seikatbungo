@@ -208,6 +208,9 @@
                             <tr>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    No</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Produk</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -229,6 +232,8 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse($products as $product)
                                 <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $loop->iteration }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div
@@ -267,14 +272,14 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
-                                                    @if(($rekap[$product->id]['stok_akhir'] ?? $product->current_stock) > 10)
-                                                        bg-green-100 text-green-800
-                                                    @elseif(($rekap[$product->id]['stok_akhir'] ?? $product->current_stock) > 5)
-                                                        bg-yellow-100 text-yellow-800
-                                                    @else
-                                                        bg-red-100 text-red-800
-                                                    @endif
-                                                ">
+                                                                @if(($rekap[$product->id]['stok_akhir'] ?? $product->current_stock) > 10)
+                                                                    bg-green-100 text-green-800
+                                                                @elseif(($rekap[$product->id]['stok_akhir'] ?? $product->current_stock) > 5)
+                                                                    bg-yellow-100 text-yellow-800
+                                                                @else
+                                                                    bg-red-100 text-red-800
+                                                                @endif
+                                                            ">
                                             {{ $rekap[$product->id]['stok_akhir'] ?? $product->current_stock }}
                                         </span>
                                     </td>
@@ -344,14 +349,14 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
-                                                    @if($log->qty > 0)
-                                                        bg-green-100 text-green-800
-                                                    @elseif($log->qty < 0)
-                                                        bg-red-100 text-red-800
-                                                    @else
-                                                        bg-gray-100 text-gray-800
-                                                    @endif
-                                                ">
+                                                                @if($log->qty > 0)
+                                                                    bg-green-100 text-green-800
+                                                                @elseif($log->qty < 0)
+                                                                    bg-red-100 text-red-800
+                                                                @else
+                                                                    bg-gray-100 text-gray-800
+                                                                @endif
+                                                            ">
                                             @if($log->qty > 0)
                                                 <i class="bi bi-plus-circle mr-1"></i>
                                             @elseif($log->qty < 0)

@@ -221,11 +221,11 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                            @if($sale->payment_method === 'cash')
-                                                                bg-green-100 text-green-800
-                                                            @else
-                                                                bg-blue-100 text-blue-800
-                                                            @endif">
+                                                                    @if($sale->payment_method === 'cash')
+                                                                        bg-green-100 text-green-800
+                                                                    @else
+                                                                        bg-blue-100 text-blue-800
+                                                                    @endif">
                                             <i
                                                 class="bi {{ $sale->payment_method === 'cash' ? 'bi-cash' : 'bi-credit-card' }} mr-1"></i>
                                             {{ ucfirst($sale->payment_method) }}
@@ -234,7 +234,10 @@
                                     <td class="px-6 py-4">
                                         <div class="text-sm text-gray-900">
                                             @foreach($sale->items as $item)
-                                                {{ $item->product->name }} ({{ $item->quantity }}x)<br>
+                                                {{ $item->product->name }} ({{ $item->quantity }}x)
+                                                @if(!empty($item->price_type))
+                                                    {{ $item->price_type }}
+                                                @endif<br>
                                             @endforeach
                                         </div>
                                     </td>
@@ -245,12 +248,12 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                                                @if($sale->status === 'completed')
-                                                                    bg-green-100 text-green-800
-                                                                @else
-                                                                    bg-red-100 text-green-800
-                                                                @endif
-                                                            ">
+                                                                        @if($sale->status === 'completed')
+                                                                            bg-green-100 text-green-800
+                                                                        @else
+                                                                            bg-red-100 text-green-800
+                                                                        @endif
+                                                                    ">
                                             <i
                                                 class="bi {{ $sale->status === 'completed' ? 'bi-check-circle' : 'bi-check-circle' }} mr-1"></i>
                                             {{ $sale->status === 'completed' ? 'Selesai' : 'selesai' }}
@@ -271,11 +274,7 @@
                     </table>
                 </div>
 
-                @if($sales->hasPages())
-                    <div class="px-6 py-4 border-t border-gray-100">
-                        {{ $sales->links() }}
-                    </div>
-                @endif
+                {{-- Pagination dihapus agar semua data tampil tanpa pagination --}}
             </div>
         </div>
     </div>

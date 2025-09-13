@@ -26,10 +26,10 @@ class ReportController extends Controller
             $query->where('status', $request->status);
         }
 
-        // Get sales data with relationships
+        // Get all sales data with relationships (no pagination)
         $sales = $query->with(['items.product', 'deletedBy'])
             ->latest()
-            ->paginate(10);
+            ->get();
 
         // Calculate statistics
         $totalSales = $query->count();

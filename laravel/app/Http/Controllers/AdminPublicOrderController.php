@@ -253,48 +253,82 @@ class AdminPublicOrderController extends Controller
      */
     public function bulkDelete(Request $request)
     {
-        $statuses = $request->input('statuses', []);
-        if (!is_array($statuses) || empty($statuses)) {
-            return back()->with('error', 'Pilih minimal satu status yang ingin dihapus.');
-        }
-        $orders = PublicOrder::whereIn('status', $statuses)->get();
-        $count = $orders->count();
-        if ($count === 0) {
-            return back()->with('info', 'Tidak ada pesanan publik dengan status yang dipilih.');
-        }
-
-        $deleted = 0;
-        foreach ($orders as $order) {
-            if (method_exists($order, 'items')) {
-                $order->items()->delete();
+        $ids = $request->input('ids', []);
+        if (is_array($ids) && count($ids) > 0) {
+            // Hapus berdasarkan checklist (ids[])
+            $orders = PublicOrder::whereIn('id', $ids)->get();
+            $count = $orders->count();
+            if ($count === 0) {
+                return back()->with('info', 'Tidak ada pesanan publik yang dipilih.');
             }
-
-            // Hapus bukti pembayaran jika ada
-            if ($order->payment_proof && Storage::disk('public')->exists($order->payment_proof)) {
-                Storage::disk('public')->delete($order->payment_proof);
-            }
-
-            // Hapus packing photo jika ada
-            if ($order->packing_photo && Storage::disk('public')->exists($order->packing_photo)) {
-                Storage::disk('public')->delete($order->packing_photo);
-            }
-
-            // Hapus file-file packing_files jika ada
-            if ($order->packing_files) {
-                $packingFiles = json_decode($order->packing_files, true);
-                if (is_array($packingFiles)) {
-                    foreach ($packingFiles as $filePath) {
-                        if ($filePath && Storage::disk('public')->exists($filePath)) {
-                            Storage::disk('public')->delete($filePath);
+            $deleted = 0;
+            foreach ($orders as $order) {
+                if (method_exists($order, 'items')) {
+                    $order->items()->delete();
+                }
+                // Hapus bukti pembayaran jika ada
+                if ($order->payment_proof && Storage::disk('public')->exists($order->payment_proof)) {
+                    Storage::disk('public')->delete($order->payment_proof);
+                }
+                // Hapus packing photo jika ada
+                if ($order->packing_photo && Storage::disk('public')->exists($order->packing_photo)) {
+                    Storage::disk('public')->delete($order->packing_photo);
+                }
+                // Hapus file-file packing_files jika ada
+                if ($order->packing_files) {
+                    $packingFiles = json_decode($order->packing_files, true);
+                    if (is_array($packingFiles)) {
+                        foreach ($packingFiles as $filePath) {
+                            if ($filePath && Storage::disk('public')->exists($filePath)) {
+                                Storage::disk('public')->delete($filePath);
+                            }
                         }
                     }
                 }
+                $order->delete();
+                $deleted++;
             }
-
-            $order->delete();
-            $deleted++;
+            return back()->with('success', "$deleted pesanan publik terpilih berhasil dihapus.");
+        } else {
+            // Hapus berdasarkan status (fitur lama)
+            $statuses = $request->input('statuses', []);
+            if (!is_array($statuses) || empty($statuses)) {
+                return back()->with('error', 'Pilih minimal satu status yang ingin dihapus.');
+            }
+            $orders = PublicOrder::whereIn('status', $statuses)->get();
+            $count = $orders->count();
+            if ($count === 0) {
+                return back()->with('info', 'Tidak ada pesanan publik dengan status yang dipilih.');
+            }
+            $deleted = 0;
+            foreach ($orders as $order) {
+                if (method_exists($order, 'items')) {
+                    $order->items()->delete();
+                }
+                // Hapus bukti pembayaran jika ada
+                if ($order->payment_proof && Storage::disk('public')->exists($order->payment_proof)) {
+                    Storage::disk('public')->delete($order->payment_proof);
+                }
+                // Hapus packing photo jika ada
+                if ($order->packing_photo && Storage::disk('public')->exists($order->packing_photo)) {
+                    Storage::disk('public')->delete($order->packing_photo);
+                }
+                // Hapus file-file packing_files jika ada
+                if ($order->packing_files) {
+                    $packingFiles = json_decode($order->packing_files, true);
+                    if (is_array($packingFiles)) {
+                        foreach ($packingFiles as $filePath) {
+                            if ($filePath && Storage::disk('public')->exists($filePath)) {
+                                Storage::disk('public')->delete($filePath);
+                            }
+                        }
+                    }
+                }
+                $order->delete();
+                $deleted++;
+            }
+            return back()->with('success', "$deleted pesanan publik dengan status terpilih berhasil dihapus.");
         }
-        return back()->with('success', "$deleted pesanan publik dengan status terpilih berhasil dihapus.");
     }
     public function index()
     {

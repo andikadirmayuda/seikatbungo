@@ -8,78 +8,103 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     @php $user = auth()->user(); @endphp
                     @if($user && $user->hasRole(['owner', 'admin']))
-                        <div class="mb-4">
-                            <button type="button" id="toggle-mass-delete"
-                                class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded shadow">
-                                Aktifkan Mode Hapus Massal
+                        <div class="mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
+
+                            <!-- Bulk Delete Checklist Button -->
+                            <button type="button" id="delete-selected-btn" disabled
+                                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow opacity-50 cursor-not-allowed flex items-center">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Hapus Terpilih
+                                <span id="selected-count"
+                                    class="ml-2 bg-white text-red-600 rounded-full px-2 text-xs hidden">0</span>
                             </button>
                         </div>
-                        <div id="mass-delete-panel" style="display:none;">
-                            <form id="bulk-delete-form" method="POST"
-                                action="{{ route('admin.public-orders.bulk-delete') }}"
-                                onsubmit="return confirm('Yakin ingin menghapus pesanan publik dengan status yang dipilih? Data yang dihapus tidak dapat dikembalikan!')"
-                                class="flex flex-col md:flex-row md:items-center gap-2">
-                                @csrf
-                                <div class="flex flex-col md:flex-row gap-4 w-full">
-                                    <div class="border rounded-lg p-3 flex-1 min-w-[220px] bg-blue-50">
-                                        <div class="font-semibold text-blue-700 mb-2 text-sm">Status Pesanan</div>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-1">
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="pending" class="mr-1"> Menunggu Diproses</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="processed" class="mr-1"> Diproses</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="packing" class="mr-1"> Dikemas</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="shipped" class="mr-1"> Dikirim</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="completed" class="mr-1"> Selesai (completed)</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="done" class="mr-1"> Selesai (done)</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="cancelled" class="mr-1"> Dibatalkan</label>
-                                        </div>
-                                    </div>
-                                    <div class="border rounded-lg p-3 flex-1 min-w-[220px] bg-green-50">
-                                        <div class="font-semibold text-green-700 mb-2 text-sm">Status Pembayaran</div>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-1">
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="waiting_confirmation" class="mr-1"> Menunggu Konfirmasi</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="ready_to_pay" class="mr-1"> Siap Dibayar</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="waiting_payment" class="mr-1"> Menunggu Pembayaran</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="waiting_verification" class="mr-1"> Menunggu Verifikasi</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="dp_paid" class="mr-1"> DP</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="partial_paid" class="mr-1"> Sebagian Bayar</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="paid" class="mr-1"> Lunas</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="rejected" class="mr-1"> Ditolak</label>
-                                            <label class="inline-flex items-center"><input type="checkbox" name="statuses[]"
-                                                    value="cancelled" class="mr-1"> Dibatalkan (bayar)</label>
-                                        </div>
+                        <!-- mass-delete-panel dihapus, hanya fitur checklist yang tersisa -->
+                        <!-- Modal Konfirmasi Hapus Checklist -->
+                        <div id="delete-modal"
+                            class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+                            <div class="bg-white rounded-lg p-8 max-w-md mx-auto">
+                                <div class="text-center">
+                                    <svg class="mx-auto mb-4 w-12 h-12 text-red-500" fill="none" stroke="currentColor"
+                                        stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 9v2m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+                                    </svg>
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Konfirmasi Hapus</h3>
+                                    <p class="text-gray-500 mb-6">Anda yakin ingin menghapus <span id="delete-modal-count"
+                                            class="font-semibold"></span> pesanan publik yang dipilih? Tindakan ini tidak
+                                        dapat dibatalkan.</p>
+                                    <div class="flex justify-center space-x-4">
+                                        <button type="button" onclick="closeDeleteModal()"
+                                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">Batal</button>
+                                        <button type="button" onclick="executeBulkDelete()"
+                                            class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">Ya,
+                                            Hapus</button>
                                     </div>
                                 </div>
-                                <button type="submit"
-                                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow">
-                                    Hapus Semua Pesanan (Status Dipilih)
-                                </button>
-                            </form>
+                            </div>
                         </div>
+                        <form id="bulk-delete-checklist-form" method="POST"
+                            action="{{ route('admin.public-orders.bulk-delete') }}" style="display:none;">
+                            @csrf
+                        </form>
                         <script>
                             document.addEventListener('DOMContentLoaded', function () {
-                                const toggleBtn = document.getElementById('toggle-mass-delete');
-                                const panel = document.getElementById('mass-delete-panel');
-                                let massMode = false;
-                                toggleBtn.addEventListener('click', function () {
-                                    massMode = !massMode;
-                                    panel.style.display = massMode ? '' : 'none';
-                                    toggleBtn.textContent = massMode ? 'Nonaktifkan Mode Hapus Massal' : 'Aktifkan Mode Hapus Massal';
+                                // Checklist Bulk Delete
+                                const deleteBtn = document.getElementById('delete-selected-btn');
+                                const selectedCount = document.getElementById('selected-count');
+                                const deleteModal = document.getElementById('delete-modal');
+                                let checkedIds = [];
+
+                                // Jadikan global agar bisa dipanggil dari script lain
+                                window.updateDeleteBtn = function () {
+                                    checkedIds = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+                                    if (checkedIds.length > 0) {
+                                        deleteBtn.disabled = false;
+                                        deleteBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                        selectedCount.textContent = checkedIds.length;
+                                        selectedCount.classList.remove('hidden');
+                                    } else {
+                                        deleteBtn.disabled = true;
+                                        deleteBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                                        selectedCount.classList.add('hidden');
+                                    }
+                                }
+                                document.addEventListener('change', function (e) {
+                                    if (e.target.classList.contains('row-checkbox')) {
+                                        window.updateDeleteBtn();
+                                    }
                                 });
+                                deleteBtn.addEventListener('click', function () {
+                                    document.getElementById('delete-modal-count').textContent = checkedIds.length;
+                                    deleteModal.classList.remove('hidden');
+                                    deleteModal.classList.add('flex');
+                                });
+                                window.closeDeleteModal = function () {
+                                    deleteModal.classList.add('hidden');
+                                    deleteModal.classList.remove('flex');
+                                }
+                                window.executeBulkDelete = function () {
+                                    const form = document.getElementById('bulk-delete-checklist-form');
+                                    form.innerHTML = '';
+                                    const csrf = document.createElement('input');
+                                    csrf.type = 'hidden';
+                                    csrf.name = '_token';
+                                    csrf.value = '{{ csrf_token() }}';
+                                    form.appendChild(csrf);
+                                    checkedIds.forEach(id => {
+                                        const input = document.createElement('input');
+                                        input.type = 'hidden';
+                                        input.name = 'ids[]';
+                                        input.value = id;
+                                        form.appendChild(input);
+                                    });
+                                    form.style.display = 'block';
+                                    form.submit();
+                                }
                             });
                         </script>
                     @endif
@@ -154,6 +179,15 @@
                         <table class="min-w-full divide-y divide-gray-200 text-sm">
                             <thead class="bg-gradient-to-r from-blue-50 to-blue-100">
                                 <tr>
+                                    @if($user && $user->hasRole(['owner', 'admin']))
+                                        <th class="px-2 py-2 border font-semibold text-gray-700" style="width:40px;">
+                                            <div
+                                                style="display:flex;align-items:center;justify-content:center;height:100%;">
+                                                <input type="checkbox" id="select-all-checkbox"
+                                                    class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                                            </div>
+                                        </th>
+                                    @endif
                                     <th class="px-4 py-2 border font-semibold text-gray-700">ID</th>
                                     <th class="px-4 py-2 border font-semibold text-gray-700">Nama Pelanggan</th>
                                     <th class="px-4 py-2 border font-semibold text-gray-700">Tanggal Ambil/Kirim</th>
@@ -168,9 +202,13 @@
                                 @foreach($orders as $order)
                                     <tr>
                                         @if($user && $user->hasRole(['owner', 'admin']))
-                                            <td class="border px-2 py-2 mass-delete-checkbox" style="display:none;">
-                                                <input type="checkbox" form="mass-delete-form" name="ids[]"
-                                                    value="{{ $order->id }}">
+                                            <td class="border px-2 py-2" style="width:40px;">
+                                                <div
+                                                    style="display:flex;align-items:center;justify-content:center;height:100%;">
+                                                    <input type="checkbox"
+                                                        class="row-checkbox rounded border-gray-300 text-red-600 focus:ring-red-500"
+                                                        value="{{ $order->id }}">
+                                                </div>
                                             </td>
                                         @endif
                                         @include('admin.public_orders._order_row', ['order' => $order])
@@ -178,6 +216,31 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <script>
+                            // Event delegation: select all & sync status
+                            document.addEventListener('change', function (e) {
+                                // Select all
+                                if (e.target && e.target.id === 'select-all-checkbox') {
+                                    const checkboxes = document.querySelectorAll('.row-checkbox');
+                                    checkboxes.forEach(cb => {
+                                        cb.checked = e.target.checked;
+                                        cb.dispatchEvent(new Event('change'));
+                                    });
+                                    // Panggil updateDeleteBtn setelah select all
+                                    if (typeof window.updateDeleteBtn === 'function') window.updateDeleteBtn();
+                                }
+                                // Sync select all status
+                                if (e.target && e.target.classList.contains('row-checkbox')) {
+                                    const checkboxes = document.querySelectorAll('.row-checkbox');
+                                    const checked = document.querySelectorAll('.row-checkbox:checked');
+                                    const selectAll = document.getElementById('select-all-checkbox');
+                                    if (selectAll) {
+                                        selectAll.checked = checkboxes.length > 0 && checked.length === checkboxes.length;
+                                        selectAll.indeterminate = checked.length > 0 && checked.length < checkboxes.length;
+                                    }
+                                }
+                            });
+                        </script>
                         <!-- Pagination removed as requested -->
                     </div>
                 </div>
@@ -214,6 +277,8 @@
                 .then(data => {
                     tbody.innerHTML = data.rows;
                     document.getElementById('pagination-links').innerHTML = data.pagination;
+                    // Panggil ulang updateDeleteBtn agar tombol hapus & select all tetap sinkron
+                    if (typeof updateDeleteBtn === 'function') updateDeleteBtn();
                 });
         }
 

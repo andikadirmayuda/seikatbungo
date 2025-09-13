@@ -240,6 +240,30 @@
             background-size: 200% 200%;
             animation: gradientShift 3s ease infinite;
         }
+
+        /* Professional Name Styles */
+    .professional-name {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 4px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .professional-name:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    transform: translateY(-2px);
+    }
+    .professional-name:hover i {
+        color: #247A72; /* hijau soft */
+    }
     </style>
     <script>
         // Fungsi telah diganti dengan panggilan langsung ke showGreetingCardModal
@@ -719,6 +743,15 @@
                 </a>
             </div>
             <p class="text-white text-sm">© 2025 Seikat Bungo. All rights reserved.</p>
+            <br>
+            <br>
+            <div class="text-xs text-white flex items-center justify-center mt-4">
+                <i class="bi bi-laptop mr-2"></i>
+                Designed and Developed by :
+                <a href="https://www.instagram.com/adrmyd/" target="_blank" class="professional-name ml-2">
+                    <i class="bi bi-code-slash mr-1"></i> adrmyd
+                </a>
+            </div>
         </div>
     </footer>
 

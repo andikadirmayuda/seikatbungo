@@ -21,6 +21,7 @@
     ];
 @endphp
 <tr>
+    <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
     <td class="px-4 py-2 border">{{ $order->id }}</td>
     <td class="px-4 py-2 border">{{ $order->customer_name }}</td>
     <td class="px-4 py-2 border">{{ $order->pickup_date }}</td>

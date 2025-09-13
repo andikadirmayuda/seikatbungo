@@ -868,6 +868,31 @@
             background-size: 200% 200%;
             animation: gradientShift 3s ease infinite;
         }
+
+    /* Professional Name Styles */
+    .professional-name {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        padding: 4px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .professional-name:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    transform: translateY(-2px);
+}
+.professional-name:hover i {
+    color: #247A72; /* hijau soft */
+}
+
     </style>
 </head>
 
@@ -1211,21 +1236,21 @@
                                 <!-- Price - Centered -->
                                 <div>
                                     @php
-                                        // Siapkan array harga untuk JS
-                                        $jsPrices = $flower->prices->map(function ($price) {
-                                            return [
-                                                'id' => $price->id,
-                                                'type' => $price->type,
-                                                'label' => __(ucwords(str_replace('_', ' ', $price->type))),
-                                                'price' => (int) $price->price // Pastikan price adalah integer
-                                            ];
-                                        });
+        // Siapkan array harga untuk JS
+        $jsPrices = $flower->prices->map(function ($price) {
+            return [
+                'id' => $price->id,
+                'type' => $price->type,
+                'label' => __(ucwords(str_replace('_', ' ', $price->type))),
+                'price' => (int) $price->price // Pastikan price adalah integer
+            ];
+        });
                                     @endphp
                                     <div class="text-center">
                                         <div class="text-price text-sm sm:text-lg font-bold text-[#275a59] text-center">
                                             @php
-                                                $minPrice = $jsPrices->min('price');
-                                                $maxPrice = $jsPrices->max('price');
+        $minPrice = $jsPrices->min('price');
+        $maxPrice = $jsPrices->max('price');
                                             @endphp
                                             @if($minPrice === $maxPrice)
                                                 Rp {{ number_format($minPrice, 0, ',', '.') }}
@@ -1248,27 +1273,27 @@
                                         <span
                                             class="font-semibold sm:text-sm {{ $flower->current_stock > 10 ? 'text-orange-600' : ($flower->current_stock > 0 ? 'text-yellow-600' : 'text-red-600') }}">
                                             @php
-                                                // Cari harga ikat yang tersedia, prioritas ikat 3, ikat 5, ikat 10, ikat 20
-                                                $ikatPrice = $flower->prices->firstWhere('type', 'ikat_3')
-                                                    ?: $flower->prices->firstWhere('type', 'ikat 3')
-                                                    ?: $flower->prices->firstWhere('type', 'ikat_5')
-                                                    ?: $flower->prices->firstWhere('type', 'ikat 5')
-                                                    ?: $flower->prices->firstWhere('type', 'ikat_10')
-                                                    ?: $flower->prices->firstWhere('type', 'ikat 10')
-                                                    ?: $flower->prices->firstWhere('type', 'ikat_20')
-                                                    ?: $flower->prices->firstWhere('type', 'ikat 20');
+        // Cari harga ikat yang tersedia, prioritas ikat 3, ikat 5, ikat 10, ikat 20
+        $ikatPrice = $flower->prices->firstWhere('type', 'ikat_3')
+            ?: $flower->prices->firstWhere('type', 'ikat 3')
+            ?: $flower->prices->firstWhere('type', 'ikat_5')
+            ?: $flower->prices->firstWhere('type', 'ikat 5')
+            ?: $flower->prices->firstWhere('type', 'ikat_10')
+            ?: $flower->prices->firstWhere('type', 'ikat 10')
+            ?: $flower->prices->firstWhere('type', 'ikat_20')
+            ?: $flower->prices->firstWhere('type', 'ikat 20');
 
-                                                $ikatCount = 0;
-                                                $ikatLabel = '';
+        $ikatCount = 0;
+        $ikatLabel = '';
 
-                                                if ($ikatPrice && $ikatPrice->unit_equivalent > 0) {
-                                                    $ikatCount = floor($flower->current_stock / $ikatPrice->unit_equivalent);
-                                                    $unitSize = $ikatPrice->unit_equivalent;
-                                                    $ikatLabel = " / {$ikatCount} ikat";
-                                                }
+        if ($ikatPrice && $ikatPrice->unit_equivalent > 0) {
+            $ikatCount = floor($flower->current_stock / $ikatPrice->unit_equivalent);
+            $unitSize = $ikatPrice->unit_equivalent;
+            $ikatLabel = " / {$ikatCount} ikat";
+        }
 
-                                                // Gunakan base_unit dari database atau default ke 'tangkai'
-                                                $baseUnit = $flower->base_unit ?? 'tangkai';
+        // Gunakan base_unit dari database atau default ke 'tangkai'
+        $baseUnit = $flower->base_unit ?? 'tangkai';
                                             @endphp
                                             {{ $flower->current_stock }} {{ $baseUnit }}{{ $ikatLabel }}
                                         </span>
@@ -1397,8 +1422,8 @@
                                 <!-- Price Range - Left Aligned -->
                                 <div class="mb-1">
                                     @php
-                                        $minPrice = $bouquet->prices->min('price');
-                                        $maxPrice = $bouquet->prices->max('price');
+        $minPrice = $bouquet->prices->min('price');
+        $maxPrice = $bouquet->prices->max('price');
                                     @endphp
                                     <div class="text-left">
                                         <div class="text-price text-sm sm:text-lg font-bold text-rose-600">
@@ -1488,6 +1513,15 @@
                 </a>
             </div>
             <p class="text-white text-sm">© 2025 Seikat Bungo. All rights reserved.</p>
+            <br>
+            <br>
+            <div class="text-xs text-white flex items-center justify-center mt-4">
+                <i class="bi bi-laptop mr-2"></i>
+                Designed and Developed by :
+                <a href="https://www.instagram.com/adrmyd/" target="_blank" class="professional-name ml-2">
+                    <i class="bi bi-code-slash mr-1"></i> adrmyd
+                </a>
+            </div>
         </div>
     </footer>
 

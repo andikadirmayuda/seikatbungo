@@ -455,15 +455,37 @@
                 minMinutes = 30;
             @endif
 
-            // Set minimal waktu ambil sesuai jenis pesanan
+                // Helper: format date to yyyy-mm-dd
+                function formatDate(date) {
+                    const y = date.getFullYear();
+                    const m = String(date.getMonth() + 1).padStart(2, '0');
+                    const d = String(date.getDate()).padStart(2, '0');
+                    return `${y}-${m}-${d}`;
+                }
+
+            // Set min time hanya jika tanggal hari ini
             function setMinPickupTime() {
-                const now = new Date();
-                now.setMinutes(now.getMinutes() + minMinutes);
-                const minHours = String(now.getHours()).padStart(2, '0');
-                const minMins = String(now.getMinutes()).padStart(2, '0');
-                const minTime = `${minHours}:${minMins}`;
-                pickupTimeInput.min = minTime;
+                const pickupDateInput = document.getElementById('pickup_date');
+                const selectedDate = pickupDateInput.value;
+                const today = formatDate(new Date());
+                if (selectedDate === today) {
+                    const now = new Date();
+                    now.setMinutes(now.getMinutes() + minMinutes);
+                    const minHours = String(now.getHours()).padStart(2, '0');
+                    const minMins = String(now.getMinutes()).padStart(2, '0');
+                    const minTime = `${minHours}:${minMins}`;
+                    pickupTimeInput.min = minTime;
+                } else {
+                    pickupTimeInput.min = '';
+                }
             }
+
+            // Update min time saat tanggal berubah
+            document.getElementById('pickup_date').addEventListener('change', function () {
+                setMinPickupTime();
+                pickupTimeInput.value = '';
+                pickupTimeDisplay.textContent = "-";
+            });
             setMinPickupTime();
 
             function showModal(text) {
@@ -485,17 +507,19 @@
                     return;
                 }
 
-                // Validasi: waktu harus >= min
-                const min = pickupTimeInput.min;
-                if (timeValue < min) {
-                    // let msg = 'Waktu ambil/pengiriman minimal <span class="font-semibold">' + minMinutes + ' menit</span> dari sekarang. Serta membutuhkan waktu Dalam perakitan & pengemasan pesanan';
-                    // let msg = 'Pengambilan/pengiriman dapat dilakukan minimal <span class="font-semibold">' + minMinutes + ' menit</span> dari sekarang, karena pesanan memerlukan waktu untuk perakitan dan pengemasan.<br><br><i>*Waktu dapat berubah sesuai ukuran dan jumlah pesanan.</i>';
-                    let msg = 'Pesanan Anda membutuhkan waktu untuk dirangkai atau dikemas. Pengambilan dan Pengiriman bisa dilakukan minimal <span class="font-semibold">' + minMinutes + ' menit</span> dari sekarang.<br><br><i>*Estimasi waktu dapat Berubah tergantung ukuran dan jumlah pesanan.</i>';
-
-                    showModal(msg);
-                    pickupTimeInput.value = '';
-                    pickupTimeDisplay.textContent = "-";
-                    return;
+                // Validasi: waktu harus >= min hanya jika tanggal hari ini
+                const pickupDateInput = document.getElementById('pickup_date');
+                const selectedDate = pickupDateInput.value;
+                const today = formatDate(new Date());
+                if (selectedDate === today && pickupTimeInput.min) {
+                    const min = pickupTimeInput.min;
+                    if (timeValue < min) {
+                        let msg = 'Pesanan Anda membutuhkan waktu untuk dirangkai atau dikemas. Pengambilan dan Pengiriman bisa dilakukan minimal <span class="font-semibold">' + minMinutes + ' menit</span> dari sekarang.<br><br><i>*Estimasi waktu dapat Berubah tergantung ukuran dan jumlah pesanan.</i>';
+                        showModal(msg);
+                        pickupTimeInput.value = '';
+                        pickupTimeDisplay.textContent = "-";
+                        return;
+                    }
                 }
 
                 // Pisahkan jam & menit
