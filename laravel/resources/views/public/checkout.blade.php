@@ -362,9 +362,9 @@
 
         <!-- Modal Notifikasi Waktu Tidak Valid -->
         <div id="modal-time-warning"
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+            class="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-40 hidden">
             <div
-                class="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center border border-rose-200 animate-fade-in">
+                class="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center border border-rose-200 animate-fade-in relative z-[10000]">
                 <div class="flex flex-col items-center">
                     <div class="w-14 h-14 flex items-center justify-center bg-rose-100 rounded-full mb-4">
                         <i class="bi bi-exclamation-triangle text-3xl text-rose-600"></i>
@@ -377,6 +377,16 @@
             </div>
         </div>
         <style>
+            /* Pastikan modal dan konten modal selalu di atas elemen lain (termasuk native select/time picker di browser modern) */
+            #modal-time-warning {
+                z-index: 9999 !important;
+            }
+
+            #modal-time-warning>div {
+                z-index: 10000 !important;
+                position: relative;
+            }
+
             @keyframes fade-in {
                 from {
                     opacity: 0;
