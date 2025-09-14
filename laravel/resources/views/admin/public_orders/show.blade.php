@@ -123,12 +123,48 @@ $timeOfDay = match (true) {
                         <span class="text-sm font-medium text-gray-500 sm:w-32 mb-1 sm:mb-0">Metode:</span>
                         <span class="text-sm font-semibold text-gray-900">{{ $order->delivery_method }}</span>
                     </div>
+                    <!-- Update Metode Pembayaran (Admin Only) -->
+                    <div class="flex flex-col sm:flex-row sm:items-center mt-2">
+                        <span class="text-sm font-medium text-gray-500 sm:w-32 mb-1 sm:mb-0">Metode Pembayaran:</span>
+                        <form method="POST" action="{{ route('admin.public-orders.update-payment-method', $order->id) }}" class="flex items-center gap-2">
+                            @csrf
+                            <div class="relative">
+                                <select name="payment_method" class="text-base px-4 py-2 border-2 border-pink-400 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200 bg-white appearance-none w-48 font-semibold text-gray-700 hover:border-pink-500 cursor-pointer custom-select-arrow">
+                                    <option value="" disabled {{ !$order->payment_method ? 'selected' : '' }} class="text-gray-400">Pilih metode</option>
+                                    <option value="cash" {{ $order->payment_method === 'cash' ? 'selected' : '' }}>💵 Cash</option>
+                                    <option value="transfer" {{ $order->payment_method === 'transfer' ? 'selected' : '' }}>🏦 Transfer</option>
+                                    <option value="debit" {{ $order->payment_method === 'debit' ? 'selected' : '' }}>💳 Debit</option>
+                                    <option value="e-wallet" {{ $order->payment_method === 'e-wallet' ? 'selected' : '' }}>📱 E-Wallet</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-pink-500">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </div>
+                            </div>
+                            <button type="submit" class="ml-2 bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-pink-400">Update</button>
+                        </form>
+                        @if($order->payment_method)
+                            <span class="ml-2 text-xs text-gray-600">Terakhir: <b>{{ ucfirst($order->payment_method) }}</b></span>
+                        @endif
+                    </div>
                     @if($order->shipping_fee > 0)
                         <div class="flex flex-col sm:flex-row sm:items-center">
                             <span class="text-sm font-medium text-gray-500 sm:w-32 mb-1 sm:mb-0">Ongkir:</span>
                             <span class="text-sm font-semibold text-red-600">Rp{{ number_format($order->shipping_fee, 0, ',', '.') }}</span>
                         </div>
                     @endif
+                    <style>
+                        /* Custom select arrow for better appearance */
+                        .custom-select-arrow {
+                            background-image: none;
+                        }
+                        .custom-select-arrow::-ms-expand {
+                            display: none;
+                        }
+                        .custom-select-arrow option {
+                            font-size: 1rem;
+                            padding: 0.5rem 1rem;
+                        }
+                    </style>
                     <div class="flex flex-col sm:flex-row sm:items-center">
                         <span class="text-sm font-medium text-gray-500 sm:w-32 mb-1 sm:mb-0">Tujuan:</span>
                         <span class="text-sm font-semibold text-gray-900 break-words">{{ $order->destination }}</span>

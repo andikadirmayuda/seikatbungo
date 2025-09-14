@@ -252,6 +252,13 @@
                                 <th class="px-6 py-4 text-left">
                                     <div
                                         class="flex items-center space-x-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <i class="bi bi-bank text-pink-400"></i>
+                                        <span>Metode Bayar</span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-left">
+                                    <div
+                                        class="flex items-center space-x-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         <i class="bi bi-cash text-pink-400"></i>
                                         <span>Total</span>
                                     </div>
@@ -322,6 +329,26 @@
                                             {{ $text }}
                                         </span>
                                     </td>
+                                    <!-- #region -->
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex flex-col">
+                                            @php
+                                                $paymentBadge = match(strtolower($order->payment_method)) {
+                                                    'cash' => 'bg-green-50 text-green-700 ring-green-600/20',
+                                                    'transfer' => 'bg-blue-50 text-blue-700 ring-blue-600/20',
+                                                    'debit' => 'bg-purple-50 text-purple-700 ring-purple-600/20',
+                                                    'e-wallet' => 'bg-yellow-50 text-yellow-700 ring-yellow-600/20',
+                                                    default => 'bg-gray-50 text-gray-700 ring-gray-600/20',
+                                                };
+                                            @endphp
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $paymentBadge }} ring-1 ring-inset w-fit min-w-[70px] justify-center">
+                                                <i class="bi bi-bank mr-1"></i>
+                                                {{ $order->payment_method ? ucfirst($order->payment_method) : '-' }}
+                                            </span>
+                                        </div>
+                                    </td>
+
+                                    <!-- #endregion -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex flex-col">
                                             <span class="text-sm font-semibold text-gray-900">

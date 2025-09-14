@@ -19,6 +19,29 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AdminPublicOrderController extends Controller
 {
+
+    /**
+     * Update payment method for public order (admin only)
+     */
+    public function updatePaymentMethod(Request $request, $id)
+    {
+        $order = PublicOrder::findOrFail($id);
+        // Cek jika sudah pernah diisi, tidak boleh update lagi
+        if (!empty($order->payment_method)) {
+            return back()->with('error', 'Metode pembayaran sudah dipilih dan tidak bisa diubah lagi.');
+        }
+        $method = $request->input('payment_method');
+        $allowed = ['cash', 'transfer', 'debit', 'e-wallet'];
+        if (!in_array($method, $allowed)) {
+            return back()->with('error', 'Metode pembayaran tidak valid.');
+        }
+        $order->payment_method = $method;
+        $order->save();
+        return back()->with('success', 'Metode pembayaran berhasil diupdate.');
+    }
+
+    /**
+    // Removed duplicate method
     use AuthorizesRequests;
 
     /**

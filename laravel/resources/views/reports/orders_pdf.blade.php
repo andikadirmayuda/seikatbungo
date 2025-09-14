@@ -223,6 +223,7 @@
                 <th>Tanggal Ambil</th>
                 <th>Status</th>
                 <th>Status Bayar</th>
+                <th>Metode Bayar</th>
                 <th class="text-right">Total</th>
             </tr>
         </thead>
@@ -232,6 +233,14 @@
                     $orderTotal = $order->items->sum(function ($item) {
                         return $item->quantity * $item->price;
                     });
+                    $paymentMethod = $order->payment_method ? ucfirst($order->payment_method) : '-';
+                    $paymentClass = match (strtolower($order->payment_method)) {
+                        'cash' => 'background: #d4edda; color: #155724;',
+                        'transfer' => 'background: #cce5ff; color: #004085;',
+                        'qris' => 'background: #f3e8ff; color: #6f42c1;',
+                        'cod' => 'background: #fff3cd; color: #856404;',
+                        default => 'background: #f5f5f5; color: #333;',
+                    };
                 @endphp
                 <tr>
                     <td>{{ $order->public_code ?? 'PO-' . str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</td>
@@ -245,6 +254,12 @@
                     <td>
                         <span class="payment-status {{ $order->payment_status ?? 'belum_bayar' }}">
                             {{ $order->payment_status ? ucfirst(str_replace('_', ' ', $order->payment_status)) : 'Belum Bayar' }}
+                        </span>
+                    </td>
+                    <td>
+                        <span
+                            style="padding:2px 6px; border-radius:3px; font-size:10px; font-weight:bold; {{ $paymentClass }}">
+                            {{ $paymentMethod }}
                         </span>
                     </td>
                     <td class="text-right currency">Rp{{ number_format($orderTotal, 0, ',', '.') }}</td>

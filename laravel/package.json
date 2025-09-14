@@ -19,6 +19,8 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
-        "puppeteer": "^24.10.2"
+        "laravel-echo": "^2.2.0",
+        "puppeteer": "^24.10.2",
+        "pusher-js": "^8.4.0"
     }
 }

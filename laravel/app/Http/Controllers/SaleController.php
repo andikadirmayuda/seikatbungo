@@ -183,6 +183,9 @@ class SaleController extends Controller
 
     public function destroy(Request $request, Sale $sale)
     {
+        // Ambil sale dengan withTrashed agar forceDelete bisa berjalan pada data yang sudah di-soft delete
+        $sale = \App\Models\Sale::withTrashed()->find($sale->id);
+
         // Validasi: hanya transaksi hari ini yang bisa dihapus
         $today = now()->format('Y-m-d');
         $saleDate = \Carbon\Carbon::parse($sale->order_time)->format('Y-m-d');
@@ -202,27 +205,15 @@ class SaleController extends Controller
 
         DB::beginTransaction();
         try {
-            // Kembalikan stok produk
-            foreach ($sale->items as $item) {
-                $product = Product::find($item->product_id);
-                if ($product) {
-                    $product->increment('stock', $item->quantity);
-                }
-            }
-
-            // Soft delete sale
-            $sale->update([
-                'deleted_at' => now(),
-                'deleted_by' => Auth::id(),
-                'deletion_reason' => $request->input('deletion_reason'),
-            ]);
+            // Hapus sale dan seluruh relasinya secara permanen (cascade)
+            $sale->forceDelete();
 
             DB::commit();
 
-            return redirect()->route('sales.index')->with('success', 'Transaksi berhasil dibatalkan dan stok telah dikembalikan.');
+            return redirect()->route('sales.index')->with('success', 'Transaksi berhasil dihapus permanen.');
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->withErrors(['error' => 'Gagal membatalkan transaksi: ' . $e->getMessage()]);
+            return back()->withErrors(['error' => 'Gagal menghapus transaksi: ' . $e->getMessage()]);
         }
     }
 
@@ -238,15 +229,15 @@ class SaleController extends Controller
 
         DB::beginTransaction();
         try {
-            $count = Sale::whereIn('id', $request->ids)->update([
-                'deleted_at' => now(),
-                'deleted_by' => Auth::id(),
-                'deletion_reason' => 'Bulk delete'
-            ]);
-
+            $sales = Sale::withTrashed()->whereIn('id', $request->ids)->get();
+            $count = 0;
+            foreach ($sales as $sale) {
+                $sale->forceDelete();
+                $count++;
+            }
             DB::commit();
             return redirect()->route('sales.index')
-                ->with('success', $count . ' transaksi berhasil dihapus.');
+                ->with('success', $count . ' transaksi berhasil dihapus permanen.');
         } catch (\Exception $e) {
             DB::rollback();
             Log::error('Bulk delete sales failed: ' . $e->getMessage());

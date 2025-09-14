@@ -1,14 +1,14 @@
 import "./bootstrap";
 
 // Alpine.js sudah diload oleh Livewire
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     if (typeof window.Alpine === 'undefined') {
         console.error('Alpine.js tidak tersedia - pastikan Livewire terload dengan benar');
         return;
     }
 
     // Fungsi untuk mengecek notifikasi
-    window.checkNotifications = async function() {
+    window.checkNotifications = async function () {
         try {
             const response = await fetch('/api/notifications/pending', {
                 method: 'GET',
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const data = await response.json();
-            
+
             if (data.success && data.data.length > 0) {
                 // Update badge count
                 const badge = document.querySelector('#notification-badge');
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     badge.textContent = data.data.length;
                     badge.style.display = 'inline-block';
                 }
-                
+
                 // Play notification sound if enabled
                 const audio = document.querySelector('#notification-sound');
                 if (audio) {
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Check setiap 30 detik
     setInterval(checkNotifications, 30000);
-    
+
     // Check pertama kali saat load
     checkNotifications();
 });

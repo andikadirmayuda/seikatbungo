@@ -183,6 +183,7 @@ Route::post('/public-order', [App\Http\Controllers\PublicOrderController::class,
 Route::post('/public-order/{public_code}/pay', [App\Http\Controllers\PublicOrderController::class, 'pay'])->name('public.order.pay');
 Route::post('/admin/public-orders/{id}/update-status', [App\Http\Controllers\AdminPublicOrderController::class, 'updateStatus'])->name('admin.public-orders.update-status');
 Route::post('/admin/public-orders/{id}/update-payment-status', [App\Http\Controllers\AdminPublicOrderController::class, 'updatePaymentStatus'])->name('admin.public-orders.update-payment-status');
+Route::post('/admin/public-orders/{id}/update-payment-method', [App\Http\Controllers\AdminPublicOrderController::class, 'updatePaymentMethod'])->name('admin.public-orders.update-payment-method');
 Route::post('/admin/public-orders/{id}/update-shipping-fee', [App\Http\Controllers\AdminPublicOrderController::class, 'updateShippingFee'])->name('admin.public-orders.update-shipping-fee');
 Route::get('/admin/public-orders/{id}/whatsapp-message', [App\Http\Controllers\AdminPublicOrderController::class, 'generateWhatsAppMessage'])->name('admin.public-orders.whatsapp-message');
 Route::get('/admin/public-orders/{id}/customer-link-message', [App\Http\Controllers\AdminPublicOrderController::class, 'generateCustomerLinkMessage'])->name('admin.public-orders.customer-link-message');
