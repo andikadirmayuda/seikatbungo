@@ -8,8 +8,8 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     @php $user = auth()->user(); @endphp
                     @if($user && $user->hasRole(['owner', 'admin']))
-                        <div class="mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
-
+                        <!-- Container untuk tombol hapus & filter pencarian sejajar di desktop/tablet -->
+                        <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
                             <!-- Bulk Delete Checklist Button -->
                             <button type="button" id="delete-selected-btn" disabled
                                 class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow opacity-50 cursor-not-allowed flex items-center">
@@ -21,6 +21,27 @@
                                 <span id="selected-count"
                                     class="ml-2 bg-white text-red-600 rounded-full px-2 text-xs hidden">0</span>
                             </button>
+                            <!-- Filter Bar Pencarian Client-side (dipindah ke sini) -->
+                            <div class="relative w-full sm:w-80">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+                                    </svg>
+                                </div>
+                                <input type="text" id="searchInput" placeholder="Cari pesanan publik..."
+                                    class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all duration-200">
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <button type="button" id="clearSearch" class="text-gray-400 hover:text-gray-600 hidden">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <!-- mass-delete-panel dihapus, hanya fitur checklist yang tersisa -->
                         <!-- Modal Konfirmasi Hapus Checklist -->
@@ -108,73 +129,7 @@
                             });
                         </script>
                     @endif
-                    <!-- Filter Bar Responsive -->
-                    <div class="mb-6">
-                        <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
-                            <div>
-                                <label for="filter-nama" class="block text-xs font-semibold text-gray-600 mb-1">Nama
-                                    Pelanggan</label>
-                                <input type="text" id="filter-nama" placeholder="Cari nama..."
-                                    class="w-full border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 rounded-lg px-3 py-2 text-sm transition" />
-                            </div>
-                            <div>
-                                <label for="filter-tanggal"
-                                    class="block text-xs font-semibold text-gray-600 mb-1">Tanggal Kirim/Ambil</label>
-                                <input type="date" id="filter-tanggal"
-                                    class="w-full border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 rounded-lg px-3 py-2 text-sm transition" />
-                            </div>
-                            <div>
-                                <label for="filter-metode" class="block text-xs font-semibold text-gray-600 mb-1">Metode
-                                    Pengiriman</label>
-                                <select id="filter-metode"
-                                    class="w-full border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 rounded-lg px-3 py-2 text-sm transition">
-                                    <option value="">Semua</option>
-                                    <option value="Ambil Langsung Ke Toko">Ambil Langsung Ke Toko</option>
-                                    <option value="Gosend (Dipesan Pribadi)">Gosend (Dipesan Pribadi)</option>
-                                    <option value="Gocar (Dipesan Pribadi)">Gocar (Dipesan Pribadi)</option>
-                                    <option value="Gosend (Pesan Dari Toko)">Gosend (Pesan Dari Toko)</option>
-                                    <option value="Gocar (Pesan Dari Toko)">Gocar (Pesan Dari Toko)</option>
-                                    <option value="Travel (Di Pesan Sendiri)">Travel (Di Pesan Sendiri)</option>
-                                    <!-- Legacy options -->
-                                    <option value="Ambil Langsung">Ambil Langsung (Legacy)</option>
-                                    <option value="GoSend">GoSend (Legacy)</option>
-                                    <option value="Kurir Toko">Kurir Toko (Legacy)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="filter-status" class="block text-xs font-semibold text-gray-600 mb-1">Status
-                                    Pesanan</label>
-                                <select id="filter-status"
-                                    class="w-full border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 rounded-lg px-3 py-2 text-sm transition">
-                                    <option value="">Semua</option>
-                                    <option value="pending">Menunggu Diproses</option>
-                                    <option value="processed">Diproses</option>
-                                    <option value="packing">Dikemas</option>
-                                    <option value="shipped">Dikirim</option>
-                                    <option value="completed">Selesai</option>
-                                    <option value="done">Selesai</option>
-                                    <option value="cancelled">Dibatalkan</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="filter-bayar" class="block text-xs font-semibold text-gray-600 mb-1">Status
-                                    Pembayaran</label>
-                                <select id="filter-bayar"
-                                    class="w-full border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 rounded-lg px-3 py-2 text-sm transition">
-                                    <option value="">Semua</option>
-                                    <option value="waiting_confirmation">Menunggu Konfirmasi</option>
-                                    <option value="ready_to_pay">Siap Dibayar</option>
-                                    <option value="waiting_payment">Menunggu Pembayaran</option>
-                                    <option value="waiting_verification">Menunggu Verifikasi</option>
-                                    <option value="dp_paid">Dp</option>
-                                    <option value="partial_paid">Sebagian Bayar</option>
-                                    <option value="paid">Lunas</option>
-                                    <option value="rejected">Ditolak</option>
-                                    <option value="cancelled">Dibatalkan</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Filter Bar Pencarian dipindah ke atas, sejajar tombol hapus -->
                     <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm bg-white">
                         <table class="min-w-full divide-y divide-gray-200 text-sm">
                             <thead class="bg-gradient-to-r from-blue-50 to-blue-100">
@@ -247,46 +202,71 @@
             </div>
         </div>
     </div>
+    <!-- Script filter pencarian client-side -->
     <script>
-        const loading = document.createElement('tr');
-        loading.innerHTML = `<td colspan="7" class="py-8 text-center text-blue-500 animate-pulse">Memuat data...</td>`;
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const clearButton = document.getElementById('clearSearch');
+            const tableBody = document.getElementById('orders-table-body');
+            let originalRows = [];
 
-        // Debounce util
-        function debounce(func, wait) {
-            let timeout;
-            return function (...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
+            // Simpan baris asli saat load
+            if (tableBody) {
+                originalRows = Array.from(tableBody.children);
+            }
 
-        function fetchOrders() {
-            const params = {
-                nama: document.getElementById('filter-nama').value,
-                tanggal: document.getElementById('filter-tanggal').value,
-                metode: document.getElementById('filter-metode').value,
-                status: document.getElementById('filter-status').value,
-                bayar: document.getElementById('filter-bayar').value,
-            };
-            const query = new URLSearchParams(params).toString();
-            const tbody = document.getElementById('orders-table-body');
-            tbody.innerHTML = '';
-            tbody.appendChild(loading);
-            fetch(`{{ route('admin.public-orders.filter') }}?${query}`)
-                .then(res => res.json())
-                .then(data => {
-                    tbody.innerHTML = data.rows;
-                    document.getElementById('pagination-links').innerHTML = data.pagination;
-                    // Panggil ulang updateDeleteBtn agar tombol hapus & select all tetap sinkron
-                    if (typeof updateDeleteBtn === 'function') updateDeleteBtn();
-                });
-        }
+            function performSearch(query) {
+                const searchTerm = query.toLowerCase().trim();
+                if (searchTerm === '') {
+                    // Tampilkan semua baris asli
+                    if (tableBody) {
+                        tableBody.innerHTML = '';
+                        originalRows.forEach(row => tableBody.appendChild(row));
+                    }
+                    clearButton.classList.add('hidden');
+                    if (typeof window.updateDeleteBtn === 'function') window.updateDeleteBtn();
+                    return;
+                }
+                clearButton.classList.remove('hidden');
+                // Filter baris
+                if (tableBody) {
+                    const filteredRows = originalRows.filter(row => {
+                        const text = row.textContent.toLowerCase();
+                        return text.includes(searchTerm);
+                    });
+                    tableBody.innerHTML = '';
+                    if (filteredRows.length > 0) {
+                        filteredRows.forEach(row => tableBody.appendChild(row.cloneNode(true)));
+                    } else {
+                        tableBody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-gray-500">Tidak ada hasil pencarian</td></tr>`;
+                    }
+                }
+                if (typeof window.updateDeleteBtn === 'function') window.updateDeleteBtn();
+            }
 
-        // Debounce hanya untuk input nama (300ms), yang lain langsung
-        document.getElementById('filter-nama').addEventListener('input', debounce(fetchOrders, 300));
-        document.getElementById('filter-tanggal').addEventListener('change', fetchOrders);
-        document.getElementById('filter-metode').addEventListener('change', fetchOrders);
-        document.getElementById('filter-status').addEventListener('change', fetchOrders);
-        document.getElementById('filter-bayar').addEventListener('change', fetchOrders);
+            searchInput.addEventListener('input', function (e) {
+                performSearch(e.target.value);
+            });
+            clearButton.addEventListener('click', function () {
+                searchInput.value = '';
+                performSearch('');
+                searchInput.focus();
+            });
+            document.addEventListener('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    searchInput.focus();
+                }
+                if (e.key === 'Escape' && document.activeElement === searchInput) {
+                    clearButton.click();
+                }
+            });
+            searchInput.addEventListener('focus', function () {
+                this.placeholder = 'Ketik untuk mencari... (Ctrl+K)';
+            });
+            searchInput.addEventListener('blur', function () {
+                this.placeholder = 'Cari pesanan publik...';
+            });
+        });
     </script>
 </x-app-layout>

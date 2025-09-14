@@ -521,6 +521,7 @@
     class="min-h-screen bg-gradient-to-br from-[#F5F5F5] via-white to-[#F5F5F5] text-[#333333] flex flex-col font-sans overflow-x-hidden">
     @include('public.partials.cart-modal')
     @include('public.partials.cart-panel')
+    @include('components.full-image-modal')
 
     <!-- Header -->
     <header class="w-full glass-effect border-b border-gray-100 sticky top-0 z-40 transition-transform duration-300"
@@ -926,14 +927,20 @@
                                 }
                             @endphp
                             @if($defaultPrice && $product->current_stock > 0)
-                                <div class="product-card glass-effect card-hover rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+                                <div class="product-card glass-effect card-hover rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
                                     data-category="{{ $product->category->name ?? '' }}" data-product-id="{{ $product->id }}">
                                     <!-- Product Image -->
                                     <div
-                                        class="aspect-w-1 aspect-h-1 bg-gradient-to-br from-[#F5F5F5] to-[#2D9C8F]/10 rounded-t-2xl overflow-hidden">
+                                        class="relative aspect-w-1 aspect-h-1 bg-gradient-to-br from-[#F5F5F5] to-[#2D9C8F]/10 rounded-t-2xl overflow-hidden">
                                         @if($product->image)
                                             <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
                                                 class="w-full h-32 object-cover">
+                                            <!-- Eye Icon Button -->
+                                            <button
+                                                onclick="showFullImage('{{ Storage::url($product->image) }}', '{{ $product->name }}')"
+                                                class="absolute top-2 right-2 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
+                                                <i class="bi bi-eye text-[#2D9C8F] text-sm"></i>
+                                            </button>
                                         @else
                                             <div
                                                 class="w-full h-32 bg-gradient-to-br from-[#2D9C8F]/10 to-[#247A72]/10 flex items-center justify-center">
@@ -941,8 +948,10 @@
                                             </div>
                                         @endif
                                     </div>
+
                                     <!-- Product Info -->
                                     <div class="p-4">
+
                                         <h3 class="font-bold text-gray-800 text-sm mb-1">{{ $product->name }}</h3>
                                         <p class="text-xs text-[#2D9C8F] mb-2 font-medium">
                                             {{ $product->category->name ?? 'Uncategorized' }}

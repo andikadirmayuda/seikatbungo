@@ -24,7 +24,15 @@
     <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
     <td class="px-4 py-2 border">{{ $order->id }}</td>
     <td class="px-4 py-2 border">{{ $order->customer_name }}</td>
-    <td class="px-4 py-2 border">{{ $order->pickup_date }}</td>
+    <td class="px-4 py-2 border">
+        @if(isset($tanggalFormatted) && $tanggalFormatted)
+            {{ $tanggalFormatted }}
+        @elseif(isset($order->pickup_date))
+            {{ \Carbon\Carbon::parse($order->pickup_date)->format('d-m-Y') }}
+        @else
+            -
+        @endif
+    </td>
     <td class="px-4 py-2 border">{{ $order->delivery_method }}</td>
     <td class="px-4 py-2 border">
         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full

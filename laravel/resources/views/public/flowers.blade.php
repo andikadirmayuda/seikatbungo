@@ -122,6 +122,43 @@
         }
     </script>
     <style>
+        /* Popup Tutorial Responsive for Mobile */
+        @media (max-width: 640px) {
+            #orderTutorialPopup .max-w-md {
+                max-width: 92vw !important;
+                width: 98vw !important;
+                padding: 0.75rem !important;
+                margin: 0 1vw !important;
+                border-radius: 12px !important;
+            }
+            #orderTutorialPopup .p-6 {
+                padding: 0.75rem !important;
+            }
+            #orderTutorialPopup h2 {
+                font-size: 0.95rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            #orderTutorialPopup ul {
+                font-size: 0.85rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+            #orderTutorialPopup a {
+                font-size: 0.85rem !important;
+                padding: 0.4rem 0.7rem !important;
+                border-radius: 8px !important;
+            }
+            #orderTutorialPopup svg {
+                width: 32px !important;
+                height: 32px !important;
+                margin-bottom: 0.5rem !important;
+            }
+            #orderTutorialPopup .mb-3 {
+                margin-bottom: 0.5rem !important;
+            }
+            #orderTutorialPopup .text-lg {
+                font-size: 1rem !important;
+            }
+        }
         body,
         .font-sans {
             font-family: 'Figtree', sans-serif;
@@ -950,11 +987,21 @@
         document.addEventListener('DOMContentLoaded', function () {
             if (!sessionStorage.getItem('orderTutorialPopupShown')) {
                 document.getElementById('orderTutorialPopup').style.display = 'flex';
+                // Sembunyikan tombol scroll saat popup muncul
+                var scrollTopBtn = document.getElementById('scrollToTopBtn');
+                var scrollBottomBtn = document.getElementById('scrollToBottomBtn');
+                if (scrollTopBtn) scrollTopBtn.style.display = 'none';
+                if (scrollBottomBtn) scrollBottomBtn.style.display = 'none';
                 sessionStorage.setItem('orderTutorialPopupShown', '1');
             }
         });
         function closeOrderTutorialPopup() {
             document.getElementById('orderTutorialPopup').style.display = 'none';
+            // Tampilkan kembali tombol scroll setelah popup ditutup
+            var scrollTopBtn = document.getElementById('scrollToTopBtn');
+            var scrollBottomBtn = document.getElementById('scrollToBottomBtn');
+            if (scrollTopBtn) scrollTopBtn.style.display = '';
+            if (scrollBottomBtn) scrollBottomBtn.style.display = '';
         }
     </script>
 
