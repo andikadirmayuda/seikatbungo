@@ -72,12 +72,21 @@ function toggleCart() {
         overlay.onclick = toggleCart;
         document.body.appendChild(overlay);
     }
+    // Hide scroll buttons when cart is open
+    const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
     if (cart.classList.contains('translate-x-full')) {
         overlay.classList.add('opacity-0');
         setTimeout(() => overlay.remove(), 300);
+        // Show scroll buttons again
+        if (scrollToBottomBtn) scrollToBottomBtn.style.display = '';
+        if (scrollToTopBtn) scrollToTopBtn.style.display = '';
     } else {
         overlay.classList.remove('opacity-0');
         updateCart();
+        // Hide scroll buttons
+        if (scrollToBottomBtn) scrollToBottomBtn.style.display = 'none';
+        if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
     }
 }
 
