@@ -996,8 +996,15 @@ $customBouquetItems = $order->items->filter(function ($item) {
                     @endphp
                     @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
                         <img src="{{ asset('storage/' . $order->payment_proof) }}" alt="Bukti Pembayaran"
-                            class="mx-auto rounded shadow max-h-64 border mb-2" style="max-width:300px;"
+                            class="mx-auto rounded shadow max-h-64 border mb-2 cursor-pointer hover:opacity-90 transition-opacity"
+                            style="max-width:300px;"
+                            onclick="openImageModal('{{ asset('storage/' . $order->payment_proof) }}', 'Bukti Pembayaran')"
                             onerror="this.style.display='none'; document.getElementById('payment-proof-error').style.display='block';" />
+                        <div class="flex flex-col items-center justify-center text-xs text-gray-600 gap-1 mb-2">
+                            <a href="{{ asset('storage/' . $order->payment_proof) }}" download class="inline-flex items-center text-xs text-blue-600 hover:text-blue-800 mt-1">
+                                <i class="bi bi-download mr-1"></i>Download Bukti Pembayaran
+                            </a>
+                        </div>
                     @elseif(strtolower($ext) == 'pdf')
                         <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank"
                             class="text-blue-600 underline">Lihat Bukti Pembayaran (PDF)</a>
@@ -1066,9 +1073,14 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                         <div style="display:none;" class="text-center p-4 text-red-600 bg-red-50 rounded-lg border border-red-200">
                                             <i class="bi bi-exclamation-triangle mr-2"></i>Foto tidak ditemukan.
                                         </div>
-                                        <div class="flex items-center justify-center text-sm text-gray-600">
-                                            <i class="bi bi-camera mr-2 text-green-500"></i>
-                                            Foto Packing {{ $index + 1 }}
+                                        <div class="flex flex-col items-center justify-center text-sm text-gray-600 gap-1">
+                                            <div>
+                                                <i class="bi bi-camera mr-2 text-green-500"></i>
+                                                Foto Packing {{ $index + 1 }}
+                                            </div>
+                                            <a href="{{ $filePath }}" download class="inline-flex items-center text-xs text-blue-600 hover:text-blue-800 mt-1">
+                                                <i class="bi bi-download mr-1"></i>Download Foto
+                                            </a>
                                         </div>
                                     @else
                                         <div class="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center mb-2">

@@ -711,8 +711,8 @@ $needsShippingFee = in_array($order->delivery_method, [
                 @foreach($order->items as $item)
                     @php 
                         $subtotal = ($item->price ?? 0) * ($item->quantity ?? 0);
-                        $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
-                        $cleanName = trim($cleanName) ?: $item->product_name;
+    $cleanName = preg_replace('/\s*\(Komponen:.*?\)\s*/', '', $item->product_name);
+    $cleanName = trim($cleanName) ?: $item->product_name;
                     @endphp
                     <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                         <!-- Product Header -->
@@ -778,14 +778,14 @@ $needsShippingFee = in_array($order->delivery_method, [
             @endforeach
 
             @php
-                $totalOrder = $order->items->sum(function ($item) {
-                    return ($item->price ?? 0) * ($item->quantity ?? 0);
-                });
-                $shippingFee = $order->shipping_fee ?? 0;
-                $voucherAmount = $order->voucher_amount ?? 0;
-                $grandTotal = $totalOrder + $shippingFee - $voucherAmount;
-                $totalPaid = $order->amount_paid ?? 0;
-                $sisaPembayaran = $order->payment_status === 'paid' ? 0 : max($grandTotal - $totalPaid, 0);
+$totalOrder = $order->items->sum(function ($item) {
+    return ($item->price ?? 0) * ($item->quantity ?? 0);
+});
+$shippingFee = $order->shipping_fee ?? 0;
+$voucherAmount = $order->voucher_amount ?? 0;
+$grandTotal = $totalOrder + $shippingFee - $voucherAmount;
+$totalPaid = $order->amount_paid ?? 0;
+$sisaPembayaran = $order->payment_status === 'paid' ? 0 : max($grandTotal - $totalPaid, 0);
             @endphp
 
             <!-- Mobile Payment Summary Card -->
@@ -928,9 +928,9 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                 <div class="border border-purple-200 rounded-lg p-6 mb-4 bg-purple-50">
                                     <h4 class="font-semibold text-purple-800 mb-4 text-lg">
                                         @php
-                    // Extract simple product name without components info
-                    $simpleName = preg_replace('/\s*\(.*?\)\s*/', '', $item->product_name);
-                    $simpleName = trim($simpleName) ?: 'Custom Bouquet';
+        // Extract simple product name without components info
+        $simpleName = preg_replace('/\s*\(.*?\)\s*/', '', $item->product_name);
+        $simpleName = trim($simpleName) ?: 'Custom Bouquet';
                                         @endphp
                                         {{ $simpleName }}
                                     </h4>
@@ -994,7 +994,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                     <!-- Custom Bouquet Components Section -->
                                     @if($item->custom_bouquet_id)
                                                         @php
-                                        $customBouquet = \App\Models\CustomBouquet::with(['items.product'])->find($item->custom_bouquet_id);
+            $customBouquet = \App\Models\CustomBouquet::with(['items.product'])->find($item->custom_bouquet_id);
                                                         @endphp
 
                                                         @if($customBouquet && $customBouquet->items->count() > 0)
@@ -1059,52 +1059,60 @@ $customBouquetItems = $order->items->filter(function ($item) {
 
         <!-- Payment Proof Card -->
         @if(!empty($order->payment_proof))
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-                <div class="flex items-center mb-4">
-                    <div class="bg-green-100 p-2 rounded-lg mr-3">
-                        <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900">Bukti Pembayaran</h3>
-                </div>
-                @php
-    $ext = pathinfo($order->payment_proof, PATHINFO_EXTENSION);
-                @endphp
-                <div class="flex justify-center">
-                    @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
-                        <img src="{{ asset('storage/' . $order->payment_proof) }}" alt="Bukti Pembayaran"
-                            class="rounded-lg shadow-md max-h-96 border border-gray-200"
-                            onerror="this.style.display='none'; document.getElementById('payment-proof-error').style.display='block';" />
-                    @elseif(strtolower($ext) == 'pdf')
-                        <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank"
-                            class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            Lihat Bukti Pembayaran (PDF)
-                        </a>
-                    @else
-                        <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank"
-                            class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            Download Bukti Pembayaran
-                        </a>
-                    @endif
-                </div>
-                <div id="payment-proof-error" style="display:none;"
-                    class="text-center p-4 text-red-600 bg-red-50 rounded-lg border border-red-200">
-                    Bukti pembayaran tidak ditemukan di server.
-                </div>
-            </div>
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+                                <div class="flex items-center mb-4">
+                                    <div class="bg-green-100 p-2 rounded-lg mr-3">
+                                        <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold text-gray-900">Bukti Pembayaran</h3>
+                                </div>
+                                @php
+            $ext = pathinfo($order->payment_proof, PATHINFO_EXTENSION);
+                                @endphp
+                                <div class="my-8 text-center">
+                                    @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                                        <img src="{{ asset('storage/' . $order->payment_proof) }}" alt="Bukti Pembayaran"
+                                            class="mx-auto rounded shadow max-h-64 border mb-2 cursor-pointer hover:opacity-90 transition-opacity"
+                                            style="max-width:300px;"
+                                            onclick="openImageModal('{{ asset('storage/' . $order->payment_proof) }}', 'Bukti Pembayaran')"
+                                            onerror="this.style.display='none'; document.getElementById('payment-proof-error').style.display='block';" />
+                                            <div class="flex flex-col items-center justify-center text-xs text-gray-600 gap-1 mb-2">
+                            <a href="{{ asset('storage/' . $order->payment_proof) }}" download class="inline-flex items-center text-xs text-blue-600 hover:text-blue-800 mt-1">
+                                <i class="bi bi-download mr-1"></i>Download Bukti Pembayaran
+                            </a>
+                        </div>
+                                    @elseif(strtolower($ext) == 'pdf')
+
+                                        <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank"
+                                            class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200">
+                                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Lihat Bukti Pembayaran (PDF)
+                                        </a>
+                                    @else
+                                        <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank"
+                                            class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
+                                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            Download Bukti Pembayaran
+                                        </a>
+                                    @endif
+                                </div>
+                                <div id="payment-proof-error" style="display:none;"
+                                    class="text-center p-4 text-red-600 bg-red-50 rounded-lg border border-red-200">
+                                    Bukti pembayaran tidak ditemukan di server.
+                                </div>
+                            </div>
         @endif
 
         <!-- Packing Files Card -->
