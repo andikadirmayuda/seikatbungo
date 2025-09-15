@@ -1183,7 +1183,42 @@
                 </div>
             </div>
 
-            <!-- Enhanced Filter Chips -->
+            <!-- Enhanced Filter Chips Dinamis -->
+            {{-- @if($activeTab === 'flowers' && isset($flowerCategories) && $flowerCategories->count() > 0)
+                <div class="flex flex-wrap gap-3 justify-center mb-4">
+                    <button type="button"
+                        class="chip-btn px-6 py-3 rounded-full border-2 border-[#275a59] bg-white text-[#275a59] text-sm font-semibold shadow-md hover:shadow-lg hover:bg-[#59aaa1]/10 transition-all duration-200 active"
+                        data-category="" onclick="selectCategory(this)">
+                        <span class="mr-2"></span>Semua
+                    </button>
+                    @foreach($flowerCategories as $category)
+                        <button type="button"
+                            class="chip-btn px-6 py-3 rounded-full border-2 border-[#275a59] bg-white text-[#275a59] text-sm font-semibold shadow-md hover:shadow-lg hover:bg-[#fffffff]/10 transition-all duration-200"
+                            data-category="{{ $category->name }}" onclick="selectCategory(this)">
+                            <span class="mr-2"></span>{{ $category->name }}
+                        </button>
+                    @endforeach
+                </div>
+            @endif --}}
+
+             {{-- @if($flowerCategories->count() > 0) --}}
+            {{-- @if($activeTab === 'flowers' && isset($flowerCategories) && $flowerCategories->count() > 0)
+                <div class="flex flex-wrap gap-3 justify-center mb-4">
+                    <button type="button"
+                        class="chip-btn px-6 py-3 rounded-full border-2 border-[#2D9C8F] bg-white text-[#2D9C8F] text-sm font-semibold shadow-md hover:shadow-lg hover:bg-[#2D9C8F]/10 transition-all duration-200 active"
+                        data-category="" onclick="selectCategory(this)">
+                        <span class="mr-2">🌸</span>Semua
+                    </button>
+                    @foreach($flowerCategories as $category)
+                        <button type="button"
+                            class="chip-btn px-6 py-3 rounded-full border-2 border-[#2D9C8F] bg-white text-[#2D9C8F] text-sm font-semibold shadow-md hover:shadow-lg hover:bg-[#2D9C8F]/10 transition-all duration-200"
+                            data-category="{{ $category->name }}" onclick="selectCategory(this)">
+                            <span class="mr-2">🌿</span>{{ $category->name }}
+                        </button>
+                    @endforeach
+                </div>
+            @endif --}}
+            
             @if($activeTab === 'flowers')
                 <div class="flex flex-wrap gap-3 justify-center">
                     <button type="button"
@@ -1211,6 +1246,11 @@
                         data-category="Aksesoris" onclick="selectCategory(this)">
                         <span class="mr-2">🎀</span>Aksesoris
                     </button>
+                    <button type="button"
+                        class="chip-btn px-6 py-3 rounded-full border-2 border-[#275a59] bg-white text-gray-700 text-sm font-semibold shadow-md hover:shadow-lg hover:bg-[#59aaa1]/10 transition-all duration-200"
+                        data-category="Papan Akrilik" onclick="selectCategory(this)">
+                        <span class="mr-2">🪧</span>Papan Akrilik
+                    </button>
                 </div>
             @else
                 <div class="flex flex-wrap gap-3 justify-center">
@@ -1223,7 +1263,9 @@
                     @endforeach
                 </div>
             @endif
-        </div>
+            
+
+            </div>
 
         <!-- Content Grid -->
         <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">

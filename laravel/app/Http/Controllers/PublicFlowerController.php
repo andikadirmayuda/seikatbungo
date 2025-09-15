@@ -27,6 +27,9 @@ class PublicFlowerController extends Controller
 
         $activeTab = request()->query('tab', 'flowers');
 
+        // Ambil semua kategori bunga yang digunakan oleh produk
+        $flowerCategories = \App\Models\Category::whereIn('id', $flowers->pluck('category_id')->unique()->filter())->orderBy('name')->get();
+
         // Jika tab adalah bouquets, ambil data bouquet juga (untuk backward compatibility)
         $bouquetData = [];
         if ($activeTab === 'bouquets') {
@@ -38,6 +41,7 @@ class PublicFlowerController extends Controller
 
         return view('public.flowers', array_merge([
             'flowers' => $flowers,
+            'flowerCategories' => $flowerCategories,
             'lastUpdated' => $lastUpdated,
             'activeTab' => $activeTab
         ], $bouquetData));
