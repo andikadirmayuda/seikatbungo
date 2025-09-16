@@ -118,13 +118,21 @@ class WhatsAppNotificationService
             $message .= "• *Total Keseluruhan: {$formattedGrandTotal}*\n\n";
 
             $message .= "*Lihat Detail Lengkap:*\n";
-            $message .= "{$orderDetailUrl}\n\n";
+            $message .= "{$orderDetailUrl}\n";
+            // Tambahkan link invoice jika tersedia
+            $invoice = '';
+            if ($order->public_code) {
+                $invoiceUrl = route('public.order.invoice', ['public_code' => $order->public_code]);
+                $invoice = "*Lihat Invoice:*\n{$invoiceUrl}";
+            }
+            $message .= "{$invoice}\n\n";
 
             $message .= "*Fitur yang tersedia:*\n";
             $message .= "• Lihat status pesanan real-time\n";
-            $message .= "• Download invoice\n";
-            $message .= "• Lihat detail produk & harga\n";
-            $message .= "• Upload bukti pembayaran\n\n";
+            $message .= "• Lihat Hasil produk & harga\n\n";
+
+            $message .= "*Catatan:*\n";
+            $message .= "• Segera lakukan konfirmasi pembayaran,\n   untuk mempercepat proses pemesanan.\n\n";
 
             $message .= "Terima kasih atas kepercayaan Anda!\n\n";
             $message .= "*Seikat Bungo*";

@@ -228,6 +228,10 @@
                                 @foreach($products as $prod)
                                     <option value="{{ $prod->id }}" data-action="{{ route('inventory.adjust', $prod) }}">
                                         {{ $prod->name }} ({{ $prod->code }})
+                                        ({{ $prod->formatted_stock }})
+                                        @if(isset($prod->category) && $prod->category)
+                                            <span class="text-xs text-gray-500"> - {{ $prod->category->name }}</span>
+                                        @endif
                                     </option>
                                 @endforeach
                             </select>

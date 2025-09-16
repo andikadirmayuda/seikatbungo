@@ -1107,7 +1107,7 @@ $customBouquetItems = $order->items->filter(function ($item) {
                                     <h3 class="text-xl font-semibold text-gray-900">Bukti Pembayaran</h3>
                                 </div>
                                 @php
-            $ext = pathinfo($order->payment_proof, PATHINFO_EXTENSION);
+    $ext = pathinfo($order->payment_proof, PATHINFO_EXTENSION);
                                 @endphp
                                 <div class="my-8 text-center">
                                     @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
@@ -1345,63 +1345,89 @@ $customBouquetItems = $order->items->filter(function ($item) {
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 @if(!empty($order->public_code))
-                    <a href="{{ route('public.order.invoice', ['public_code' => $order->public_code]) }}" target="_blank"
-                        class="inline-flex items-center justify-center px-4 py-3 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        Lihat Invoice
-                    </a>
-
-                    <a href="https://wa.me/{{ preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $order->wa_number)) }}?text={{ urlencode('Terima kasih telah memesan di Seikat Bungo! Berikut link invoice pesanan Anda: ' . route('public.order.invoice', ['public_code' => $order->public_code])) }}"
-                        target="_blank"
-                        class="inline-flex items-center justify-center px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-                        </svg>
-                        Kirim Invoice ke Customer
-                    </a>
-
-                    <button onclick="shareToEmployeeGroup({{ $order->id }})"
-                        class="inline-flex items-center justify-center px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M16 12A4 4 0 1 1 12 8a4 4 0 0 1 4 4Z"/>
-                            <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94 1 1 0 1 0-.16-2A8 8 0 1 1 20 10.76V13a1 1 0 0 1-2 0V8a1 1 0 0 1 1-1 1 1 0 0 1 1 1v.28A10 10 0 0 0 12 2a10 10 0 0 0-8 16 1 1 0 0 0 1.6 1.2A8 8 0 0 1 12 4a8 8 0 0 1 3.2.64A6 6 0 0 0 12 8a6 6 0 0 0 4 5.66Z"/>
-                        </svg>
-                        Share Pesanan ke Grup Karyawan
-                    </button>
-
-                    <button onclick="shareOrderLinkToCustomer({{ $order->id }})"
-                        class="inline-flex items-center justify-center px-4 py-3 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                        </svg>
-                        Share Link Pesanan ke Customer
-                    </button>
-
-                    <button onclick="copyMessageToClipboard({{ $order->id }})"
-                        class="inline-flex items-center justify-center px-4 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/>
-                            <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/>
-                        </svg>
-                        Copy Pesan
-                    </button>
-                    @if(!auth()->user()->hasRole(['customer service', 'karyawan']))
-                    @if(config('public_order.enable_public_order_edit') && $order->status === 'pending')
-                        <a href="{{ route('admin.public-orders.edit', $order->id) }}"
-                            class="inline-flex items-center justify-center px-4 py-3 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                        {{-- <a href="{{ route('public.order.invoice', ['public_code' => $order->public_code]) }}" target="_blank"
+                            class="inline-flex items-center justify-center px-4 py-3 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
                             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                <path fill-rule="evenodd"
+                                    d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
+                                    clip-rule="evenodd" />
                             </svg>
-                            Edit Pesanan
-                        </a>
+                            Lihat Invoice
+                        </a> --}}
+
+                        {{-- <a href="https://wa.me/{{ preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $order->wa_number)) }}?text={{ urlencode('Terima kasih telah memesan di Seikat Bungo! Berikut link invoice pesanan Anda: ' . route('public.order.invoice', ['public_code' => $order->public_code])) }}"
+                            target="_blank"
+                            class="inline-flex items-center justify-center px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                            </svg>
+                            Kirim Invoice ke Customer
+                        </a> --}}
+
+                       @if(strtolower($order->status) === 'completed' || strtolower($order->status) === 'selesai')
+                        @php
+                            $customer_name = $order->customer_name ?? ($order->customer->name ?? 'Pelanggan');
+                        @endphp
+                        @php
+                            $waMessage = "Halo! " . $customer_name . ",\n"
+                                . "\nStatus pesanan Anda telah *Selesai*.\n"
+                                . "Terima kasih telah berbelanja di Seikat Bungo!\n"
+                                . "\n*Untuk infomasi lebih lanjut Kunjungi:*\n"
+                                . "\n - Website: seikatbungo.com\n"
+                                . " - WhatsApp: 08123456789\n"
+                                . " - Instagram: @seikat.bungo";
+                            $waMessage = str_replace(["\r\n", "\r", "\n"], "\n", $waMessage);
+                        @endphp
+                                            <a href="https://wa.me/{{ preg_replace('/^0/', '62', preg_replace('/[^0-9]/', '', $order->wa_number)) }}?text={{ urlencode($waMessage) }}"
+                                                target="_blank"
+                                                class="inline-flex items-center justify-center px-4 py-3 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 32 32">
+                                <path d="M16 0C7.163 0 0 7.163 0 16c0 8.837 7.163 16 16 16s16-7.163 16-16c0-8.837-7.163-16-16-16zm8.363 23.363c-.363.363-1.45.693-2.025.787-.55.088-1.275.163-2.075-.163-.475-.188-1.025-.375-1.75-.725-2.975-1.375-4.875-4.125-5.025-4.325-.15-.2-1.2-1.6-1.2-3.075 0-1.475.75-2.175 1.025-2.475.275-.3.6-.375.8-.375.2 0 .4.013.575.025.175.013.425.013.65.525.225.513.725 1.75.788 1.875.063.125.1.275.025.45-.075.175-.113.275-.225.425-.113.15-.225.325-.325.425-.1.1-.2.2-.088.375.113.175.5.825 1.025 1.338.525.513 1.025.675 1.225.75.2.075.325.063.45-.038.125-.1.575-.7.725-.938.15-.238.3-.2.5-.125.2.075 1.275.6 1.775.825.5.225.85.375.975.575.125.2.125 1.15-.238 1.513z" />
+                            </svg>
+                            Kirim Status Pesanan "Selesai" ke WhatsApp Customer
+                         </a>
                     @endif
-                    @endif
+
+
+
+                        <button onclick="shareOrderLinkToCustomer({{ $order->id }})"
+                            class="inline-flex items-center justify-center px-4 py-3 bg-pink-600 hover:bg-pink-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                            </svg>
+                            Share Informasi Pesanan ke WhatsApp Customer
+                        </button>
+
+                        <button onclick="shareToEmployeeGroup({{ $order->id }})"
+                            class="inline-flex items-center justify-center px-4 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M16 12A4 4 0 1 1 12 8a4 4 0 0 1 4 4Z"/>
+                                 <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94 1 1 0 1 0-.16-2A8 8 0 1 1 20 10.76V13a1 1 0  0 1-2 0V8a1 1 0 0 1 1-1 1 1 0 0 1 1 1v.28A10 10 0 0 0 12 2a10 10 0 0 0-8 16 1 1 0 0 0 1.6 1.2A8 8 0 0 1 12 4a8 8 0 0 1 3.2.64A6 6 0 0 0 12 8a6 6 0 0 0 4 5.66Z"/>
+                            </svg>
+                            Share Informasi Pesanan ke Grup Karyawan
+                        </button>
+
+                        <button onclick="copyMessageToClipboard({{ $order->id }})"
+                            class="inline-flex items-center justify-center px-4 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/>
+                                <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/>
+                            </svg>
+                            Copy Pesan
+                        </button>
+                        @if(!auth()->user()->hasRole(['customer service', 'karyawan']))
+                        @if(config('public_order.enable_public_order_edit') && $order->status === 'pending')
+                            <a href="{{ route('admin.public-orders.edit', $order->id) }}"
+                                class="inline-flex items-center justify-center px-4 py-3 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                                Edit Pesanan
+                            </a>
+                        @endif
+                        @endif
                 @else
                     <div class="col-span-full">
                         <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
