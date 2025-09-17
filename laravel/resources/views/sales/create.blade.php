@@ -402,26 +402,63 @@
                                         </div>
 
                                         <!-- Quick Amount Buttons -->
-                                        <div class="mt-3 flex flex-wrap gap-2">
+                                        <div class="mt-3 flex flex-wrap gap-3">
+                                            <button type="button"
+                                                onclick="cashGivenInput.value=''; updateCashChange();"
+                                                class="px-3 py-1 text-2xl bg-blue-100 text-red-700 rounded-md hover:bg-blue-200 transition-colors">
+                                                Reset
+                                            </button>
                                             <button type="button" onclick="setExactAmount()"
-                                                class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
+                                                class="px-3 py-1 text-2xl bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors">
                                                 Pas
                                             </button>
+                                            <button type="button" onclick="addAmount(500)"
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +500
+                                            </button>
+                                            <button type="button" onclick="addAmount(1000)"
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +1000
+                                            </button>
+                                            <button type="button" onclick="addAmount(2000)"
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +2000
+                                            </button>
                                             <button type="button" onclick="addAmount(5000)"
-                                                class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
-                                                +5k
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +5000
                                             </button>
                                             <button type="button" onclick="addAmount(10000)"
-                                                class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
-                                                +10k
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +10.000
                                             </button>
                                             <button type="button" onclick="addAmount(20000)"
-                                                class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
-                                                +20k
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +20.000
                                             </button>
                                             <button type="button" onclick="addAmount(50000)"
-                                                class="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
-                                                +50k
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +50.000
+                                            </button>
+                                            <button type="button" onclick="addAmount(100000)"
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +100.000
+                                            </button>
+                                            <button type="button" onclick="addAmount(150000)"
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +150.000
+                                            </button>
+                                            <button type="button" onclick="addAmount(200000)"
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +200.000
+                                            </button>
+                                            <button type="button" onclick="addAmount(500000)"
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +500.000
+                                            </button>
+                                            <button type="button" onclick="addAmount(1000000)"
+                                                class="px-3 py-1 text-xl bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+                                                +1.000.000
                                             </button>
                                         </div>
                                     </div>

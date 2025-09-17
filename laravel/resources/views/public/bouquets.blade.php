@@ -18,23 +18,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom scrollbar for mobile: lebih kecil */
-            ::-webkit-scrollbar {
-                width: 4px;
-                height: 4px;
-            }
-            ::-webkit-scrollbar-thumb {
-                background: #b5e2dd;
-                border-radius: 4px;
-            }
-            ::-webkit-scrollbar-track {
-                background: #f3f3f3;
-                border-radius: 4px;
-            }
-            /* Firefox */
-            html {
-                scrollbar-width: thin;
-                scrollbar-color: #b5e2dd #f3f3f3;
-            }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #b5e2dd;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f3f3f3;
+            border-radius: 4px;
+        }
+
+        /* Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #b5e2dd #f3f3f3;
+        }
 
         /* Navigation Styles */
         .nav-tab {
@@ -261,28 +264,30 @@
         }
 
         /* Professional Name Styles */
-    .professional-name {
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        padding: 4px 10px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 6px;
-        background: rgba(255, 255, 255, 0.05);
-        transition: all 0.3s ease;
-        color: #fff;
-        text-decoration: none;
-        transition: all 0.3s ease-in-out;
-    }
+        .professional-name {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+        }
 
-    .professional-name:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: #fff;
-    box-shadow: 0 0 10px rgba(255,255,255,0.4);
-    transform: translateY(-2px);
-    }
-    .professional-name:hover i {
-        color: #247A72; /* hijau soft */
-    }
+        .professional-name:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .professional-name:hover i {
+            color: #247A72;
+            /* hijau soft */
+        }
     </style>
     <script>
         // Fungsi telah diganti dengan panggilan langsung ke showGreetingCardModal
@@ -481,12 +486,15 @@
                         <div class="flex items-center justify-center space-x-2 sm:space-x-4 md:space-x-8">
                             <a href="{{ route('public.flowers') }}"
                                 class="px-2 sm:px-4 py-1.5 text-center {{ $activeTab === 'flowers' ? 'nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-[#2D9C8F] to-[#247A72] shadow-lg nav-active-gradient' : 'text-[#2D9C8F] hover:bg-[#2D9C8F]/10' }}">
-                                <span class="text-sm font-medium {{ $activeTab === 'flowers' ? 'text-white' : '' }}">BUNGA POTONG</span>
+                                <span
+                                    class="text-sm font-medium {{ $activeTab === 'flowers' ? 'text-white' : '' }}">BUNGA
+                                    POTONG</span>
                             </a>
 
                             <a href="{{ route('public.bouquets') }}"
                                 class="px-2 sm:px-4 py-1.5 text-center {{ $activeTab === 'bouquets' ? 'nav-tab nav-hover-effect group relative items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-[#2D9C8F] to-[#247A72] shadow-lg nav-active-gradient' : 'text-[#2D9C8F] hover:bg-[#2D9C8F]/10' }}">
-                                <span class="text-sm font-medium {{ $activeTab === 'bouquets' ? 'text-white' : '' }}">BOUQUET</span>
+                                <span
+                                    class="text-sm font-medium {{ $activeTab === 'bouquets' ? 'text-white' : '' }}">BOUQUET</span>
                             </a>
 
                             <a href="{{ route('custom.bouquet.create') }}"
@@ -563,11 +571,11 @@
         <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6" id="bouquetGrid">
             @forelse($bouquets as $bouquet)
                 @php
-    // Only show bouquets that have components
-    $sizeIdsWithComponents = $bouquet->sizesWithComponents->pluck('id');
-    $pricesWithComponents = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
-    $minPrice = $pricesWithComponents->min('price') ?? 0;
-    $maxPrice = $pricesWithComponents->max('price') ?? 0;
+                    // Only show bouquets that have components
+                    $sizeIdsWithComponents = $bouquet->sizesWithComponents->pluck('id');
+                    $pricesWithComponents = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
+                    $minPrice = $pricesWithComponents->min('price') ?? 0;
+                    $maxPrice = $pricesWithComponents->max('price') ?? 0;
                 @endphp
                 @if($bouquet->sizesWithComponents->count() > 0)
                     <div class="bouquet-card group" data-name="{{ strtolower($bouquet->name) }}"
@@ -637,16 +645,16 @@
                                 <div class="mb-3">
                                     <span class="text-xs text-[#666666] text-center block mb-2">Ukuran
                                         Tersedia:</span>
-                                    <div class="flex flex-wrap gap-1">
+                                    <div class="text-center gap-1">
                                         @php
-        // Define size order
-        $sizeOrder = ['Extra Small', 'Small', 'Medium', 'Large'];
+                                            // Define size order
+                                            $sizeOrder = ['Extra Small', 'Small', 'Medium', 'Large'];
 
-        // Sort sizes based on the defined order - only show sizes with components
-        $sortedSizes = $bouquet->sizesWithComponents->sortBy(function ($size) use ($sizeOrder) {
-            $index = array_search($size->name, $sizeOrder);
-            return $index !== false ? $index : 999; // Put unknown sizes at the end
-        });
+                                            // Sort sizes based on the defined order - only show sizes with components
+                                            $sortedSizes = $bouquet->sizesWithComponents->sortBy(function ($size) use ($sizeOrder) {
+                                                $index = array_search($size->name, $sizeOrder);
+                                                return $index !== false ? $index : 999; // Put unknown sizes at the end
+                                            });
                                         @endphp
                                         @foreach($sortedSizes as $size)
                                             <span
@@ -660,11 +668,11 @@
                                 <!-- Price Range -->
                                 <div class="mb-3 sm:mb-4">
                                     @php
-        // Only show prices for sizes that have components
-        $sizeIdsWithComponents = $bouquet->sizesWithComponents->pluck('id');
-        $pricesWithComponents = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
-        $minPrice = $pricesWithComponents->min('price');
-        $maxPrice = $pricesWithComponents->max('price');
+                                        // Only show prices for sizes that have components
+                                        $sizeIdsWithComponents = $bouquet->sizesWithComponents->pluck('id');
+                                        $pricesWithComponents = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
+                                        $minPrice = $pricesWithComponents->min('price');
+                                        $maxPrice = $pricesWithComponents->max('price');
                                     @endphp
                                     @if($minPrice && $maxPrice)
                                         <div class="text-center">
@@ -685,23 +693,23 @@
                                 <!-- Action Buttons -->
                                 <div class="mt-auto space-y-1.5 sm:space-y-2">
                                     @php
-        $availablePrices = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
+                                        $availablePrices = $bouquet->prices->whereIn('size_id', $sizeIdsWithComponents);
                                     @endphp
                                     @if($availablePrices->count() == 1)
                                         @php
-            $firstPrice = $availablePrices->first();
+                                            $firstPrice = $availablePrices->first();
                                         @endphp
-                                        <button
+                                        {{-- <button
                                             onclick="showGreetingCardModal(
-                                                                                                                                                                                                                                                                            '{{ $bouquet->id }}',
-                                                                                                                                                                                                                                                                            '{{ $bouquet->name }}',
-                                                                                                                                                                                                                                                                            '{{ $firstPrice->size_id ?? 'standard' }}',
-                                                                                                                                                                                                                                                                            '{{ $firstPrice->size->name ?? 'Standard' }}',
-                                                                                                                                                                                                                                                                            {{ $firstPrice->price }}
-                                                                                                                                                                                                                                                                        )"
+                                                                                                                                                                                                                                                                                        '{{ $bouquet->id }}',
+                                                                                                                                                                                                                                                                                        '{{ $bouquet->name }}',
+                                                                                                                                                                                                                                                                                        '{{ $firstPrice->size_id ?? 'standard' }}',
+                                                                                                                                                                                                                                                                                        '{{ $firstPrice->size->name ?? 'Standard' }}',
+                                                                                                                                                                                                                                                                                        {{ $firstPrice->price }}
+                                                                                                                                                                                                                                                                                    )"
                                             class="w-full bg-[#F5A623] hover:bg-[#E59420] text-white font-semibold py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg text-xs sm:text-sm">
                                             <i class="bi bi-cart-plus mr-1 sm:mr-2"></i>Tambah ke Keranjang
-                                        </button>
+                                        </button> --}}
                                     @elseif($availablePrices->count() > 1)
                                         <button
                                             onclick="showBouquetPriceModal('{{ $bouquet->id }}', '{{ $bouquet->name }}', {{ json_encode($availablePrices->values()) }})"
@@ -748,8 +756,7 @@
                 hidup Anda
             </p>
             <div class="flex justify-center space-x-6 mb-6">
-                <a href="https://www.instagram.com/seikatbungo/"
-                    class="text-white hover:text-white transition-colors">
+                <a href="https://www.instagram.com/seikatbungo/" class="text-white hover:text-white transition-colors">
                     <i class="bi bi-instagram text-xl"></i>
                 </a>
                 <a href="https://www.tiktok.com/@seikatbungo" class="text-white hover:text-white transition-colors"
@@ -781,8 +788,8 @@
         style="width: 30px; height: 30px;">
         <i class="bi bi-arrow-down text-2xl"></i>
     </button>
-    
-    
+
+
     <!-- Scroll to Top Button -->
     <button id="scrollToTopBtn" title="Kembali ke atas"
         class="fixed top-1/2 right-6 -translate-y-1/2 z-50 bg-[#2D9C8F] text-white rounded-full shadow-lg p-3 flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none hover:bg-[#247A72] focus:outline-none"
@@ -800,48 +807,48 @@
     <script>
 
         // Scroll to Bottom Button Logic
-            const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
-            function checkScrollButtons() {
-                // Scroll to Top
-                if (window.scrollY > 200) {
-                    scrollToTopBtn.classList.add('opacity-100');
-                    scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
-                } else {
-                    scrollToTopBtn.classList.remove('opacity-100');
-                    scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none');
-                }
-                // Scroll to Bottom
-                const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-                if (window.scrollY < scrollable - 100) {
-                    scrollToBottomBtn.classList.add('opacity-100');
-                    scrollToBottomBtn.classList.remove('opacity-0', 'pointer-events-none');
-                } else {
-                    scrollToBottomBtn.classList.remove('opacity-100');
-                    scrollToBottomBtn.classList.add('opacity-0', 'pointer-events-none');
-                }
+        const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+        function checkScrollButtons() {
+            // Scroll to Top
+            if (window.scrollY > 200) {
+                scrollToTopBtn.classList.add('opacity-100');
+                scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollToTopBtn.classList.remove('opacity-100');
+                scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none');
             }
-            window.addEventListener('scroll', checkScrollButtons);
-            // Inisialisasi saat load
-            document.addEventListener('DOMContentLoaded', checkScrollButtons);
-            scrollToBottomBtn.addEventListener('click', function () {
-                window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
-            });
+            // Scroll to Bottom
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            if (window.scrollY < scrollable - 100) {
+                scrollToBottomBtn.classList.add('opacity-100');
+                scrollToBottomBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollToBottomBtn.classList.remove('opacity-100');
+                scrollToBottomBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+        window.addEventListener('scroll', checkScrollButtons);
+        // Inisialisasi saat load
+        document.addEventListener('DOMContentLoaded', checkScrollButtons);
+        scrollToBottomBtn.addEventListener('click', function () {
+            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+        });
 
-            // Scroll to Top Button Logic
-            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 200) {
-                    scrollToTopBtn.classList.add('opacity-100');
-                    scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
-                } else {
-                    scrollToTopBtn.classList.remove('opacity-100');
-                    scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none');
-                }
-            });
-            scrollToTopBtn.addEventListener('click', function () {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        
+        // Scroll to Top Button Logic
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 200) {
+                scrollToTopBtn.classList.add('opacity-100');
+                scrollToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollToTopBtn.classList.remove('opacity-100');
+                scrollToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        });
+        scrollToTopBtn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
 
         // Search functionality
         function searchBouquets() {

@@ -95,12 +95,13 @@ class WhatsAppNotificationService
             $formattedGrandTotal = "Rp " . number_format($grandTotal, 0, ',', '.');
 
             // Build pesan untuk customer
-            $message = "*Halo {$order->customer_name}!*\n\n";
+            $message = "*Halo, {$order->customer_name} !*\n\n";
             $message .= "Terima kasih telah memesan di *Seikat Bungo*\n\n";
             $message .= "*Detail Pesanan Anda:*\n";
             $message .= "• Kode Pesanan: *{$order->public_code}*\n";
             $message .= "• Tanggal Pesan: {$createdAt}\n";
-            $message .= "• Tanggal Ambil: {$pickupDate}\n";
+            // $message .= "• Tanggal Ambil: {$pickupDate}\n";
+            $message .= "• Tanggal Ambil: {$pickupDate} " . ($order->pickup_time ?? '') . "\n";
             $message .= "• Metode: " . self::translateDeliveryMethod($order->delivery_method ?? 'N/A') . "\n";
             if (!empty($order->destination)) {
                 $message .= "• Tujuan: {$order->destination}\n";
@@ -117,25 +118,27 @@ class WhatsAppNotificationService
             }
             $message .= "• *Total Keseluruhan: {$formattedGrandTotal}*\n\n";
 
-            $message .= "*Lihat Detail Lengkap:*\n";
-            $message .= "{$orderDetailUrl}\n";
+            $message .= "*Klik Link Berikut:*\n\n";
+            // $message .= "Untuk Melihat Informasi Pesanan Secara Lengkap\n\n";
+            $message .= "*• Lihat Detail Pesanan:*\n{$orderDetailUrl}\n\n";
             // Tambahkan link invoice jika tersedia
             $invoice = '';
             if ($order->public_code) {
                 $invoiceUrl = route('public.order.invoice', ['public_code' => $order->public_code]);
-                $invoice = "*Lihat Invoice:*\n{$invoiceUrl}";
+                $invoice = "*• Lihat Invoice:*\n{$invoiceUrl}";
             }
             $message .= "{$invoice}\n\n";
 
             $message .= "*Fitur yang tersedia:*\n";
             $message .= "• Lihat status pesanan real-time\n";
+            $message .= "• Lihat detail pesanan\n";
             $message .= "• Lihat Hasil produk & harga\n\n";
 
             $message .= "*Catatan:*\n";
-            $message .= "• Segera lakukan konfirmasi pembayaran,\n   untuk mempercepat proses pemesanan.\n\n";
+            $message .= "• Mohon lakukan konfirmasi pembayaran,\n   agar pesanan dapat segera diproses.\n\n";
 
             $message .= "Terima kasih atas kepercayaan Anda!\n\n";
-            $message .= "*Seikat Bungo*";
+            $message .= "*[seikat bungo]*";
 
             return $message;
         } catch (\Exception $e) {
