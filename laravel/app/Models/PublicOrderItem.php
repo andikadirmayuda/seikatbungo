@@ -22,8 +22,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property \App\Models\PublicOrder $order
  * @property \App\Models\Product|null $product
  */
+
 class PublicOrderItem extends Model
 {
+
+    // Relasi ke ukuran bouquet
+    public function size()
+    {
+        return $this->belongsTo(\App\Models\BouquetSize::class, 'size_id');
+    }
+
     protected $casts = [
         'details' => 'json',
         'metadata' => 'json'

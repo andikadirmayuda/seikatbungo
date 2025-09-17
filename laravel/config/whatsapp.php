@@ -36,7 +36,7 @@ return [
 
     // Template pesan untuk berbagai jenis notifikasi
     'message_templates' => [
-        'new_order' => "🌸 *PESANAN BARU MASUK* 🌸\n\n📋 *Detail Pesanan:*\n{order_details}\n\n🛒 *Item Pesanan:*\n{order_items}\n\n💰 *Total: {total}*\n\n{notes}{invoice_link}⚠️ *Mohon segera diproses!*\n📱 Cek detail lengkap di admin panel.",
+        'new_order' => "🌸 *PESANAN BARU MASUK* 🌸\n\n📋 *Detail Pesanan:*\n{order_details}\n\n🛒 *Item Pesanan:*\n{order_items}\n\n💰 *Total: {total}*\n\n{notes}{invoice_link}{order_link}⚠️ *Mohon segera diproses!*\n📱 Cek detail lengkap di admin panel.",
 
         'status_update' => "🔔 *UPDATE STATUS PESANAN* 🔔\n\nPesanan *{order_code}* telah diupdate:\n📊 Status: *{old_status}* → *{new_status}*\n👤 Customer: {customer_name}\n\n{invoice_link}",
 

@@ -324,7 +324,12 @@ class PublicOrderController extends Controller
     public function publicOrderDetail($public_code)
     {
         $order = PublicOrder::where('public_code', $public_code)
-            ->with(['items', 'payments'])
+            ->with([
+                'items.bouquet.category',
+                'items.size',
+                'items.product',
+                'payments'
+            ])
             ->firstOrFail();
         return view('public.order_detail', compact('order'));
     }

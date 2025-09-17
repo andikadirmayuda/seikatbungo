@@ -251,6 +251,10 @@ class WhatsAppNotificationService
                 $invoiceUrl = route('public.order.invoice', ['public_code' => $order->public_code]);
                 $invoiceLink = "🔗 *Link Invoice:*\n{$invoiceUrl}\n\n";
             }
+            if ($order->public_code) {
+                $orderDetailUrl = route('public.order.detail', ['public_code' => $order->public_code]);
+                $orderDetailUrl = "🔗 *Order Detail:*\n{$orderDetailUrl}\n\n";
+            }
 
             // Build message dari template
             $template = config('whatsapp.message_templates.new_order');
@@ -259,13 +263,15 @@ class WhatsAppNotificationService
                 '{order_items}',
                 '{total}',
                 '{notes}',
-                '{invoice_link}'
+                '{invoice_link}',
+                '{order_link}'
             ], [
                 $orderDetails,
                 $orderItems . $shippingInfo, // Add shipping & voucher info to items section
                 $formattedTotal,
                 $notes,
-                $invoiceLink
+                $invoiceLink,
+                $orderDetailUrl
             ], $template);
 
             return $message;
@@ -318,10 +324,15 @@ class WhatsAppNotificationService
     }
 
     /**
-     * Generate URL WhatsApp untuk grup karyawan atau individual
+     * Generate URL WhatsApp untuk grup karyawan atau individual, dengan link order detail
      */
-    public static function generateEmployeeGroupWhatsAppUrl($message)
+    public static function generateEmployeeGroupWhatsAppUrl($message, PublicOrder $order = null)
     {
+        // Tambahkan link order detail jika order diberikan
+        if ($order && $order->public_code) {
+            $orderDetailUrl = route('public.order.detail', ['public_code' => $order->public_code]);
+            $message .= "\n\n🔗 *Order Detail:*\n{$orderDetailUrl}";
+        }
         return self::generateWhatsAppUrl($message);
     }
 
